@@ -11,9 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class Category{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", nullable = false)
     private int id;
 
@@ -24,6 +24,6 @@ public class Category {
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Column(name = "category_id")
+    @JoinColumn(name = "category_id")
     private List<Publication> publications;
 }

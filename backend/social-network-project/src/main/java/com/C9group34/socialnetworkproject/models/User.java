@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private int id;
 
@@ -35,10 +35,10 @@ public class User {
     @Column(name = "user_ratings", nullable = false)
     private Double ratings;
 
-    private Role role;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Publication> publications;
+
+    private Role role;
 
 }

@@ -5,17 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "roles")
+@Entity(name = "comments")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rol_id", nullable = false)
+    @Column(name = "comment_id", nullable = false)
     private int id;
 
-    @Column(name = "rol_description", nullable = false)
-    private String description;
+    @Column(name="comment_content")
+    private String content;
 
 }

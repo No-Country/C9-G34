@@ -5,13 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity(name = "publications")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Publication {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "publication_id", nullable = false)
     private int id;
 
@@ -22,7 +24,7 @@ public class Publication {
     @Column(name = "publication_description")
     private String description;
 
-    @Column(name = "publication_url_imgs", nullable = false)
+    @Column(name = "publication_urlImgs", nullable = false)
     private String urlImg;
 
     @Column(name = "publication_ratings", nullable = false, columnDefinition = "0")
@@ -30,5 +32,9 @@ public class Publication {
 
     @Column(name = "publication_status", nullable = false)
     private String status;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "publication_id")
+    private List<Comment> comments;
 
 }
