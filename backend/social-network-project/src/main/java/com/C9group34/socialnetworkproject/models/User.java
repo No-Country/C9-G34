@@ -39,6 +39,8 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Publication> publications;
 
-    private Role role;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Role> roles;
 
 }
