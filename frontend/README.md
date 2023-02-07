@@ -2,6 +2,8 @@
     <img src="./IMAGES/DINO_GIF.gif" width="75%"/>
 </div><br/>
 
+<h1 align="center">C9-34-T-JAVAREACT__FRONT-END</h1>
+
 ```javascript
 // Integrantes del equipo de front-end
 const INTEGRANTES = [
