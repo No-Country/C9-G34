@@ -14,13 +14,13 @@ import java.util.List;
 public class Category{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "category_title", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "category_description")
+    @Column(name = "description")
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

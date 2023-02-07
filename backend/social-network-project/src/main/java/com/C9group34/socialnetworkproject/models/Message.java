@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "message_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "message_content", nullable = false, columnDefinition = "")
+    @Column(name = "content", nullable = false, columnDefinition = "")
     private String content;
 
 }

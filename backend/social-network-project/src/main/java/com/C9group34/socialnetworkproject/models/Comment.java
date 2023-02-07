@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name="comment_content")
+    @Column(name="content")
     private String content;
 
 }

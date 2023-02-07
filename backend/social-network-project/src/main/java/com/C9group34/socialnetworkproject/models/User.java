@@ -14,25 +14,25 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "user_surname", nullable = false)
+    @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "user_phone")
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "user_ratings", nullable = false)
+    @Column(name = "ratings", nullable = false)
     private Double ratings;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
