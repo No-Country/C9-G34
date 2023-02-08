@@ -23,7 +23,6 @@ public class Category{
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Publication> publications;
 }
