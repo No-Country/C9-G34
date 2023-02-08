@@ -7,7 +7,7 @@ import javax.management.relation.Role;
 import java.util.List;
 
 public class UserDto {
-    private int id;
+    private Integer id;
 
     private String name;
 

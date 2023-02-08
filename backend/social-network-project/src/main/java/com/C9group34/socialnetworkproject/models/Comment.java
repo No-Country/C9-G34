@@ -24,4 +24,5 @@ public class Comment {
     @JoinColumn(name = "publication_id")
     private Publication publication;
 
+
 }

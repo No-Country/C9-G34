@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CategoryDto {
 
-    private int id;
+    private Integer id;
     private String title;
     private String description;
     private List<PublicationRepository> publications;
