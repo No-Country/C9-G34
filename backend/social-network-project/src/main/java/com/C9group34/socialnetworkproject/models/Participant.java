@@ -1,26 +1,22 @@
 package com.C9group34.socialnetworkproject.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "roles")
+import java.util.List;
+
+@Entity(name = "participants")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
-
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
+    private List<User> pars;
 }

@@ -1,6 +1,7 @@
 package com.C9group34.socialnetworkproject.models;
 
-import com.C9group34.socialnetworkproject.dto.CommentDto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,8 +35,21 @@ public class Publication {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "publication_id")
-    private List<CommentDto> comments;
+
+    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
+    private List<FavoritePublication> favoritePublications;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 }
