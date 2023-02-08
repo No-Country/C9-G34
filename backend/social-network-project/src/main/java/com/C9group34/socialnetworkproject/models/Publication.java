@@ -1,5 +1,6 @@
 package com.C9group34.socialnetworkproject.models;
 
+import com.C9group34.socialnetworkproject.dto.CommentDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +36,6 @@ public class Publication {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "publication_id")
-    private List<Comment> comments;
+    private List<CommentDto> comments;
 
 }
