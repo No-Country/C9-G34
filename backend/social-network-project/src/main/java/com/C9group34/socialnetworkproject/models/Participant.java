@@ -19,4 +19,8 @@ public class Participant {
 
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
     private List<User> pars;
+
+
+    @OneToOne(mappedBy = "participant", cascade = CascadeType.ALL)
+    private Conversation conversation;
 }

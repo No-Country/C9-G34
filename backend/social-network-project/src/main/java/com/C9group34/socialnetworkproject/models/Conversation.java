@@ -30,7 +30,8 @@ public class Conversation {
     private User user;
 
 
-
-
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "participant_id")
+    private Participant participant;
 
 }
