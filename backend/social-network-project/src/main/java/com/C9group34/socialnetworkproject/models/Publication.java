@@ -1,5 +1,6 @@
 package com.C9group34.socialnetworkproject.models;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class Publication {
 
     @Column(name = "status", nullable = false)
     private String status;
+
 
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
     private List<Comment> comments;
