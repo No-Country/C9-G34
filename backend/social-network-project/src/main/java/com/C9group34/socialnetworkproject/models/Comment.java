@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "comments")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

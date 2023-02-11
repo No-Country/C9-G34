@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Publication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,5 +53,9 @@ public class Publication {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    private Double calculateRating(){
+        return null;
+    }
 
 }
