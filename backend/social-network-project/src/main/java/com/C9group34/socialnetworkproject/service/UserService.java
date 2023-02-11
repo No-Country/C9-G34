@@ -81,15 +81,18 @@ public class UserService {
         if (user.isEmpty()) {
             throw new ResourceNotFoundException();
         }
+        User updatedUser;
         User userToReplace = user.get();
-        userToReplace.setName(userDTO.getName());
-        userToReplace.setSurname(userDTO.getSurname());
-        userToReplace.setEmail(userDTO.getEmail());
-        userToReplace.setPhone(userDTO.getPhone());
-        userToReplace.setPassword(userDTO.getPassword());
-        userToReplace.setRatings(userDTO.getRatings());
+        updatedUser = new User().builder().id(userToReplace.getId())
+                .name(userDTO.getName())
+                .surname(userDTO.getSurname())
+                .email(userDTO.getEmail())
+                .phone(userDTO.getPhone())
+                .password(userDTO.getPassword())
+                .ratings(userDTO.getRatings()).build();
 
-        userRepository.save(userToReplace);
+
+        userRepository.save(updatedUser);
     }
 
     public void modify(Integer userId, Map<String, Object> fieldsToModify) {
@@ -105,9 +108,12 @@ public class UserService {
 
     //estos serian para mapear
     private User mapToEntity(UserDto userDto) {
-        User user = new User(userDto.getName(), use)
-
-
+        User user = new User().builder().name(userDto.getName())
+                .surname(userDto.getSurname())
+                .email(userDto.getEmail())
+                .phone(userDto.getPhone())
+                .password(userDto.getPassword())
+                .ratings(userDto.getRatings()).build();
         return user;
     }
 
@@ -123,8 +129,7 @@ public class UserService {
     private UserDto mapToDTOWithFavoritePublications(User user) {
 
         UserDto userDto = new UserDto();
-
-        return userDTO;
+        return userDto;
     }
 
     //metodo para la exception
