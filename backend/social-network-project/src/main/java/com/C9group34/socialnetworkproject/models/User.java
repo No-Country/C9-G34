@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +55,28 @@ public class User {
     @JoinColumn(name = "participant_id")
     private Participant participant;
 
+    public void modifyAttributeValue(String attributeName, Object newValue) {
+        switch (attributeName) {
+            case "name":
+                this.name = (String) newValue;
+                break;
+            case "Surname":
+                this.surname = (String) newValue;
+                break;
+            case "email":
+                this.email = (String) newValue;
+                break;
+            case "phone":
+                this.phone = (String) newValue;
+                break;
+            case "password":
+                this.password = (String) newValue;
+                break;
+            case "ratings":
+                this.ratings = (Double) newValue;
+                break;
+        }
+    }
 
 
 }
