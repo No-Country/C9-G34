@@ -55,6 +55,28 @@ public class User {
     @JoinColumn(name = "participant_id")
     private Participant participant;
 
+    public void modifyAttributeValue(String attributeName, Object newValue) {
+        switch (attributeName) {
+            case "name":
+                this.name = (String) newValue;
+                break;
+            case "Surname":
+                this.surname = (String) newValue;
+                break;
+            case "email":
+                this.email = (String) newValue;
+                break;
+            case "phone":
+                this.phone = (String) newValue;
+                break;
+            case "password":
+                this.password = (String) newValue;
+                break;
+            case "ratings":
+                this.ratings = (Double) newValue;
+                break;
+        }
+    }
 
 
 

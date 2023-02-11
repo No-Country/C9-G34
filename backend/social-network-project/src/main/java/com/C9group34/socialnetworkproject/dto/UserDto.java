@@ -29,6 +29,15 @@ public class UserDto {
 
     }
 
+    public UserDto(Integer id, String name, String surname, String email, String phone, String password) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
+
     public UserDto(int id, String name, String surname, String email, String phone,
                    String password, Double ratings, List<Publication> publications, List<Role> roles) {
         this.id = id;
