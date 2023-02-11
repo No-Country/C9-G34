@@ -31,7 +31,7 @@ public class Publication {
     @Column(name = "url_imgs", nullable = false)
     private String urlImg;
 
-    @Column(name = "ratings", nullable = false, columnDefinition = "0")
+    @Column(name = "ratings", nullable = false)
     private Double rating;
 
     @Column(name = "status", nullable = false)
