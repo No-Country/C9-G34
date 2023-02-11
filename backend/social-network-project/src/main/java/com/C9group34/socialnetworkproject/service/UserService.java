@@ -103,13 +103,14 @@ public class UserService {
     }
 
 
-
+    //estos serian para mapear
     private User mapToEntity(UserDto userDto) {
         User user = new User(userDto.getName(), use)
 
 
         return user;
     }
+
 
     private UserDto mapToDTO(User user) {
 
@@ -126,6 +127,7 @@ public class UserService {
         return userDTO;
     }
 
+    //metodo para la exception
     private void checkForExistingUser(Integer userId) {
         if (userRepository.existsById(userId)) {
             throw new ExistingResourceException("El usuario que está intentando crear ya existe.");
