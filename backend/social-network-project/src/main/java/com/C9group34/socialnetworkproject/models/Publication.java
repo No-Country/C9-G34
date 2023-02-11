@@ -54,4 +54,8 @@ public class Publication {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    private Double calculateRating(){
+        return null;
+    }
+
 }
