@@ -3,6 +3,9 @@ package com.C9group34.socialnetworkproject.controllers;
 import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +25,29 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity register (@RequestBody UserDto userDto){
+    @PostMapping("/new")
+    @Operation(
+            summary = "Create new user"
+    )
+    public ResponseEntity register (@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = "{\"name\" : \"Luis\", \"surname\" : \"Uzcategui\", \"email\" : \"luis@example.com\", \"password\" : \"123456789\", \"phone\" : \"+593979010717\", \"ratings\" : 1.5 }"
+                    )
+            )
+    ) @RequestBody User u){
 
-        userService.register(userDto);
+        userService.register(u);
 
-        return new ResponseEntity(userDto.getId(), HttpStatus.CREATED);
+        return new ResponseEntity(u, HttpStatus.CREATED);
 
     }
 
     @GetMapping
+    @Operation(
+            summary = "Get all users"
+    )
     public ResponseEntity retrieve(){
 
         return new ResponseEntity(userService.retrieveAll(), HttpStatus.OK);

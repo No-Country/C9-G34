@@ -26,7 +26,7 @@ public class User {
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "phone")
@@ -35,7 +35,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "ratings", nullable = false)
+    @Column(name = "ratings")
     private Double ratings;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -50,10 +50,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Conversation> conversations;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    /*@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "participant_id")
-    private Participant participant;
+    private Participant participant;*/
 
     public void modifyAttributeValue(String attributeName, Object newValue) {
         switch (attributeName) {

@@ -19,8 +19,8 @@ public class Participant {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
-    private List<User> pars;
+    /*@OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
+    private List<User> pars;*/
 
 
     @OneToOne(mappedBy = "participant", cascade = CascadeType.ALL)

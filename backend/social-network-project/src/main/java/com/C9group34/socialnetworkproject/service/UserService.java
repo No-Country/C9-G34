@@ -29,13 +29,13 @@ public class UserService {
         this.favoritePublicationService = favoritePublicationService;
     }
 
-    public UserDto register(UserDto userDto) {
+    public User register(User u) {
 
-        User user = mapToEntity(userDto);
+        User user = mapToEntity(u);
         checkForExistingUser(user.getId());
         user = userRepository.save(user);
 
-        return userDto;
+        return u;
 
     }
 
@@ -107,7 +107,7 @@ public class UserService {
 
 
     //estos serian para mapear
-    private User mapToEntity(UserDto userDto) {
+    private User mapToEntity(User userDto) {
         User user = new User().builder().name(userDto.getName())
                 .surname(userDto.getSurname())
                 .email(userDto.getEmail())
