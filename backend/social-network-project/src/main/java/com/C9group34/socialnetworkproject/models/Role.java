@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity(name = "roles")
 @Builder
 @NoArgsConstructor
@@ -18,11 +20,12 @@ public class Role {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
-
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private List<User> users;
 }

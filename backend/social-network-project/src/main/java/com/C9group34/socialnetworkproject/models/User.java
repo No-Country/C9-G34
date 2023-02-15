@@ -38,11 +38,13 @@ public class User {
     @Column(name = "ratings")
     private Double ratings;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Publication> publications;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Role> roles;
+    private List<Publication> publications;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<FavoritePublication> favoritePublications;
@@ -50,10 +52,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Conversation> conversations;
 
-    /*@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JoinColumn(name = "participant_id")
-    private Participant participant;*/
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Participant> participant;
 
     public void modifyAttributeValue(String attributeName, Object newValue) {
         switch (attributeName) {

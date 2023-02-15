@@ -26,4 +26,9 @@ public class Message {
     @JoinColumn(name = "conversation_id")
     private Conversation conversation;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "sender_id")
+    private User user;
+
 }

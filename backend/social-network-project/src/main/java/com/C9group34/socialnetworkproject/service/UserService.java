@@ -35,7 +35,7 @@ public class UserService {
         checkForExistingUser(user.getId());
         user = userRepository.save(user);
 
-        return u;
+        return user;
 
     }
 

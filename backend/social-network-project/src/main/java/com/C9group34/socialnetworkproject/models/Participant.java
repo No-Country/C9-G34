@@ -1,5 +1,6 @@
 package com.C9group34.socialnetworkproject.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +20,16 @@ public class Participant {
     @Column(name = "id", nullable = false)
     private int id;
 
-    /*@OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
-    private List<User> pars;*/
+    @Column(name = "title")
+    private String title;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToOne(mappedBy = "participant", cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "conversation_id")
     private Conversation conversation;
 }
