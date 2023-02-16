@@ -1,12 +1,16 @@
 import React from "react";
-import { PostCard } from "../../components";
+import { PostCard, BottomNavigationBar, Navbar } from "../../components";
 
 export default function HomePage() {
   return (
-    <div className="w-100 p-3 py-5">
-      <PostCard />
-      <PostCard />
-      <PostCard />
-    </div>
+    <>
+      <Navbar />
+      <div className="w-100 p-3 py-5 container">
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </div>
+        <BottomNavigationBar />
+    </>
   );
 }
