@@ -6,3 +6,11 @@
   box-sizing: border-box;
   outline: none;
 }
+
+body{
+  background-color: #D2E5E5 !important;
+}
+
+.first-color{
+  background-color: #D2E5E5;
+}

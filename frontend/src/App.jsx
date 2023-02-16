@@ -1,11 +1,14 @@
-import './App.css'
+import AllRoutes from "./routes/AllRoutes";
+import { BottomNavigationBar, Navbar } from "./components";
+// CSS
+import "./App.css";
 
-function App() {
+// --------------------------------------------------------------------
+
+export default function App() {
   return (
-    <div className="App">
-      
-    </div>
-  )
+    <>
+      <AllRoutes />
+    </>
+  );
 }
-
-export default App
