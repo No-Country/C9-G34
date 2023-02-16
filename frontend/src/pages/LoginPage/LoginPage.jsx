@@ -1,8 +1,6 @@
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import React from "react";
 import images from "../../assets/index";
-// CSS
-import "./index.css";
 
 export default function LoginPage() {
   return (
