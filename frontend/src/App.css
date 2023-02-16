@@ -5,5 +5,12 @@
   list-style: none;
   box-sizing: border-box;
   outline: none;
-  background-color:#e49292
+}
+
+body{
+  background-color: #D2E5E5 !important;
+}
+
+.first-color{
+  background-color: #D2E5E5;
 }

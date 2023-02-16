@@ -1,15 +1,16 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import PagRegister from '../pages/PagRegister';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import { HomePage, LoginPage } from "../pages";
 
-const AllRoutes = () => {
+// --------------------------------------------------------------------
+
+export default function AllRoutes() {
   return (
-    <div>
-      <Routes>        
-        <Route path='/registerid' element={<PagRegister/>} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      {/* <Route path="/register" element={<ContactPage />} />
+      <Route path="/profile" element={<InformationPage />} /> */}
+    </Routes>
   );
-};
-
-export default AllRoutes;
+}

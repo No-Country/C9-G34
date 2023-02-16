@@ -1,14 +1,14 @@
+import AllRoutes from "./routes/AllRoutes";
+import { BottomNavigationBar, Navbar } from "./components";
+// CSS
+import "./App.css";
 
-import './App.css'
-import AllRoutes from './routes/AllRoutes'
+// --------------------------------------------------------------------
 
-
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <AllRoutes/>
-    </div>
-  )
+    <>
+      <AllRoutes />
+    </>
+  );
 }
-
-export default App
