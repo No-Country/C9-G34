@@ -3,6 +3,7 @@ package com.C9group34.socialnetworkproject.controllers;
 import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(path = "/users")
+
 public class UserController {
-    /*public ResponseEntity<User> getUser(){
-        return null;
-    }*/
+
 
     private final UserService userService;
 
@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity register (@RequestBody UserDto userDto){
+    public ResponseEntity register(@RequestBody UserDto userDto) {
 
         userService.register(userDto);
 
@@ -32,19 +32,20 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity retrieve(){
+    public ResponseEntity retrieve() {
 
         return new ResponseEntity(userService.retrieveAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId){
+    public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId) {
 
         UserDto userDTO = userService.retrieveByIdWithFavoritePublications(userId);
 
         return new ResponseEntity(userDTO, HttpStatus.OK);
 
     }
+
     @DeleteMapping("/{userId}")
     public ResponseEntity delete(@PathVariable Integer userId) {
         userService.delete(userId);
@@ -68,5 +69,5 @@ public class UserController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
-    
+
 }

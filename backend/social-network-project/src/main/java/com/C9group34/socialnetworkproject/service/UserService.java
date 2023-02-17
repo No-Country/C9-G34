@@ -18,14 +18,11 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PublicationService publicationService;
     private final FavoritePublicationService favoritePublicationService;
 
 
-    public UserService(UserRepository userRepository, PublicationService publicationService,
-                       FavoritePublicationService favoritePublicationService) {
+    public UserService(UserRepository userRepository, FavoritePublicationService favoritePublicationService) {
         this.userRepository = userRepository;
-        this.publicationService = publicationService;
         this.favoritePublicationService = favoritePublicationService;
     }
 
@@ -57,7 +54,7 @@ public class UserService {
     }
 
 
-    public UserDto retrieveByIdWithFavoritePublications(Integer userId){
+    public UserDto retrieveByIdWithFavoritePublications(Integer userId) {
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isEmpty()) {
@@ -117,18 +114,28 @@ public class UserService {
         return user;
     }
 
-
     private UserDto mapToDTO(User user) {
+        UserDto userDto = new UserDto().builder().name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .password(user.getPassword())
+                .ratings(user.getRatings()).build();
+        return userDto;
+    }
+
+   /* private UserDto mapToDTO(User user) {
 
         UserDto userDto = new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail(),
                 user.getPhone(), user.getPassword());
 
         return userDto;
-    }
+    }*/
 
     private UserDto mapToDTOWithFavoritePublications(User user) {
 
         UserDto userDto = new UserDto();
+
         return userDto;
     }
 
