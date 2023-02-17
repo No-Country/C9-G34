@@ -91,18 +91,6 @@ public class PublicationService {
 
     }
 
-
-    /*Publication updatedPublication;
-        Publication publicationToReplace = publication.get();
-        updatedPublication = new Publication().builder().description(publicationToReplace.getDescription())
-                .urlImg(publicationDto.getUrlImg())
-                .rating(publicationDto.getRating())
-                .status(publicationDto.getStatus());
-
-        publicationRepository.save(updatedPublication);
-
-    }*/
-
    private Publication mapToEntity(PublicationDto publicationDto , User user) {
         Publication publication = new Publication().builder().description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())

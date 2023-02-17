@@ -124,14 +124,6 @@ public class UserService {
         return userDto;
     }
 
-   /* private UserDto mapToDTO(User user) {
-
-        UserDto userDto = new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail(),
-                user.getPhone(), user.getPassword());
-
-        return userDto;
-    }*/
-
     private UserDto mapToDTOWithFavoritePublications(User user) {
 
         UserDto userDto = new UserDto();
