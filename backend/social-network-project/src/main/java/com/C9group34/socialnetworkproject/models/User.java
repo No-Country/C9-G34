@@ -1,6 +1,7 @@
 package com.C9group34.socialnetworkproject.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,18 +21,22 @@ public class User {
     @Column(name = "id", nullable = false)
     private int id;
 
+    @Schema(required = true)
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Schema(required = true)
     @Column(name = "surname", nullable = false)
     private String surname;
 
+    @Schema(required = true)
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "phone")
     private String phone;
 
+    @Schema(required = true)
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -73,7 +78,7 @@ public class User {
                 this.password = (String) newValue;
                 break;
             case "ratings":
-                this.ratings = (Double) newValue;
+                this.ratings = Double.valueOf ((String)  newValue);
                 break;
         }
     }

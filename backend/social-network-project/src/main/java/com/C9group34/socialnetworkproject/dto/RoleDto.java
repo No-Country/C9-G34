@@ -1,7 +1,5 @@
 package com.C9group34.socialnetworkproject.dto;
 
-import jakarta.persistence.Column;
-
 public class RoleDto {
 
     private int id;

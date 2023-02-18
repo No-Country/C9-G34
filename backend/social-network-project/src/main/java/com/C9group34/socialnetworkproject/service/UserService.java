@@ -29,12 +29,10 @@ public class UserService {
         this.favoritePublicationService = favoritePublicationService;
     }
 
-    public User register(User u) {
-
-        User user = mapToEntity(u);
+    public User register(UserDto userDto) {
+        User user = mapToEntity(userDto);
         checkForExistingUser(user.getId());
         user = userRepository.save(user);
-
         return user;
 
     }
@@ -64,7 +62,7 @@ public class UserService {
             throw new ResourceNotFoundException("El id del usuario que está buscando no existe.");
         }
 
-        return mapToDTOWithFavoritePublications(user.get());
+        return mapToDTOWithFavoritePublications(user);
     }
 
 
@@ -76,7 +74,7 @@ public class UserService {
         }
     }
 
-    public void replace(Integer userId, UserDto userDTO) {
+    public void replace(Integer userId, User userDTO) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException();
@@ -107,7 +105,8 @@ public class UserService {
 
 
     //estos serian para mapear
-    private User mapToEntity(User userDto) {
+    private User mapToEntity(UserDto userDto) {
+        userDto.setRatings(0.0);
         User user = new User().builder().name(userDto.getName())
                 .surname(userDto.getSurname())
                 .email(userDto.getEmail())
@@ -121,14 +120,15 @@ public class UserService {
     private UserDto mapToDTO(User user) {
 
         UserDto userDto = new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail(),
-                user.getPhone(), user.getPassword());
+                user.getPhone(), user.getPassword(), user.getRatings());
 
         return userDto;
     }
 
-    private UserDto mapToDTOWithFavoritePublications(User user) {
+    private UserDto mapToDTOWithFavoritePublications(Optional<User> user) {
 
-        UserDto userDto = new UserDto();
+        UserDto userDto = new UserDto(user.get().getId(), user.get().getName(), user.get().getSurname(), user.get().getEmail(),
+                user.get().getPhone(), user.get().getPassword(), user.get().getRatings());
         return userDto;
     }
 

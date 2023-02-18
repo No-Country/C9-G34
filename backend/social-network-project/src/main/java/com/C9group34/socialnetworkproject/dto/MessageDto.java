@@ -1,17 +1,11 @@
 package com.C9group34.socialnetworkproject.dto;
 
-import jakarta.persistence.Column;
-
 public class MessageDto {
 
     private int id;
     private String content;
 
-    public MessageDto(){
-
-    }
-
-    public MessageDto(int id, String content) {
+    public MessageDto(String id, int content, int conversationCreatedId) {
         this.id = id;
         this.content = content;
     }

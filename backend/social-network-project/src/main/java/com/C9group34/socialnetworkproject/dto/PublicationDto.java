@@ -1,7 +1,5 @@
 package com.C9group34.socialnetworkproject.dto;
 
-import jakarta.persistence.*;
-
 import java.util.List;
 
 public class PublicationDto {

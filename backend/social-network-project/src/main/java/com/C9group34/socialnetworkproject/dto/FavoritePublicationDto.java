@@ -2,10 +2,6 @@ package com.C9group34.socialnetworkproject.dto;
 
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 public class FavoritePublicationDto {
 

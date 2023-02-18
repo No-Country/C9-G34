@@ -1,7 +1,6 @@
 package com.C9group34.socialnetworkproject.dto;
 
 import com.C9group34.socialnetworkproject.models.Publication;
-import jakarta.persistence.*;
 
 import javax.management.relation.Role;
 import java.util.List;
@@ -23,23 +22,22 @@ public class UserDto {
 
     private List<Publication> publications;
 
-    private List<Role> roles;
-
     public UserDto(){
 
     }
 
-    public UserDto(Integer id, String name, String surname, String email, String phone, String password) {
+    public UserDto(Integer id, String name, String surname, String email, String phone, String password, Double ratings) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.ratings = ratings;
     }
 
     public UserDto(int id, String name, String surname, String email, String phone,
-                   String password, Double ratings, List<Publication> publications, List<Role> roles) {
+                   String password, Double ratings, List<Publication> publications) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -48,7 +46,6 @@ public class UserDto {
         this.password = password;
         this.ratings = ratings;
         this.publications = publications;
-        this.roles = roles;
     }
 
     public int getId() {
@@ -113,13 +110,5 @@ public class UserDto {
 
     public void setPublications(List<Publication> publications) {
         this.publications = publications;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 }
