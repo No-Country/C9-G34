@@ -1,7 +1,9 @@
 package com.C9group34.socialnetworkproject.dto;
 
 import jakarta.persistence.Column;
+import lombok.Builder;
 
+@Builder
 public class RoleDto {
 
     private int id;

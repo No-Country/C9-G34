@@ -1,11 +1,15 @@
 package com.C9group34.socialnetworkproject.dto;
 
 import com.C9group34.socialnetworkproject.models.Publication;
-import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.management.relation.Role;
 import java.util.List;
 
+@Builder
+@Getter
+@Setter
 public class UserDto {
     private Integer id;
 
@@ -23,7 +27,6 @@ public class UserDto {
 
     private List<Publication> publications;
 
-    private List<Role> roles;
 
     public UserDto(){
 
@@ -37,9 +40,8 @@ public class UserDto {
         this.phone = phone;
         this.password = password;
     }
-
-    public UserDto(int id, String name, String surname, String email, String phone,
-                   String password, Double ratings, List<Publication> publications, List<Role> roles) {
+    public UserDto(Integer id, String name, String surname, String email, String phone,
+                   String password, Double ratings, List<Publication> publications) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -48,14 +50,14 @@ public class UserDto {
         this.password = password;
         this.ratings = ratings;
         this.publications = publications;
-        this.roles = roles;
     }
 
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -107,19 +109,5 @@ public class UserDto {
         this.ratings = ratings;
     }
 
-    public List<Publication> getPublications() {
-        return publications;
-    }
 
-    public void setPublications(List<Publication> publications) {
-        this.publications = publications;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 }
