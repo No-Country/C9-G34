@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 public class PublicationDto {
 
-    private int id;
+    private Integer id;
 
     private String title;
 
@@ -30,7 +30,7 @@ public class PublicationDto {
 
     }
 
-    public PublicationDto(int id, String title, String description, String urlImg, Double rating, String status, List<CommentDto> comments) {
+    public PublicationDto(Integer id, String title, String description, String urlImg, Double rating, String status, List<CommentDto> comments) {
         this.id = id;
         this.title = title;
         this.description = description;

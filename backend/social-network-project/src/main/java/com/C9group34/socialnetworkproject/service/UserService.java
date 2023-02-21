@@ -105,7 +105,8 @@ public class UserService {
 
     //estos serian para mapear
     private User mapToEntity(UserDto userDto) {
-        User user = new User().builder().name(userDto.getName())
+        User user = new User().builder().id(userDto.getId())
+                .name(userDto.getName())
                 .surname(userDto.getSurname())
                 .email(userDto.getEmail())
                 .phone(userDto.getPhone())
@@ -115,7 +116,8 @@ public class UserService {
     }
 
     private UserDto mapToDTO(User user) {
-        UserDto userDto = new UserDto().builder().name(user.getName())
+        UserDto userDto = new UserDto().builder().id(user.getId())
+                .name(user.getName())
                 .surname(user.getSurname())
                 .email(user.getEmail())
                 .phone(user.getPhone())
