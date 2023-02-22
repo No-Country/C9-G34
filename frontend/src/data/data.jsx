@@ -1,15 +1,15 @@
 const linksBottomNavigationBar = [
     {
+        img: "CameraIcon",
+        to: "/newPost"
+    },
+    {
         img: "HomeIcon",
         to: "/"
     },
     {
-        img: "CameraIcon",
-        to: "/"
-    },
-    {
         img: "UserIcon",
-        to: "/"
+        to: "/profile"
     }
 ]
 

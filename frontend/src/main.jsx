@@ -1,21 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import store from "./store";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { DataProvider } from "./context/useContext";
 
 // CSS
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // --------------------------------------------------------------------
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
+    <DataProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
+    </DataProvider>
   </React.StrictMode>
 );

@@ -6,6 +6,7 @@ import Message01Icon from "./images/icons/message01.svg";
 import Message02Icon from "./images/icons/message02.svg";
 import FavoriteIcon from "./images/icons/favorite.svg";
 import LikeIcon from "./images/icons/like.svg";
+import TrashIcon from "./images/icons/trash.svg";
 
 // LOGOS
 import Logo from "./images/logos/logo.svg";
@@ -45,6 +46,10 @@ export default {
   FavoriteIcon: {
     img: FavoriteIcon,
     info: "Favorite Icon Lumini"
+  },
+  TrashIcon: {
+    img: TrashIcon,
+    info: "Trash Icon Lumini"
   },
 
   Logo: {
