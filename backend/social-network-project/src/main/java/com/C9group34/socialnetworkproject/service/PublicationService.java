@@ -72,13 +72,12 @@ public class PublicationService {
         }
     }
 
-    public void replace(Integer userId, Integer publicationID , PublicationDto publicationDto) throws ResourceNotFoundException {
+    public void replace(Integer userId, Integer publicationId , PublicationDto publicationDto) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("El id del usuario que está ingresando no existe.");
         }
-
-        Optional<Publication> publication = publicationRepository.findById(userId);
+        Optional<Publication> publication = publicationRepository.findById(publicationId);
         if (publication.isEmpty()) {
             throw new ResourceNotFoundException("El id de la publicacion que está ingresando no existe.");
         }
@@ -87,15 +86,17 @@ public class PublicationService {
         Publication publicationToReplace = publication.get();
         updatedPublication = new Publication().builder().id(publicationToReplace.getId())
                 .title(publicationDto.getTitle())
-                .description(publicationToReplace.getDescription())
+                .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
                 .rating(publicationDto.getRating())
-                .status(publicationDto.getStatus()).build();
-
+                .status(publicationDto.getStatus())
+                .user(publicationToReplace.getUser())
+                .build();
         publicationRepository.save(updatedPublication);
 
     }
 
+    /*
     public void modify(Integer userId, Integer publicationId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
@@ -109,10 +110,11 @@ public class PublicationService {
         Publication publicationToModify = publication.get();
         //fieldsToModify.forEach((key, value) -> publicationToModify.modifyAttributeValue(key, value));
         publicationRepository.save(publicationToModify);
-    }
+    }*/
 
    private Publication mapToEntity(PublicationDto publicationDto , User user) {
         Publication publication = new Publication().builder()
+                .id(publicationDto.getId())
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
