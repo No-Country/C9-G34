@@ -12,14 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "{host}")
 public class UserController {
-    /*public ResponseEntity<User> getUser(){
-        return null;
-    }*/
 
     private final UserService userService;
 
@@ -66,9 +64,11 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId){
 
-        UserDto userDTO = userService.retrieveByIdWithFavoritePublications(userId);
-
-        return new ResponseEntity(userDTO, HttpStatus.OK);
+        Optional<UserDto> userOptional = userService.retrieveByIdWithFavoritePublications(userId);
+        if (userOptional.isEmpty()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(userOptional.get(), HttpStatus.OK);
 
     }
     @DeleteMapping("/{userId}")

@@ -57,32 +57,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Conversation> conversations;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Participant> participant;
 
-    public void modifyAttributeValue(String attributeName, Object newValue) {
-        switch (attributeName) {
-            case "name":
-                this.name = (String) newValue;
-                break;
-            case "Surname":
-                this.surname = (String) newValue;
-                break;
-            case "email":
-                this.email = (String) newValue;
-                break;
-            case "phone":
-                this.phone = (String) newValue;
-                break;
-            case "password":
-                this.password = (String) newValue;
-                break;
-            case "ratings":
-                this.ratings = Double.valueOf ((String)  newValue);
-                break;
-        }
-    }
-
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "conversation_id")
+    private Conversation participant;
 
 }

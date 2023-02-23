@@ -18,14 +18,16 @@ import java.io.IOException;
 
 @OpenAPIDefinition
 @Configuration
+/*
 @SecurityScheme(
         name = "token",
         type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
         scheme = "bearer"
-)
+)*/
 public class SwaggerConfig {
 
+    /*
     @Bean
     public OpenAPI baseOpenAPI() throws IOException {
 
@@ -75,4 +77,6 @@ public class SwaggerConfig {
                         .version("1.0.1")
                         .description("API rest for social media"));
     }
+
+     */
 }

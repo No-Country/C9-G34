@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
 @Entity(name = "messages")
 @Builder
 @NoArgsConstructor
@@ -33,41 +31,4 @@ public class Message {
     @JoinColumn(name = "sender_id")
     private User user;
 
-    public Message(String content, Conversation conversation, User user) {
-        this.content = content;
-        this.conversation = conversation;
-        this.user = user;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public int getConversation() {
-        return conversation.getId();
-    }
-
-    public void setConversation(Conversation conversation) {
-        this.conversation = conversation;
-    }
-
-    public int getUser() {
-        return user.getId();
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -16,10 +16,11 @@ public class ConversationsControllers {
     @Autowired
     ConversationService conversationService;
 
+    /*
     @GetMapping("/all")
     public ResponseEntity getAllConversations(){
         return new ResponseEntity(conversationService.getAll(), HttpStatus.OK);
     }
 
-
+*/
 }
