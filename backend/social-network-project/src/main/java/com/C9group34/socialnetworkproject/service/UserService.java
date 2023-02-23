@@ -1,11 +1,11 @@
 package com.C9group34.socialnetworkproject.service;
 
-
 import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -17,22 +17,28 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
+    /*
     private final UserRepository userRepository;
-    private final FavoritePublicationService favoritePublicationService;
+    private final PublicationService publicationService;
+    private final FavoritePublicationService favoritePublicationService;*/
 
 
-    public UserService(UserRepository userRepository, FavoritePublicationService favoritePublicationService) {
-        this.userRepository = userRepository;
-        this.favoritePublicationService = favoritePublicationService;
-    }
+    // ------------cambio por autowired por simplicidad de codigo---------------
 
-    public UserDto register(UserDto userDto) {
 
+    @Autowired
+    private  UserRepository userRepository;
+    @Autowired
+    private  PublicationService publicationService;
+    @Autowired
+    private  FavoritePublicationService favoritePublicationService;
+
+
+    public User register(UserDto userDto) {
         User user = mapToEntity(userDto);
         checkForExistingUser(user.getId());
         user = userRepository.save(user);
-
-        return userDto;
+        return user;
 
     }
 
@@ -43,25 +49,21 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto retrieveById(Integer userId) {
+    public Optional<UserDto> retrieveById(Integer userId) {
         Optional<User> user = userRepository.findById(userId);
-
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("El id del usuario que está buscando no existe.");
-        }
-
-        return mapToDTO(user.get());
+        return Optional.of(mapToDTO(user.get()));
     }
 
 
-    public UserDto retrieveByIdWithFavoritePublications(Integer userId) {
+
+    public Optional<UserDto> retrieveByIdWithFavoritePublications(Integer userId){
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("El id del usuario que está buscando no existe.");
         }
 
-        return mapToDTOWithFavoritePublications(user.get());
+        return mapToDTOWithFavoritePublications(user);
     }
 
 
@@ -73,22 +75,23 @@ public class UserService {
         }
     }
 
-    public void replace(Integer userId, UserDto userDTO) {
+    public void replace(Integer userId, User userDTO) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
+        // esta exception la controlaremos en el controller
+        /*
         if (user.isEmpty()) {
             throw new ResourceNotFoundException();
-        }
+        }*/
         User updatedUser;
         User userToReplace = user.get();
-        updatedUser = new User().builder().id(userToReplace.getId())
+        new User();
+        updatedUser = User.builder().id(userToReplace.getId())
                 .name(userDTO.getName())
                 .surname(userDTO.getSurname())
                 .email(userDTO.getEmail())
                 .phone(userDTO.getPhone())
                 .password(userDTO.getPassword())
                 .ratings(userDTO.getRatings()).build();
-
-
         userRepository.save(updatedUser);
     }
 
@@ -98,39 +101,55 @@ public class UserService {
             throw new ResourceNotFoundException();
         }
         User userToModify = user.get();
-        fieldsToModify.forEach((key, value) -> userToModify.modifyAttributeValue(key, value));
-        userRepository.save(userToModify);
+        User userMofificated = User.builder()
+                .id(userToModify.getId())
+                .name(userToModify.getName())
+                .surname(userToModify.getSurname())
+                .email(userToModify.getEmail())
+                .phone(userToModify.getPhone())
+                .role(userToModify.getRole())
+                .build();
+        userRepository.save(userMofificated);
     }
-
 
     //estos serian para mapear
     private User mapToEntity(UserDto userDto) {
-        User user = new User().builder().id(userDto.getId())
-                .name(userDto.getName())
+
+        new User();
+        return User.builder().name(userDto.getName())
                 .surname(userDto.getSurname())
                 .email(userDto.getEmail())
                 .phone(userDto.getPhone())
                 .password(userDto.getPassword())
-                .ratings(userDto.getRatings()).build();
-        return user;
+                .ratings(userDto.getRatings())
+                .build();
     }
 
     private UserDto mapToDTO(User user) {
-        UserDto userDto = new UserDto().builder().id(user.getId())
+
+        return UserDto.builder().id(user.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .password(user.getPassword())
-                .ratings(user.getRatings()).build();
-        return userDto;
+                .ratings(user.getRatings())
+                .build();
     }
 
-    private UserDto mapToDTOWithFavoritePublications(User user) {
-
-        UserDto userDto = new UserDto();
-
-        return userDto;
+    private Optional<UserDto> mapToDTOWithFavoritePublications(Optional<User> optionalUser) {
+        if(optionalUser.isEmpty()){
+            return Optional.empty();
+        }
+        User user = optionalUser.get();
+        return Optional.ofNullable(UserDto.builder().id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .password(user.getPassword())
+                .ratings(user.getRatings())
+                .build());
     }
 
     //metodo para la exception
@@ -139,5 +158,4 @@ public class UserService {
             throw new ExistingResourceException("El usuario que está intentando crear ya existe.");
         }
     }
-
 }

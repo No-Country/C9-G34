@@ -2,17 +2,21 @@ package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/users")
-
+@RequestMapping("/users")
+@CrossOrigin(origins = "{host}")
 public class UserController {
-
 
     private final UserService userService;
 
@@ -20,17 +24,39 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity register(@RequestBody UserDto userDto) {
+    @PostMapping("/new")
+    @Operation(
+            summary = "Create new use",
+            responses = {
+                    @ApiResponse(responseCode = "201",ref = "created"),
+                    @ApiResponse(responseCode = "400",ref = "badRequest")
+            }
+    )
+    public ResponseEntity register (@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = "{\"name\" : \"Luis\", \"surname\" : \"Uzcategui\", \"email\" : \"luis@example.com\", \"password\" : \"123456789\", \"phone\" : \"+593979010717\" }"
+                    )
+            )
+    ) @RequestBody UserDto u){
 
-        userService.register(userDto);
+        User user = userService.register(u);
 
-        return new ResponseEntity(userDto.getId(), HttpStatus.CREATED);
+        return new ResponseEntity(user, HttpStatus.CREATED);
 
     }
 
-    @GetMapping
-    public ResponseEntity retrieve() {
+    @GetMapping("/all")
+    @Operation(
+            summary = "Get all users",
+            responses = {
+                    @ApiResponse(responseCode = "200",ref = "getAll"),
+                    @ApiResponse(responseCode = "400",ref = "badRequest")
+            }
+    )
+    public ResponseEntity retrieve(){
+
 
         return new ResponseEntity(userService.retrieveAll(), HttpStatus.OK);
     }
@@ -38,9 +64,11 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId) {
 
-        UserDto userDTO = userService.retrieveByIdWithFavoritePublications(userId);
-
-        return new ResponseEntity(userDTO, HttpStatus.OK);
+        Optional<UserDto> userOptional = userService.retrieveByIdWithFavoritePublications(userId);
+        if (userOptional.isEmpty()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(userOptional.get(), HttpStatus.OK);
 
     }
 
@@ -52,10 +80,16 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity replace(@PathVariable Integer userId,
-                                  @RequestBody UserDto userDTO) {
+    public ResponseEntity replace(@PathVariable Integer userId,@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = "{\"name\" : \"String\", \"surname\" : \"String\", \"email\" : \"String\", \"password\" : \"String\", \"phone\" : \"String\", \"ratings\" : 0.0 }"
+                    )
+            )
+    ) @RequestBody User user) {
 
-        userService.replace(userId, userDTO);
+        userService.replace(userId, user);
 
         return new ResponseEntity(HttpStatus.OK);
     }

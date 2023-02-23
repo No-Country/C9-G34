@@ -1,11 +1,14 @@
 package com.C9group34.socialnetworkproject.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity(name = "roles")
 @Builder
@@ -18,11 +21,14 @@ public class Role {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "description", nullable = false)
+    @Schema(required = true)
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
 
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private List<User> users;
 }

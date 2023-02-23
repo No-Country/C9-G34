@@ -18,12 +18,17 @@ public class Message {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "content", nullable = false, columnDefinition = "")
+    @Column(name = "content", nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "conversation_id")
     private Conversation conversation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "sender_id")
+    private User user;
 
 }
