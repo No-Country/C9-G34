@@ -84,6 +84,7 @@ public class PublicationController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /*
     @PatchMapping("/{publicationId}")
     public ResponseEntity modify(@PathVariable Integer userId,
                                  @PathVariable Integer publicationId,
@@ -95,6 +96,6 @@ public class PublicationController {
             throw new RuntimeException(e);
         }
         return new ResponseEntity(HttpStatus.OK);
-    }
+    }*/
 
 }

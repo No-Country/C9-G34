@@ -25,25 +25,34 @@ public class FavoritePublicationService {
     @Autowired
     private PublicationRepository publicationRepository;
 
-    public FavoritePublication create(FavoritePublicationDto fpDto, Integer userId, Integer publicationId) throws ExistingResourceException, ResourceNotFoundException {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException();
+    public FavoritePublicationDto create( Integer userId, Integer publicationId) throws ExistingResourceException, ResourceNotFoundException {
+        Optional<User> u = userRepository.findById(userId);
+        Optional<Publication> p = publicationRepository.findById(publicationId);
+        System.out.println(p.get());
+        if (u.isEmpty()) {
+            throw new ResourceNotFoundException("usuario no encontrado");
         }
         Optional<Publication> publication = publicationRepository.findById(publicationId);
-        if (publication.isEmpty()) {
-            throw new ResourceNotFoundException();
+        if (p.isEmpty()) {
+            throw new ResourceNotFoundException("publicacion no encontrada");
         }
-        FavoritePublication fp = mapToEntity(fpDto, user.get(), publication.get());
+        FavoritePublication fp = new FavoritePublication().builder()
+                .publication(p.get())
+                .user(u.get()).build();;
         fp = favoriteRepository.save(fp);
-        return fp;
+        return this.mapToDTO(fp);
     }
 
-    private FavoritePublication mapToEntity(FavoritePublicationDto favoritePublicationDto, User u, Publication p) {
-        FavoritePublication favoritePublication = new FavoritePublication().builder()
+    private FavoritePublication mapToEntity(User u, Publication p) {
+        return new FavoritePublication().builder()
                 .publication(p)
                 .user(u).build();
-        return favoritePublication;
+    }
+
+    private FavoritePublicationDto mapToDTO(FavoritePublication fp) {
+        return new FavoritePublicationDto().builder()
+                .publication(fp.getPublication())
+                .user(fp.getUser()).build();
     }
 
 }

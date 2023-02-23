@@ -124,7 +124,6 @@ public class PublicationService {
         return publication;
     }
 
-
     private PublicationDto mapToDTO(Publication publication) {
         PublicationDto.PublicationDtoBuilder publicationDto = new PublicationDto().builder().id(publication.getId())
                 .title(publication.getTitle())
@@ -135,6 +134,5 @@ public class PublicationService {
 
         return publicationDto.build();
     }
-
 
 }
