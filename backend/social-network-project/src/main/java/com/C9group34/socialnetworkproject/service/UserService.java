@@ -34,7 +34,7 @@ public class UserService {
     private  FavoritePublicationService favoritePublicationService;
 
 
-    public User register(UserDto userDto) {
+    public User register(UserDto userDto) throws ExistingResourceException {
         User user = mapToEntity(userDto);
         checkForExistingUser(user.getId());
         user = userRepository.save(user);
@@ -56,18 +56,18 @@ public class UserService {
 
 
 
-    public Optional<UserDto> retrieveByIdWithFavoritePublications(Integer userId){
+    public UserDto retrieveByIdWithFavoritePublications(Integer userId) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("El id del usuario que está buscando no existe.");
         }
 
-        return mapToDTOWithFavoritePublications(user);
+        return mapToDTOWithFavoritePublications(user).get();
     }
 
 
-    public void delete(Integer userId) {
+    public void delete(Integer userId) throws ResourceNotFoundException {
         try {
             userRepository.deleteById(userId);
         } catch (EmptyResultDataAccessException e) {
@@ -75,13 +75,11 @@ public class UserService {
         }
     }
 
-    public void replace(Integer userId, User userDTO) throws ResourceNotFoundException {
+    public void replace(Integer userId, UserDto userDTO) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
-        // esta exception la controlaremos en el controller
-        /*
         if (user.isEmpty()) {
             throw new ResourceNotFoundException();
-        }*/
+        }
         User updatedUser;
         User userToReplace = user.get();
         new User();
@@ -95,7 +93,7 @@ public class UserService {
         userRepository.save(updatedUser);
     }
 
-    public void modify(Integer userId, Map<String, Object> fieldsToModify) {
+    public void modify(Integer userId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException();
@@ -153,7 +151,7 @@ public class UserService {
     }
 
     //metodo para la exception
-    private void checkForExistingUser(Integer userId) {
+    private void checkForExistingUser(Integer userId) throws ExistingResourceException {
         if (userRepository.existsById(userId)) {
             throw new ExistingResourceException("El usuario que está intentando crear ya existe.");
         }

@@ -8,6 +8,7 @@ import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -19,28 +20,29 @@ import java.util.stream.Collectors;
 @Service
 public class PublicationService {
 
+    /*
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
+    private final UserService userService;*/
 
-    public PublicationService(PublicationRepository publicationRepository, UserRepository userRepository, UserService userService) {
-        this.publicationRepository = publicationRepository;
-        this.userRepository = userRepository;
-        this.userService = userService;
-    }
+    // ------------cambio por autowired por simplicidad de codigo---------------
+    @Autowired
+    private  PublicationRepository publicationRepository;
+    @Autowired
+    private  UserRepository userRepository;
+    /*
+    @Autowired
+    private  UserService userService;*/
+
 
     public void create(PublicationDto publicationDTO, Integer userId) {
         Optional<User> user = userRepository.findById(userId);
-
         Publication publication = mapToEntity(publicationDTO, user.get());
         publicationRepository.save(publication);
-
     }
 
 
-
-
-    public List<PublicationDto> retrieveAll(Integer userId) {
+    public List<PublicationDto> retrieveAll(Integer userId) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("El id del usuario que está ingresando no existe.");
@@ -51,7 +53,7 @@ public class PublicationService {
                 .collect(Collectors.toList());
     }
 
-    public PublicationDto retrieveById(Integer publicationId) {
+    public PublicationDto retrieveById(Integer publicationId) throws ResourceNotFoundException {
         Optional<Publication> publication = publicationRepository.findById(publicationId);
 
         if (publication.isEmpty()) {
@@ -62,7 +64,7 @@ public class PublicationService {
     }
 
 
-    public void delete(Integer publicationId) {
+    public void delete(Integer publicationId) throws ResourceNotFoundException {
         try {
             publicationRepository.deleteById(publicationId);
         } catch (EmptyResultDataAccessException e) {
@@ -70,7 +72,7 @@ public class PublicationService {
         }
     }
 
-    public void replace(Integer userId, Integer publicationID , PublicationDto publicationDto) {
+    public void replace(Integer userId, Integer publicationID , PublicationDto publicationDto) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("El id del usuario que está ingresando no existe.");
@@ -94,7 +96,7 @@ public class PublicationService {
 
     }
 
-    public void modify(Integer userId, Integer publicationId, Map<String, Object> fieldsToModify) {
+    public void modify(Integer userId, Integer publicationId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException();

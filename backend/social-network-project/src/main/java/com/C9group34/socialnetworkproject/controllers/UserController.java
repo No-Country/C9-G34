@@ -1,6 +1,9 @@
 package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.UserDto;
+import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
+import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
+import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,11 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "{host}")
+//@CrossOrigin(origins = "{host}")
 public class UserController {
 
     private final UserService userService;
@@ -41,7 +43,13 @@ public class UserController {
             )
     ) @RequestBody UserDto u){
 
-        User user = userService.register(u);
+        User user = null;
+        try {
+            user = userService.register(u);
+        } catch (ExistingResourceException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
+        }
 
         return new ResponseEntity(user, HttpStatus.CREATED);
 
@@ -57,24 +65,29 @@ public class UserController {
     )
     public ResponseEntity retrieve(){
 
-
         return new ResponseEntity(userService.retrieveAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId) {
 
-        Optional<UserDto> userOptional = userService.retrieveByIdWithFavoritePublications(userId);
-        if (userOptional.isEmpty()){
+        try {
+            UserDto user = userService.retrieveByIdWithFavoritePublications(userId);
+            return new ResponseEntity(user, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(userOptional.get(), HttpStatus.OK);
-
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity delete(@PathVariable Integer userId) {
-        userService.delete(userId);
+        try {
+            userService.delete(userId);
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -87,17 +100,25 @@ public class UserController {
                             value = "{\"name\" : \"String\", \"surname\" : \"String\", \"email\" : \"String\", \"password\" : \"String\", \"phone\" : \"String\", \"ratings\" : 0.0 }"
                     )
             )
-    ) @RequestBody User user) {
-
-        userService.replace(userId, user);
-
+    ) @RequestBody UserDto user) {
+        try {
+            userService.replace(userId, user);
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PatchMapping("/{userId}")
     public ResponseEntity modify(@PathVariable Integer userId,
                                  @RequestBody Map<String, Object> fieldsToModify) {
-        userService.modify(userId, fieldsToModify);
+        try {
+            userService.modify(userId, fieldsToModify);
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
+        }
 
         return new ResponseEntity(HttpStatus.OK);
     }
