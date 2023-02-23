@@ -1,11 +1,13 @@
 package com.C9group34.socialnetworkproject.dto;
 
 import com.C9group34.socialnetworkproject.models.Publication;
+
 import com.C9group34.socialnetworkproject.models.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class UserDto {
     private String password;
 
     private Double ratings;
+
 
     private List<Role> roles;
 

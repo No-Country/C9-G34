@@ -1,9 +1,12 @@
 package com.C9group34.socialnetworkproject.dto;
 
-import lombok.AllArgsConstructor;
+
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
 
 import java.util.List;
 
@@ -13,7 +16,7 @@ import java.util.List;
 @Getter
 public class PublicationDto {
 
-    private int id;
+    private Integer id;
 
     private String title;
 

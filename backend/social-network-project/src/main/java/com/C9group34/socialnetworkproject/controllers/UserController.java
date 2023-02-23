@@ -1,7 +1,6 @@
 package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.UserDto;
-import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -58,11 +57,12 @@ public class UserController {
     )
     public ResponseEntity retrieve(){
 
+
         return new ResponseEntity(userService.retrieveAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId){
+    public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId) {
 
         Optional<UserDto> userOptional = userService.retrieveByIdWithFavoritePublications(userId);
         if (userOptional.isEmpty()){
@@ -71,6 +71,7 @@ public class UserController {
         return new ResponseEntity(userOptional.get(), HttpStatus.OK);
 
     }
+
     @DeleteMapping("/{userId}")
     public ResponseEntity delete(@PathVariable Integer userId) {
         userService.delete(userId);
@@ -100,5 +101,5 @@ public class UserController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
-    
+
 }

@@ -22,7 +22,9 @@ public class UserService {
     private final PublicationService publicationService;
     private final FavoritePublicationService favoritePublicationService;*/
 
+
     // ------------cambio por autowired por simplicidad de codigo---------------
+
 
     @Autowired
     private  UserRepository userRepository;
@@ -51,6 +53,7 @@ public class UserService {
         Optional<User> user = userRepository.findById(userId);
         return Optional.of(mapToDTO(user.get()));
     }
+
 
 
     public Optional<UserDto> retrieveByIdWithFavoritePublications(Integer userId){
@@ -111,6 +114,7 @@ public class UserService {
 
     //estos serian para mapear
     private User mapToEntity(UserDto userDto) {
+
         new User();
         return User.builder().name(userDto.getName())
                 .surname(userDto.getSurname())
@@ -122,6 +126,7 @@ public class UserService {
     }
 
     private UserDto mapToDTO(User user) {
+
         return UserDto.builder().id(user.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
