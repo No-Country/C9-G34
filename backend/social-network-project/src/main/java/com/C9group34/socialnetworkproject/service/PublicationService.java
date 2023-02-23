@@ -107,18 +107,19 @@ public class PublicationService {
             throw new ResourceNotFoundException();
         }
         Publication publicationToModify = publication.get();
-        fieldsToModify.forEach((key, value) -> publicationToModify.modifyAttributeValue(key, value));
+        //fieldsToModify.forEach((key, value) -> publicationToModify.modifyAttributeValue(key, value));
         publicationRepository.save(publicationToModify);
     }
 
    private Publication mapToEntity(PublicationDto publicationDto , User user) {
-        Publication publication = new Publication().builder().id(publicationDto.getId())
+        Publication publication = new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
                 .rating(publicationDto.getRating())
                 .status(publicationDto.getStatus())
-                .user(user).build();
+                .user(user)
+                .build();
 
         return publication;
     }

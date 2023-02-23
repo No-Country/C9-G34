@@ -18,7 +18,7 @@ public class FavoritePublicationController {
     @Autowired
     private FavoritePublicationService favoritePService;
 
-
+/*
 
     @PostMapping
     @Transactional
@@ -28,5 +28,5 @@ public class FavoritePublicationController {
         favoritePService
                 create(publicationDTO , userId);
         return new ResponseEntity<>(publicationDTO.getId(), HttpStatus.CREATED);
-    }
+    }*/
 }
