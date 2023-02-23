@@ -1,20 +1,18 @@
 package com.C9group34.socialnetworkproject.dto;
 
-import com.C9group34.socialnetworkproject.models.Publication;
-import com.C9group34.socialnetworkproject.models.User;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+import java.util.List;
+
 @Getter
+@Builder
 public class FavoritePublicationDto {
 
-    private int id;
-    private User user;
-    private Publication publication;
+    @JsonAlias("user")
+    private Integer userId;
 
+    @JsonAlias("Publications")
+    private Integer publicationId;
 }
