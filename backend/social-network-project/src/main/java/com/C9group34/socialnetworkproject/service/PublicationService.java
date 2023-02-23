@@ -96,7 +96,7 @@ public class PublicationService {
 
     }
 
-    public void modify(Integer userId, Integer publicationId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
+    /*public void modify(Integer userId, Integer publicationId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException();
@@ -110,7 +110,7 @@ public class PublicationService {
         fieldsToModify.forEach((key, value) -> publicationToModify.modifyAttributeValue(key, value));
         publicationRepository.save(publicationToModify);
     }
-
+*/
    private Publication mapToEntity(PublicationDto publicationDto , User user) {
         Publication publication = new Publication().builder().id(publicationDto.getId())
                 .title(publicationDto.getTitle())

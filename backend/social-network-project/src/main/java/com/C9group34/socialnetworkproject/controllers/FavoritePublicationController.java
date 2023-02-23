@@ -2,6 +2,8 @@ package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.FavoritePublicationDto;
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
+import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
+import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
 import com.C9group34.socialnetworkproject.service.FavoritePublicationService;
 import com.C9group34.socialnetworkproject.service.PublicationService;
@@ -23,10 +25,10 @@ public class FavoritePublicationController {
     @PostMapping
     @Transactional
     public ResponseEntity create(@PathVariable Integer userId,
-                                 @RequestBody FavoritePublicationDto favoritePublicationDto) {
+                                 @PathVariable Integer publicationId,
+                                 @RequestBody FavoritePublicationDto favoritePublicationDto) throws ExistingResourceException, ResourceNotFoundException {
 
-        favoritePService
-                create(publicationDTO , userId);
-        return new ResponseEntity<>(publicationDTO.getId(), HttpStatus.CREATED);
+        favoritePService.create(favoritePublicationDto, publicationId , userId);
+        return new ResponseEntity<>(favoritePublicationDto.getId(), HttpStatus.CREATED);
     }
 }
