@@ -14,9 +14,7 @@ import lombok.NoArgsConstructor;
 public class FavoritePublicationDto {
 
     private int id;
-
     private User user;
-
     private Publication publication;
 
 }

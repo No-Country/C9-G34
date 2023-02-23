@@ -94,9 +94,7 @@ public class PublicationController {
         } catch (ResourceNotFoundException e) {
             throw new RuntimeException(e);
         }
-
         return new ResponseEntity(HttpStatus.OK);
     }
-
 
 }

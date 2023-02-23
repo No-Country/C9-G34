@@ -59,6 +59,7 @@ public class Publication {
     }
 
 
+    /*
     public void modifyAttributeValue(String attributeName, Object newValue) {
         switch (attributeName) {
             case "title":
@@ -78,5 +79,5 @@ public class Publication {
                 break;
 
         }
-    }
+    }*/
 }

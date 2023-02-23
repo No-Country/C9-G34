@@ -28,11 +28,6 @@ public class UserService {
 
     @Autowired
     private  UserRepository userRepository;
-    @Autowired
-    private  PublicationService publicationService;
-    @Autowired
-    private  FavoritePublicationService favoritePublicationService;
-
 
     public User register(UserDto userDto) throws ExistingResourceException {
         User user = mapToEntity(userDto);
@@ -98,6 +93,7 @@ public class UserService {
         if (user.isEmpty()) {
             throw new ResourceNotFoundException();
         }
+
         User userToModify = user.get();
         User userMofificated = User.builder()
                 .id(userToModify.getId())
