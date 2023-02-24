@@ -13,26 +13,19 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PublicationService {
 
-    /*
-    private final PublicationRepository publicationRepository;
-    private final UserRepository userRepository;
-    private final UserService userService;*/
 
     // ------------cambio por autowired por simplicidad de codigo---------------
     @Autowired
     private  PublicationRepository publicationRepository;
     @Autowired
     private  UserRepository userRepository;
-    /*
-    @Autowired
-    private  UserService userService;*/
+
 
     public void create(PublicationDto publicationDTO, Integer userId) {
         Optional<User> user = userRepository.findById(userId);
@@ -58,7 +51,6 @@ public class PublicationService {
         if (publication.isEmpty()) {
             throw new ResourceNotFoundException("El id de la publicacion que está buscando no existe.");
         }
-
         return mapToDTO(publication.get());
     }
 
@@ -67,7 +59,7 @@ public class PublicationService {
         try {
             publicationRepository.deleteById(publicationId);
         } catch (EmptyResultDataAccessException e) {
-           System.out.println(e.getMessage());
+            throw new ResourceNotFoundException();
         }
     }
 
@@ -95,25 +87,9 @@ public class PublicationService {
 
     }
 
-    /*
-    public void modify(Integer userId, Integer publicationId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException();
-        }
 
-        Optional<Publication> publication = publicationRepository.findById(publicationId);
-        if (publication.isEmpty()) {
-            throw new ResourceNotFoundException();
-        }
-        Publication publicationToModify = publication.get();
-        //fieldsToModify.forEach((key, value) -> publicationToModify.modifyAttributeValue(key, value));
-        publicationRepository.save(publicationToModify);
-    }*/
-
-   private Publication mapToEntity(PublicationDto publicationDto , User user) {
-        Publication publication = new Publication().builder()
-                .id(publicationDto.getId())
+    private Publication mapToEntity(PublicationDto publicationDto , User user) {
+        return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
@@ -122,7 +98,6 @@ public class PublicationService {
                 .user(user)
                 .build();
 
-        return publication;
     }
 
     private PublicationDto mapToDTO(Publication publication) {

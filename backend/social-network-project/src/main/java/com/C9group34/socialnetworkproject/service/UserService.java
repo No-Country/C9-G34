@@ -18,15 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    /*
-    private final UserRepository userRepository;
-    private final PublicationService publicationService;
-    private final FavoritePublicationService favoritePublicationService;*/
-
-
-    // ------------cambio por autowired por simplicidad de codigo---------------
-
-
     @Autowired
     private  UserRepository userRepository;
 
@@ -61,6 +52,32 @@ public class UserService {
         }
 
         return mapToDTOWithFavoritePublications(user).get();
+    }
+
+    /*@Transactional
+    public UserDto retrieveByIdWithPublications(Integer userId) throws ResourceNotFoundException {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            throw new ResourceNotFoundException("El id del usuario que está buscando no existe.");
+        }
+
+        return mapToDTOWithPublications(user).get();
+    }*/
+
+    private Optional<UserDto> mapToDTOWithPublications(Optional<User> optionalUser) {
+        if(optionalUser.isEmpty()){
+            return Optional.empty();
+        }
+        User user = optionalUser.get();
+        return Optional.ofNullable(UserDto.builder().id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .password(user.getPassword())
+                .ratings(user.getRatings())
+                .build());
     }
 
 
@@ -114,7 +131,7 @@ public class UserService {
         userRepository.save(userMofificated);
     }*/
 
-    //estos serian para mapear
+
     private User mapToEntity(UserDto userDto) {
 
         new User();
@@ -154,7 +171,7 @@ public class UserService {
                 .build());
     }
 
-    //metodo para la exception
+
     private void checkForExistingUser(Integer userId) throws ExistingResourceException {
         if (userRepository.existsById(userId)) {
             throw new ExistingResourceException("El usuario que está intentando crear ya existe.");

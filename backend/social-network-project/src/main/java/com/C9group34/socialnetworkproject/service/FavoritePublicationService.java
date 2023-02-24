@@ -2,7 +2,7 @@ package com.C9group34.socialnetworkproject.service;
 
 
 import com.C9group34.socialnetworkproject.dto.FavoritePublicationDto;
-import com.C9group34.socialnetworkproject.dto.UserDto;
+import com.C9group34.socialnetworkproject.dto.PublicationDto;
 import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.models.FavoritePublication;
@@ -12,9 +12,12 @@ import com.C9group34.socialnetworkproject.repository.FavoritePublicationReposito
 import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FavoritePublicationService {
@@ -24,6 +27,7 @@ public class FavoritePublicationService {
     private UserRepository userRepository;
     @Autowired
     private PublicationRepository publicationRepository;
+
 
     public FavoritePublicationDto create( Integer userId, Integer publicationId) throws ExistingResourceException, ResourceNotFoundException {
         Optional<User> u = userRepository.findById(userId);
@@ -41,6 +45,25 @@ public class FavoritePublicationService {
                 .user(u.get()).build();;
         fp = favoriteRepository.save(fp);
         return this.mapToDTO(fp);
+    }
+
+    public List<FavoritePublicationDto> retrieveAll(Integer userId) throws ResourceNotFoundException {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw new ResourceNotFoundException("El id del usuario que está ingresando no existe.");
+        }
+        List<FavoritePublication> favoritePublications = favoriteRepository.findAll();
+        return favoritePublications.stream()
+                .map(favoritePublication -> mapToDTO(favoritePublication))
+                .collect(Collectors.toList());
+    }
+
+    public void delete(Integer favoritePublicationId) throws ResourceNotFoundException {
+        try {
+            favoriteRepository.deleteById(favoritePublicationId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     private FavoritePublication mapToEntity(User u, Publication p) {

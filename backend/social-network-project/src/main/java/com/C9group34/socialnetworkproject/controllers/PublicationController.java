@@ -1,7 +1,6 @@
 package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
-import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.service.PublicationService;
 import com.C9group34.socialnetworkproject.service.UserService;
@@ -10,27 +9,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/users/{userId}/publications")
 
 public class PublicationController {
 
-
     @Autowired
     private PublicationService publicationService;
     @Autowired
     private  UserService userService;
 
-
     @PostMapping
     public ResponseEntity create(@PathVariable Integer userId,
                                  @RequestBody PublicationDto publicationDTO) {
 
-       publicationService.create(publicationDTO , userId);
-       return new ResponseEntity<>(publicationDTO.getId(), HttpStatus.CREATED);
+        publicationService.create(publicationDTO , userId);
+        return new ResponseEntity<>(publicationDTO.getId(), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -83,19 +78,5 @@ public class PublicationController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    /*
-    @PatchMapping("/{publicationId}")
-    public ResponseEntity modify(@PathVariable Integer userId,
-                                 @PathVariable Integer publicationId,
-                                 @RequestBody Map<String, Object> fieldsToModify) {
-
-        try {
-            publicationService.modify(userId,publicationId, fieldsToModify);
-        } catch (ResourceNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return new ResponseEntity(HttpStatus.OK);
-    }*/
 
 }
