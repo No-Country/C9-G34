@@ -34,7 +34,6 @@ public class PublicationService {
     @Autowired
     private  UserService userService;*/
 
-
     public void create(PublicationDto publicationDTO, Integer userId) {
         Optional<User> user = userRepository.findById(userId);
         Publication publication = mapToEntity(publicationDTO, user.get());
@@ -68,7 +67,7 @@ public class PublicationService {
         try {
             publicationRepository.deleteById(publicationId);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException();
+           System.out.println(e.getMessage());
         }
     }
 

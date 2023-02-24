@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString
 public class Publication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

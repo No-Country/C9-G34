@@ -111,7 +111,6 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-
     // no usado
     /*
     @PatchMapping("/{userId}")
@@ -136,7 +135,6 @@ public class UserController {
         }
 
         return new ResponseEntity(HttpStatus.OK);
-
 
        }*/
 }
