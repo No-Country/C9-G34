@@ -1,10 +1,7 @@
 package com.C9group34.socialnetworkproject.dto;
 
 import com.C9group34.socialnetworkproject.repository.PublicationRepository;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString
 public class CategoryDto {
 
     private Integer id;

@@ -14,10 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
-//@CrossOrigin(origins = "{host}")
+//@CrossOrigin(origins = "${host}")
 public class UserController {
 
     private final UserService userService;
@@ -110,9 +111,23 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
+    // no usado
+    /*
     @PatchMapping("/{userId}")
-    public ResponseEntity modify(@PathVariable Integer userId,
+    public void modify(@PathVariable Integer userId,
                                  @RequestBody Map<String, Object> fieldsToModify) {
+        fieldsToModify.entrySet().stream()
+                .forEach(entry -> {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    Class<?> valueType = value.getClass();
+                    String valueContent = String.valueOf(value); // convert value to string
+
+                    // do something with key, valueType, and valueContent
+                    System.out.println("Key: " + key + ", Type: " + valueType.getName() + ", Content: " + valueContent);
+                });
+        /*
         try {
             userService.modify(userId, fieldsToModify);
         } catch (ResourceNotFoundException e) {
@@ -121,6 +136,7 @@ public class UserController {
         }
 
         return new ResponseEntity(HttpStatus.OK);
-    }
 
+
+       }*/
 }

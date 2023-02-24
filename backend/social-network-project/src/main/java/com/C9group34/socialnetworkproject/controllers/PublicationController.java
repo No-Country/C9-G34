@@ -84,17 +84,4 @@ public class PublicationController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /*@PatchMapping("/{publicationId}")
-    public ResponseEntity modify(@PathVariable Integer userId,
-                                 @PathVariable Integer publicationId,
-                                 @RequestBody Map<String, Object> fieldsToModify) {
-
-        try {
-            publicationService.modify(userId,publicationId, fieldsToModify);
-        } catch (ResourceNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return new ResponseEntity(HttpStatus.OK);
-    }*/
-
 }
