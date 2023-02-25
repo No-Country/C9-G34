@@ -11,7 +11,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -107,6 +106,11 @@ public class UserService {
                 .password(userDTO.getPassword())
                 .ratings(userDTO.getRatings()).build();
         userRepository.save(updatedUser);
+    }
+
+    @Transactional
+    public Optional<User> getUserByEmail(String email) {
+        return Optional.ofNullable(userRepository.findByEmail(email));
     }
 
 
