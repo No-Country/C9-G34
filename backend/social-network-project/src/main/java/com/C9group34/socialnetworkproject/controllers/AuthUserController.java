@@ -6,6 +6,8 @@ import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.service.UserService;
 import com.C9group34.socialnetworkproject.util.JWTutil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
@@ -27,13 +29,16 @@ public class AuthUserController {
     private JWTutil jwt;
 
     @PostMapping("/login")
-    public Token loginUser(@RequestBody UserDto userDto) throws NoSuchPaddingException, IllegalBlockSizeException, UnsupportedEncodingException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
+    public ResponseEntity loginUser(@RequestBody UserDto userDto) throws NoSuchPaddingException, IllegalBlockSizeException, UnsupportedEncodingException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
 
-        System.out.println(userDto.getId());
-            User checkedUser = userService.getUserByEmail(userDto.getEmail());
-            String t = jwt.create(String.valueOf(checkedUser.getId()), checkedUser.getEmail()); // generando un
-                // token devuelto para ser almacenado en cliente
-           return new Token(t);
+        Optional<User> checkedUser = userService.getUserByEmail(userDto.getEmail());
+        if(checkedUser.isEmpty()){
+            return new ResponseEntity<>("FAIL", HttpStatus.NOT_FOUND);
+        }
+        User u = checkedUser.get();
+        String t = jwt.create(String.valueOf(u.getId()), u.getEmail()); // generando un
+        // token devuelto para ser almacenado en cliente
+        return new ResponseEntity(new Token(t),HttpStatus.NOT_FOUND );
     }
 
     @GetMapping("/logged")
