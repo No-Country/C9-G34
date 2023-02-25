@@ -16,6 +16,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchProviderException;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -33,9 +34,12 @@ public class AuthUserController {
 
         Optional<User> checkedUser = userService.getUserByEmail(userDto.getEmail());
         if(checkedUser.isEmpty()){
-            return new ResponseEntity<>("FAIL", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("USERNAME INORRECT", HttpStatus.NOT_FOUND);
         }
         User u = checkedUser.get();
+        if(!Objects.equals(u.getPassword(), userDto.getPassword())){
+            return new ResponseEntity<>("PASSWORD INCORRECT", HttpStatus.NOT_FOUND);
+        }
         String t = jwt.create(String.valueOf(u.getId()), u.getEmail()); // generando un
         // token devuelto para ser almacenado en cliente
         return new ResponseEntity(new Token(t),HttpStatus.NOT_FOUND );
