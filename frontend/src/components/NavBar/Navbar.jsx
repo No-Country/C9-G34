@@ -16,23 +16,21 @@ export default function Navbar() {
             title={assets.Logo.info}
           />
         </a>
-        {userCredentials.login === null ? (
+        {userCredentials.login === null && (
           <div className="d-flex gap-4">
-            <Link className="border-0 bg-transparent text-decoration-none text-muted" to="/login">
+            <Link
+              className="border-0 bg-transparent text-decoration-none text-muted"
+              to="/login"
+            >
               Iniciar sesion
             </Link>
-            <Link className="border-0 bg-transparent text-decoration-none text-muted" to="/register">
+            <Link
+              className="border-0 bg-transparent text-decoration-none text-muted"
+              to="/register"
+            >
               Registrarse
             </Link>
           </div>
-        ) : (
-          <button className="border-0 bg-transparent">
-            <img
-              src={assets.Message01Icon.img}
-              alt={assets.Message01Icon.info}
-              title={assets.Message01Icon.info}
-            />
-          </button>
         )}
       </div>
     </nav>

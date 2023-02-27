@@ -1,8 +1,10 @@
+import { alertOk, errorAlert } from "../../components/Alert/Alert";
 import { Container, Form, Button, Card } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { instance } from "../../axios/axiosConfig";
+import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import images from "../../assets/index";
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
@@ -13,9 +15,16 @@ export default function LoginPage() {
     handleSubmit,
     reset,
   } = useForm();
+  const navigate = useNavigate()
 
   const login = (e) => {
-    console.log(e);
+    instance.post("auth/login", e).then((res) => {
+      localStorage.setItem("token", res.data.token);
+      alertOk("Sesion iniciada con exito");
+      setTimeout(() => {
+        navigate("/");
+      }, 3200);
+    }).catch((err) => errorAlert("Ocurrio un error, revisa tus credenciales"));
     clear();
   };
 
@@ -59,11 +68,11 @@ export default function LoginPage() {
           <h6>LOGIN</h6>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Control
-              {...register("name", {
+              {...register("email", {
                 required: true,
               })}
-              type="text"
-              placeholder="Usuario"
+              type="email"
+              placeholder="Email"
               {...animate}
             />
             {errors.name?.type === "required" && (
