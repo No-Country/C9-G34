@@ -35,7 +35,7 @@ export default function LoginPage() {
 
   const clear = () => {
     reset({
-      name: "",
+      email: "",
       password: "",
     });
   };
