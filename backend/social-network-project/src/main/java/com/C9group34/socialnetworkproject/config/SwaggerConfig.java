@@ -16,7 +16,9 @@ import org.springframework.http.MediaType;
 
 import java.io.IOException;
 
+
 @OpenAPIDefinition
+
 @Configuration
 /*
 @SecurityScheme(
@@ -27,7 +29,7 @@ import java.io.IOException;
 )*/
 public class SwaggerConfig {
 
-    /*
+/*
     @Bean
     public OpenAPI baseOpenAPI() throws IOException {
 
@@ -77,6 +79,5 @@ public class SwaggerConfig {
                         .version("1.0.1")
                         .description("API rest for social media"));
     }
-
-     */
+*/
 }

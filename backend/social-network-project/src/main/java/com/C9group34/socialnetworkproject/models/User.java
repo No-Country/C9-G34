@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import java.util.List;
@@ -39,6 +40,9 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "img_profile")
+    private String imgProfile;
+
     @Schema(required = true)
     @Column(name = "password", nullable = false)
     private String password;
@@ -52,17 +56,52 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Publication> publications;
+    private List<Publication> publications = new ArrayList<Publication>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<FavoritePublication> favoritePublications;
+    private List<FavoritePublication> favoritePublications = new ArrayList<FavoritePublication>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Conversation> conversations;
+    private List<Conversation> conversations = new ArrayList<Conversation>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "conversation_id")
     private Conversation participant;
+
+    public void addPublication(Publication p) {
+        publications.add(p);
+        p.setUser(this);
+    }
+
+    public void removePublication(Publication p) {
+        publications.remove(p);
+        p.setUser(null);
+    }
+
+    //------------------------
+
+    public void addFavoritePublication(FavoritePublication fp) {
+        favoritePublications.add(fp);
+        fp.setOrder(this);
+    }
+
+    public void removeFavoritePublication(FavoritePublication fp) {
+        favoritePublications.remove(fp);
+        fp.setOrder(null);
+    }
+
+
+    //-------------------------
+
+    public void addConversation(Conversation c) {
+        conversations.add(c);
+        c.setOrder(this);
+    }
+
+    public void removeConversation(Conversation c) {
+        conversations.remove(c);
+        c.setOrder(null);
+    }
 
 }
