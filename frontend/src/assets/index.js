@@ -10,7 +10,7 @@ import TrashIcon from "./images/icons/trash.svg";
 
 // LOGOS
 import Logo from "./images/logos/logo.svg";
-
+import Imgedit from "./images/logos/imgedit.svg";
 // TEST
 import Test01 from "./images/test/test01.svg"
 import Test02 from "./images/test/test02.svg"
@@ -69,5 +69,9 @@ export default {
   LoginImg:{
     img: LoginImg,
     info: "Login image Lumini"
+  },
+  Imgedit:{
+    img: Imgedit,
+  info:"image edit perfil"
   }
 };
