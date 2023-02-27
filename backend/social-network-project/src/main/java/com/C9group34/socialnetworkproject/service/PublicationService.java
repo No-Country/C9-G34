@@ -11,7 +11,12 @@ import com.C9group34.socialnetworkproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,9 +33,15 @@ public class PublicationService {
 
 
     public void create(PublicationDto publicationDTO, Integer userId) {
-        Optional<User> user = userRepository.findById(userId);
-        Publication publication = mapToEntity(publicationDTO, user.get());
-        publicationRepository.save(publication);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            Publication publication = mapToEntity(publicationDTO, user);
+            user.addPublication(publication);
+            publicationRepository.save(publication);
+            
+            user.getPublications().stream().forEach(p ->System.out.println(p.getTitle()));
+        }
     }
 
 
@@ -78,7 +89,7 @@ public class PublicationService {
         updatedPublication = new Publication().builder().id(publicationToReplace.getId())
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(publicationDto.getUrlImg())
+                .urlImg("")
                 .rating(publicationDto.getRating())
                 .status(publicationDto.getStatus())
                 .user(publicationToReplace.getUser())
@@ -89,10 +100,11 @@ public class PublicationService {
 
 
     private Publication mapToEntity(PublicationDto publicationDto , User user) {
+        String urlImg = "";
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(publicationDto.getUrlImg())
+                .urlImg(urlImg)
                 .rating(publicationDto.getRating())
                 .status(publicationDto.getStatus())
                 .user(user)
@@ -101,10 +113,12 @@ public class PublicationService {
     }
 
     private PublicationDto mapToDTO(Publication publication) {
+        // agregado de prueba
+        File img = new File("df");
         PublicationDto.PublicationDtoBuilder publicationDto = new PublicationDto().builder().id(publication.getId())
                 .title(publication.getTitle())
                 .description(publication.getDescription())
-                .urlImg(publication.getUrlImg())
+                .img(img)
                 .rating(publication.getRating())
                 .status(publication.getStatus());
 

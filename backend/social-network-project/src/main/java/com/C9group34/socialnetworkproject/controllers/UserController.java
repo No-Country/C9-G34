@@ -9,11 +9,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,11 +23,9 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "${host}")
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping("/new")
     @Operation(
@@ -69,16 +69,23 @@ public class UserController {
         return new ResponseEntity(userService.retrieveAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId) {
+    @GetMapping("{userId}")
+    public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId){
 
         try {
-            UserDto user = userService.retrieveByIdWithFavoritePublications(userId);
+            UserDto user = userService.retrieveById(userId);
             return new ResponseEntity(user, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+        /*
+        Optional u = userService.retrieveById2(userId);
+        System.out.println(u.get());
+        if(u.isEmpty()){
+            return new ResponseEntity("not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(u.get(), HttpStatus.OK);*/
     }
 
     @DeleteMapping("/{userId}")

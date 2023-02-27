@@ -32,4 +32,12 @@ public class Conversation {
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
     private List<User> participants;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setOrder(User u) {
+        this.user = u;
+    }
+
 }
