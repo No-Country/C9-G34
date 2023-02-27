@@ -1,9 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import assets from "../../assets/index";
+import useDataContext from "../../hooks/useDataContext";
 
 export default function Navbar() {
+  const { userCredentials } = useDataContext();
+
   return (
-    <nav className="navbar">
+    <nav className="navbar container">
       <div className="container-fluid">
         <a className="navbar-brand">
           <img
@@ -12,13 +16,22 @@ export default function Navbar() {
             title={assets.Logo.info}
           />
         </a>
-        <button className="border-0 bg-transparent">
-          <img
-            src={assets.Message01Icon.img}
-            alt={assets.Message01Icon.info}
-            title={assets.Message01Icon.info}
-          />
-        </button>
+        {userCredentials.login === null && (
+          <div className="d-flex gap-4">
+            <Link
+              className="border-0 bg-transparent text-decoration-none text-muted"
+              to="/login"
+            >
+              Iniciar sesion
+            </Link>
+            <Link
+              className="border-0 bg-transparent text-decoration-none text-muted"
+              to="/register"
+            >
+              Registrarse
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

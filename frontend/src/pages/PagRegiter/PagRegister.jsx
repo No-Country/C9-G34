@@ -1,23 +1,45 @@
-import React from 'react';
-import { Button, Card, Col, Container, Form, Image, Row } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
-import { BottomNavigationBar, Navbar } from '../../components';
+import React from "react";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { instance } from "../../axios/axiosConfig";
+import { alertOk, errorAlert } from "../../components/Alert/Alert";
 import './PagRegister.css'
+
 const PagRegister = () => {
-  const { register, formState: { errors }, handleSubmit, reset } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
+
+  const navigate = useNavigate();
+
   const submit = (data) => {
-    console.log(data);
-    clear()
-  }
+    instance
+      .post("users/new", data)
+      .then((res) => {
+        alertOk(
+          `${res.data.name} te registraste correctamente, ahora inicia sesion`
+        );
+        clear();
+        setTimeout(() => {
+          navigate("/login");
+        }, 3200);
+      })
+      .catch((err) => errorAlert("Ocurrio un error, intenta de nuevo"));
+  };
+
   const clear = () => {
     reset({
       name: "",
       surname: "",
       email: "",
-      password: ""
-    })
-  }
-  
+      password: "",
+    });
+  };
+
   return (
     <Container className='register ' >
       <Navbar/>    
@@ -25,14 +47,14 @@ const PagRegister = () => {
           <Col>
             <Form className='my-5 py-5' onSubmit={handleSubmit(submit)}>             
               <Row>
-                <Form.Group as={Col} >
+                <Form.Group as={Col}>
                   <Form.Label> First Name</Form.Label>
                   <Form.Control {...register('name', {
                     required: true
                   })} type="text" placeholder="Enter First name" />
                   {errors.name?.type === "required" && <p>el campo First Name es requerido</p>}
                 </Form.Group>
-                <Form.Group as={Col} >
+                <Form.Group as={Col}>
                   <Form.Label> Last Name</Form.Label>
                   <Form.Control {...register('surname', {
                     required: true
@@ -42,23 +64,42 @@ const PagRegister = () => {
               </Row>
               <Form.Group as={Col} controlId="formGridEmail">
                 <Form.Label>Email</Form.Label>
-                <Form.Control {...register('email', {
-                  required: true,
-                  pattern: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
-                })} type="email" placeholder="Enter email" />
-                {errors.email?.type === "required" && <p>el campo Email es requerido</p>}
-                {errors.email?.type === "pattern" && <p>El formato del Email es incorrecto</p>}
+                <Form.Control
+                  {...register("email", {
+                    required: true,
+                    pattern:
+                      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i,
+                  })}
+                  type="email"
+                  placeholder="Enter email"
+                />
+                {errors.email?.type === "required" && (
+                  <p>el campo Email es requerido</p>
+                )}
+                {errors.email?.type === "pattern" && (
+                  <p>El formato del Email es incorrecto</p>
+                )}
               </Form.Group>
               <Form.Group as={Col} controlId="formGridPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control {...register('password', {
-                  required: true,
-                  minLength: 8,
-                  maxLength: 15
-                })} type="password" placeholder="Password" />
-                {errors.password?.type === "required" && <p>el campo Password es requerido</p>}
-                {errors.password?.type === "minLength" && <p>debe tener mas de 8 caracteres</p>}
-                {errors.password?.type === "maxLength" && <p>debe tener minimo de 15 caracteres</p>}
+                <Form.Control
+                  {...register("password", {
+                    required: true,
+                    minLength: 8,
+                    maxLength: 15,
+                  })}
+                  type="text"
+                  placeholder="Password"
+                />
+                {errors.password?.type === "required" && (
+                  <p>el campo Password es requerido</p>
+                )}
+                {errors.password?.type === "minLength" && (
+                  <p>debe tener mas de 8 caracteres</p>
+                )}
+                {errors.password?.type === "maxLength" && (
+                  <p>debe tener minimo de 15 caracteres</p>
+                )}
               </Form.Group>
               <Form.Group as={Col} >
                   <Form.Label> Teléfono</Form.Label>
