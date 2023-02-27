@@ -17,7 +17,7 @@ public class firebaseController {
     @PostMapping("/api/v1/test")
     public ResponseEntity create(@RequestParam(name = "file") MultipartFile file) {
         try {
-            String fileName = firebaseFileService.saveTest(file);
+            //String fileName = firebaseFileService.saveTest(file);
             // do whatever you want with that
         } catch (Exception e) {
             //  throw internal error;

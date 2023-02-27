@@ -1,0 +1,2 @@
+# Firebase Configuration
+firebase.config.path=classpath:firebase-config.json

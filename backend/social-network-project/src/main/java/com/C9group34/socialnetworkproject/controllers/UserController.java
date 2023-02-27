@@ -70,22 +70,15 @@ public class UserController {
     }
 
     @GetMapping("{userId}")
-    public ResponseEntity retrieveByIdWithFavoritePublications(@PathVariable Integer userId){
+    public ResponseEntity retrieveById(@PathVariable Integer userId){
 
         try {
             UserDto user = userService.retrieveById(userId);
             return new ResponseEntity(user, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             System.out.println(e.getMessage());
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity("el usuario no ha sido encontrado", HttpStatus.NOT_FOUND);
         }
-        /*
-        Optional u = userService.retrieveById2(userId);
-        System.out.println(u.get());
-        if(u.isEmpty()){
-            return new ResponseEntity("not found", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity(u.get(), HttpStatus.OK);*/
     }
 
     @DeleteMapping("/{userId}")

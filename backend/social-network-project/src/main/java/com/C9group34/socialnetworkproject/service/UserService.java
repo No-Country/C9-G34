@@ -38,9 +38,9 @@ public class UserService {
     @Transactional
     public List<UserDto> retrieveAll() {
         List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(user -> mapToDTO(user))
-                .collect(Collectors.toList());
+        List userDtoList = new ArrayList<UserDto>();
+        users.forEach(user -> userDtoList.add(mapToDTO(user)));
+        return userDtoList;
     }
     @Transactional
     public UserDto retrieveById(Integer userId) throws ResourceNotFoundException {
@@ -50,41 +50,6 @@ public class UserService {
         }
 
         return mapToDTO(userOptional.get());
-    }
-
-    @Transactional
-    public Optional<User> retrieveById2(Integer userId) {
-        Optional<User> user = userRepository.findById(userId);
-        return Optional.of(user.get());
-    }
-
-    /*
-
-    @Transactional
-    public UserDto retrieveByIdWithFavoritePublications(Integer userId) throws ResourceNotFoundException {
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("El id del usuario que está buscando no existe.");
-        }
-
-        return mapToDTOWithFavoritePublications(user).get();
-    }*/
-
-
-    private Optional<UserDto> mapToDTOWithPublications(Optional<User> optionalUser) {
-        if(optionalUser.isEmpty()){
-            return Optional.empty();
-        }
-        User user = optionalUser.get();
-        return Optional.ofNullable(UserDto.builder().id(user.getId())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .password(user.getPassword())
-                .ratings(user.getRatings())
-                .build());
     }
 
 
