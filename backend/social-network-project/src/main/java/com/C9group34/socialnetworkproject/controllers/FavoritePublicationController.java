@@ -35,6 +35,8 @@ public class FavoritePublicationController {
         return new ResponseEntity<>(favoriteDto.getId(), HttpStatus.CREATED);
     }
 
+    @PostMapping("/{userId}")
+    @Transactional
     @GetMapping
     public ResponseEntity retrieve(@PathVariable Integer userId){
 
@@ -46,6 +48,7 @@ public class FavoritePublicationController {
         }
     }
 
+    @Transactional
     @DeleteMapping("/{favoritePublicationId}")
     public ResponseEntity delete(@PathVariable Integer favoritePublicationId){
         try {

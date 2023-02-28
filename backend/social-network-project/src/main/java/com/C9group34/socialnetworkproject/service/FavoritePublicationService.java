@@ -42,7 +42,7 @@ public class FavoritePublicationService {
         }
         FavoritePublication fp = new FavoritePublication().builder()
                 .publication(p.get())
-                .user(u.get()).build();;
+                .user(u.get()).build();
         fp = favoriteRepository.save(fp);
         return this.mapToDTO(fp);
     }
@@ -66,10 +66,10 @@ public class FavoritePublicationService {
         }
     }
 
-    private FavoritePublication mapToEntity(User u, Publication p) {
+    private FavoritePublication mapToEntity(FavoritePublication fp) {
         return new FavoritePublication().builder()
-                .publication(p)
-                .user(u).build();
+                .publication(fp.getPublication())
+                .user(fp.getUser()).build();
     }
 
     private FavoritePublicationDto mapToDTO(FavoritePublication fp) {

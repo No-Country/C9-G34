@@ -33,6 +33,16 @@ public class PublicationController {
        return new ResponseEntity<>(publicationDTO.getId(), HttpStatus.CREATED);
     }
 
+
+    @GetMapping("/{publication}")
+    public ResponseEntity retrieve(){
+
+        return new ResponseEntity(publicationService.retrieveAll(), HttpStatus.OK);
+
+
+
+    }
+
     @GetMapping
     public ResponseEntity retrieve(@PathVariable Integer userId){
 

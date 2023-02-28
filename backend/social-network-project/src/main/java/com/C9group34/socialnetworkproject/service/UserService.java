@@ -54,7 +54,7 @@ public class UserService {
         return mapToDTOWithFavoritePublications(user).get();
     }
 
-    /*@Transactional
+    @Transactional
     public UserDto retrieveByIdWithPublications(Integer userId) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
 
@@ -63,7 +63,7 @@ public class UserService {
         }
 
         return mapToDTOWithPublications(user).get();
-    }*/
+    }
 
     private Optional<UserDto> mapToDTOWithPublications(Optional<User> optionalUser) {
         if(optionalUser.isEmpty()){

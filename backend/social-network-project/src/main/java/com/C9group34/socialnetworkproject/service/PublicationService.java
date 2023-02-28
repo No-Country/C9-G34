@@ -2,12 +2,14 @@ package com.C9group34.socialnetworkproject.service;
 
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
+import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,14 @@ public class PublicationService {
         publicationRepository.save(publication);
     }
 
+
+    @Transactional
+    public List<PublicationDto> retrieveAll() {
+        List<Publication> publications = publicationRepository.findAll();
+        return publications.stream()
+                .map(publication -> mapToDTO(publication))
+                .collect(Collectors.toList());
+    }
 
     public List<PublicationDto> retrieveAll(Integer userId) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
