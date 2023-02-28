@@ -29,6 +29,7 @@ public class AuthUserController {
         Optional<User> checkedUser = userService.getUserByEmail(userDto.getEmail());
         if(checkedUser.isEmpty()){
             return new ResponseEntity<>("USERNAME INCORRECT", HttpStatus.NOT_FOUND);
+
         }
         User u = checkedUser.get();
         if(!Objects.equals(u.getPassword(), userDto.getPassword())){
@@ -47,6 +48,5 @@ public class AuthUserController {
         }
         return false;
     }
-
 
 }

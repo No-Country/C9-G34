@@ -7,6 +7,8 @@ import lombok.*;
 
 import java.util.ArrayList;
 
+import java.util.Objects;
+
 import java.util.List;
 
 @Entity(name = "users")
@@ -31,7 +33,6 @@ public class User {
 
 
     @Schema(required = true)
-
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
@@ -81,12 +82,15 @@ public class User {
 
     public void addFavoritePublication(FavoritePublication fp) {
         favoritePublications.add(fp);
+
         fp.setUser(this);
+
     }
 
     public void removeFavoritePublication(FavoritePublication fp) {
         favoritePublications.remove(fp);
         fp.setUser(null);
+
     }
 
 
@@ -95,11 +99,13 @@ public class User {
     public void addConversation(Conversation c) {
         conversations.add(c);
         c.setUser(this);
+
     }
 
     public void removeConversation(Conversation c) {
         conversations.remove(c);
         c.setUser(null);
+
     }
 
 }

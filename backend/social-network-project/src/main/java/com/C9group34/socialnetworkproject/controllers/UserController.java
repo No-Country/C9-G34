@@ -27,9 +27,11 @@ public class UserController {
     @Autowired
     private JWTutil jwt;
 
+
     @PostMapping("/new")
     @Operation(
             summary = "Create new use",
+            description = "With endpoint can you created a new user",
             responses = {
                     @ApiResponse(responseCode = "201",ref = "created"),
                     @ApiResponse(responseCode = "400",ref = "badRequest")
@@ -39,7 +41,7 @@ public class UserController {
             content = @Content(
                     mediaType = "application/json",
                     examples = @ExampleObject(
-                            value = "{\"name\" : \"Luis\", \"surname\" : \"Uzcategui\", \"email\" : \"luis@example.com\", \"password\" : \"123456789\", \"phone\" : \"+593979010717\" }"
+                            value = "{\"name\" : \"Luis\", \"surname\" : \"Uzcategui\", \"email\" : \"luis@example.com\", \"password\" : \"123456789\", \"phone\" : \"+593979010717\", \"img_profile\" : \"URL\" }"
                     )
             )
     ) @RequestBody UserDto u){
@@ -59,6 +61,7 @@ public class UserController {
     @GetMapping("/all")
     @Operation(
             summary = "Get all users",
+            description = "This endpoint is for get all users",
             responses = {
                     @ApiResponse(responseCode = "200",ref = "getAll"),
                     @ApiResponse(responseCode = "400",ref = "badRequest")
@@ -105,6 +108,7 @@ public class UserController {
 
     @PutMapping("/edit")
     public ResponseEntity replace(@RequestHeader(value = "Authorization") String token,@io.swagger.v3.oas.annotations.parameters.RequestBody(
+
             content = @Content(
                     mediaType = "application/json",
                     examples = @ExampleObject(

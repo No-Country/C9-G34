@@ -3,8 +3,10 @@ package com.C9group34.socialnetworkproject.service;
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
+import com.C9group34.socialnetworkproject.models.Category;
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
+import com.C9group34.socialnetworkproject.repository.CategoryRepository;
 import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +26,24 @@ public class PublicationService {
     @Autowired
     private  UserRepository userRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    public List<Publication> getAll(){
+        List<Publication> p = publicationRepository.findAll();
+        return p;
+    }
+
 
     public void create(PublicationDto publicationDTO, Integer userId) {
+        Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            Publication publication = mapToEntity(publicationDTO, user);
+            Category category = categoryOptional.get();
+            Publication publication = mapToEntity(publicationDTO, user, category);
             user.addPublication(publication);
+            category.addPublication(publication);
             publicationRepository.save(publication);
             
             user.getPublications().stream().forEach(p ->System.out.println(p.getTitle()));
@@ -90,6 +103,7 @@ public class PublicationService {
     }
 
 
+
     private Publication mapToEntity(PublicationDto publicationDto , User user) {
         String urlImg = "";
         return new Publication().builder()
@@ -98,17 +112,19 @@ public class PublicationService {
                 .urlImg(urlImg)
                 .rating(publicationDto.getRating())
                 .user(user)
+                .category(category)
                 .build();
-
     }
 
     private PublicationDto mapToDTO(Publication publication) {
         // agregado de prueba
+
         PublicationDto.PublicationDtoBuilder publicationDto = new PublicationDto().builder().id(publication.getId())
                 .title(publication.getTitle())
                 .description(publication.getDescription())
                 .urlImg(publication.getUrlImg())
                 .rating(publication.getRating());
+
 
         return publicationDto.build();
     }

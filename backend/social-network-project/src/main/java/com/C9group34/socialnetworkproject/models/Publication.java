@@ -34,6 +34,7 @@ public class Publication {
 
 
 
+
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
@@ -62,6 +63,10 @@ public class Publication {
         this.user = u;
     }
 
+
+    public void setCategory(Category c){
+        this.category = c;
+    }
     public void addComment(Comment c) {
         comments.add(c);
         c.setPublication(this);
@@ -81,4 +86,5 @@ public class Publication {
         favoritePublications.remove(fp);
         fp.setPublication(null);
     }
+
 }

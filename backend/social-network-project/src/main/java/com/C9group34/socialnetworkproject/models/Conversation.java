@@ -37,6 +37,7 @@ public class Conversation {
     }
 
     public void setUser(User u) {
+
         this.user = u;
     }
 

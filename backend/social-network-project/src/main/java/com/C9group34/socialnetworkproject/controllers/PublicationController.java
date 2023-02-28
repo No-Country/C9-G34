@@ -5,6 +5,8 @@ import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.service.PublicationService;
 import com.C9group34.socialnetworkproject.service.UserService;
 import com.C9group34.socialnetworkproject.util.JWTutil;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/users/publications")
+
 @CrossOrigin
 public class PublicationController {
 
@@ -25,13 +28,25 @@ public class PublicationController {
 
     @PostMapping
     public ResponseEntity create(@RequestHeader(value = "Authorization") String token,
-                                 @RequestBody PublicationDto publicationDTO) {
+                                 @RequestBody PublicationDto publicationDTO, @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = "{ \"title\": \"string\", \"description\": \"string\", \"img\": \"string\", \"category\": 1 }"
+                    )
+            ), @RequestBody PublicationDto publicationDTO) {
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)){
             publicationService.create(publicationDTO, Integer.valueOf(id));
             return new ResponseEntity<>(publicationDTO.getId(), HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Accion no realizada", HttpStatus.UNAUTHORIZED);
+
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity getAll(){
+        return new ResponseEntity(publicationService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping

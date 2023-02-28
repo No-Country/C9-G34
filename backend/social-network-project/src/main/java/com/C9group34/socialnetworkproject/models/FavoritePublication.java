@@ -37,6 +37,7 @@ public class FavoritePublication {
 
     public void setPublication(Publication p) {
         this.publication = p;
+
     }
 
 }

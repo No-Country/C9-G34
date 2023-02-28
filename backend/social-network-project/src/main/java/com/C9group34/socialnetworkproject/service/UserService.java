@@ -104,6 +104,7 @@ public class UserService {
 
     private User mapToEntity(UserDto userDto) {
 
+        String imgUrl = "";
         new User();
         return User.builder().name(userDto.getName())
                 .surname(userDto.getSurname())
@@ -112,6 +113,7 @@ public class UserService {
                 .imgProfile(userDto.getImgProfile())
                 .publications(userDto.getPublications())
                 .favoritePublications(userDto.getFavoritePublications())
+                .conversations(userDto.getConversations())
                 .password(userDto.getPassword())
                 .ratings(userDto.getRatings())
                 .build();
@@ -119,7 +121,6 @@ public class UserService {
 
     private UserDto mapToDTO(User user) {
 
-        // agregado de prueba
         return UserDto.builder().id(user.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
@@ -128,6 +129,7 @@ public class UserService {
                 .imgProfile(user.getImgProfile())
                 .publications(user.getPublications())
                 .favoritePublications(user.getFavoritePublications())
+                .conversations(user.getConversations())
                 .password(user.getPassword())
                 .ratings(user.getRatings())
                 .build();

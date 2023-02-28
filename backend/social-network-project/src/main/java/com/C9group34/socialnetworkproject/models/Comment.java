@@ -41,5 +41,4 @@ public class Comment {
     public void setPublication(Publication p) { this.publication = p; }
 
 
-
 }
