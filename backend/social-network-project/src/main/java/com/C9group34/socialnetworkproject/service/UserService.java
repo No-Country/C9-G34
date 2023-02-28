@@ -114,26 +114,6 @@ public class UserService {
     }
 
 
-    // no usado
-    /*
-    @Transactional
-    public void modify(Integer userId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException();
-        }
-
-        User userToModify = user.get();
-        User userMofificated = User.builder()
-                .id(userToModify.getId())
-                .name(userToModify.getName())
-                .surname(userToModify.getSurname())
-                .email(userToModify.getEmail())
-                .phone(userToModify.getPhone())
-                .role(userToModify.getRole())
-                .build();
-        userRepository.save(userMofificated);
-    }*/
 
 
     private User mapToEntity(UserDto userDto) {

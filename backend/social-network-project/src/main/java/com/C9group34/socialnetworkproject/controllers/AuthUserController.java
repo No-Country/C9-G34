@@ -1,7 +1,6 @@
 package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.UserDto;
-import com.C9group34.socialnetworkproject.models.Token;
 import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.service.UserService;
 import com.C9group34.socialnetworkproject.util.JWTutil;
@@ -10,16 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchProviderException;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
+@CrossOrigin(origins = "${host}")
 public class AuthUserController {
 
     @Autowired
@@ -29,19 +24,19 @@ public class AuthUserController {
     private JWTutil jwt;
 
     @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestBody UserDto userDto) throws NoSuchPaddingException, IllegalBlockSizeException, UnsupportedEncodingException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
+    public ResponseEntity loginUser(@RequestBody UserDto userDto) {
 
         Optional<User> checkedUser = userService.getUserByEmail(userDto.getEmail());
         if(checkedUser.isEmpty()){
-            return new ResponseEntity<>("USERNAME INORRECT", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("USERNAME INCORRECT", HttpStatus.NOT_FOUND);
         }
         User u = checkedUser.get();
-        if(u.getPassword() != userDto.getPassword()){
+        if(!Objects.equals(u.getPassword(), userDto.getPassword())){
             return new ResponseEntity<>("PASSWORD INCORRECT", HttpStatus.NOT_FOUND);
         }
         String t = jwt.create(String.valueOf(u.getId()), u.getEmail()); // generando un
         // token devuelto para ser almacenado en cliente
-        return new ResponseEntity(new Token(t),HttpStatus.NOT_FOUND );
+        return new ResponseEntity(t,HttpStatus.OK );
     }
 
     @GetMapping("/logged")
@@ -54,14 +49,5 @@ public class AuthUserController {
         return false;
     }
 
-    //-----------------------------
-
-
-
-    @GetMapping(value = "auth/guest")
-    public Token guestToken(){
-        Token token = new Token(jwt.create("0000", "xxx"));
-        return token;
-    }
 
 }
