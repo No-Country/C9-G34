@@ -74,27 +74,6 @@ public class CommentService {
         commentRepository.save(updatedComment);
     }
 
-    @Transactional
-    public Optional<User> getUserByEmail(String email) {
-        return Optional.ofNullable(userRepository.findByEmail(email));
-    }
-
-
-    private User createNewEntity(UserDto userDto){
-        new User();
-        return User.builder().name(userDto.getName())
-                .surname(userDto.getSurname())
-                .email(userDto.getEmail())
-                .phone(userDto.getPhone())
-                .imgProfile(userDto.getImgProfile())
-                .publications(new ArrayList<Publication>())
-                .favoritePublications(new ArrayList<FavoritePublication>())
-                .conversations(new ArrayList<Conversation>())
-                .password(userDto.getPassword())
-                .ratings(userDto.getRatings())
-                .build();
-    }
-
 
     private Comment mapToEntity(CommentDto dto) {
 
