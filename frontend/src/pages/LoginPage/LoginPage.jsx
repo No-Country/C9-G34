@@ -15,16 +15,23 @@ export default function LoginPage() {
     handleSubmit,
     reset,
   } = useForm();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const login = (e) => {
-    instance.post("auth/login", e).then((res) => {
-      localStorage.setItem("token", res.data.token);
-      alertOk("Sesion iniciada con exito");
-      setTimeout(() => {
-        navigate("/");
-      }, 3200);
-    }).catch((err) => errorAlert("Ocurrio un error, revisa tus credenciales"));
+    instance
+      .post("auth/login", e)
+      .then((res) => {
+        localStorage.setItem("token", res.data);
+        alertOk("Sesion iniciada con exito");
+        setTimeout(() => {
+          navigate("/");
+          window.location.reload()
+        }, 3200);
+      })
+      .catch((err) => {
+        console.log(err);
+        errorAlert("Ocurrio un error, revisa tus credenciales");
+      });
     clear();
   };
 

@@ -11,19 +11,6 @@ export const DataProvider = ({ children }) => {
     login: localStorage.getItem("token"),
   });
 
-//   useEffect(() => {
-//     if (userCredentials.login !== null) {
-//       instance
-//         .get("api/auth/logged", {
-//           auth: {
-//             username: userCredentials.username,
-//             password: userCredentials.password,
-//           },
-//         })
-//         .then((res) => localStorage.setItem("token", res.data.token));
-//     }
-//   }, [userCredentials.login]);
-
   return (
     <DataContext.Provider value={{ userCredentials }}>
       {children}

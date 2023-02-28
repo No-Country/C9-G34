@@ -112,19 +112,6 @@ const PagRegister = () => {
                 <p>debe tener minimo de 15 caracteres</p>
               )}
             </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label> Teléfono</Form.Label>
-              <Form.Control
-                {...register("telefono", {
-                  required: true,
-                })}
-                type="text"
-                placeholder="+593 999 999 999"
-              />
-              {errors.telefono?.type === "required" && (
-                <p>el campo Telefono es requerido</p>
-              )}
-            </Form.Group>
             <Button className="my-4" type="submit">
               Register
             </Button>
