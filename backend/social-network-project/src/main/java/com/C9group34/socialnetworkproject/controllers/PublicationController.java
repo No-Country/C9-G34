@@ -28,14 +28,16 @@ public class PublicationController {
 
     @PostMapping
     public ResponseEntity create(@RequestHeader(value = "Authorization") String token,
-                                 @RequestBody PublicationDto publicationDTO,
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(
                     mediaType = "application/json",
                     examples = @ExampleObject(
                             value = "{ \"title\": \"string\", \"description\": \"string\", \"img\": \"string\", \"category\": 1 }"
                     )
-            ))) {
+            )
+    ) @RequestBody PublicationDto publicationDTO)
+
+    {
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)) {
             publicationService.create(publicationDTO, Integer.valueOf(id));
