@@ -72,20 +72,20 @@ public class CommentController {
                     @ApiResponse(responseCode = "400",ref = "badRequest")
             }
     )
-    public ResponseEntity retrieve(@RequestHeader(value = "Authorization") String token{
+    public ResponseEntity retrieve(@RequestHeader(value = "Authorization") String token){
 
         if (jwt.verifyToken(token)) return new ResponseEntity(commentService.retrieveAll(), HttpStatus.OK);
         return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<UserDto> retrieveUser(@RequestHeader(value = "Authorization") String token){
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentDto> retrieveComment(@RequestHeader(value = "Authorization") String token,
+                                                      @PathVariable Integer commentId){
 
-        String id = jwt.getKey(token);
         if (jwt.verifyToken(token)) {
             CommentDto commentDto = null;
             try {
-                commentDto = commentService.retrieveById(Integer.valueOf(id));
+                commentDto = commentService.retrieveById(Integer.valueOf(commentId));
             } catch (ResourceNotFoundException e) {
                 System.out.println(e.getMessage());
                 return new ResponseEntity("el comentario no ha sido encontrado", HttpStatus.NOT_FOUND);
@@ -95,13 +95,13 @@ public class CommentController {
         return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity delete(@RequestHeader(value = "Authorization") String token) {
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity delete(@RequestHeader(value = "Authorization") String token,
+                                 @PathVariable Integer commentId) {
 
-        String id = jwt.getKey(token);
         if (jwt.verifyToken(token)) {
             try {
-                userService.delete(Integer.valueOf(id));
+                commentService.delete(Integer.valueOf(commentId));
                 return new ResponseEntity(HttpStatus.OK);
             } catch (ResourceNotFoundException e) {
                 System.out.println(e.getMessage());
@@ -112,20 +112,20 @@ public class CommentController {
 
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/{commentId}")
     public ResponseEntity replace(@RequestHeader(value = "Authorization") String token,@io.swagger.v3.oas.annotations.parameters.RequestBody(
 
             content = @Content(
                     mediaType = "application/json",
                     examples = @ExampleObject(
-                            value = "{\"name\" : \"String\", \"surname\" : \"String\", \"email\" : \"String\", \"password\" : \"String\", \"phone\" : \"String\", \"ratings\" : 0.0 }"
+                            value = "{\"content\" : \"String\",}"
                     )
             )
-    ) @RequestBody UserDto user) {
-        String id = jwt.getKey(token);
+    ) @RequestBody CommentDto dto, @PathVariable Integer commentId) {
+
         try {
             if(jwt.verifyToken(token)){
-                userService.replace(Integer.valueOf(id), user);
+                commentService.replace(Integer.valueOf(commentId), dto);
                 return new ResponseEntity<>("datos actualizados", HttpStatus.OK);
             }
         } catch (ResourceNotFoundException e) {
