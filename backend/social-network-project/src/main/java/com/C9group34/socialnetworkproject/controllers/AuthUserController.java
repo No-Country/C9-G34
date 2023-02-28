@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "${host}")
+@CrossOrigin
 public class AuthUserController {
 
     @Autowired
@@ -41,8 +41,7 @@ public class AuthUserController {
 
     @GetMapping("/logged")
     public boolean isLogged(@RequestHeader(value = "Authorization") String token) {
-
-        String id = jwt.getKey(token);
+        
         if (jwt.verifyToken(token)){
             return true;
         }

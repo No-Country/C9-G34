@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/users/publications")
-@CrossOrigin(origins = "${host}")
+@CrossOrigin
 public class PublicationController {
 
     @Autowired
