@@ -15,9 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -29,7 +26,6 @@ public class UserController {
 
     @Autowired
     private JWTutil jwt;
-
 
     @PostMapping("/new")
     @Operation(
@@ -78,11 +74,14 @@ public class UserController {
 
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)) {
-            Optional userOptional = userService.retrieveById(Integer.valueOf(id));
-            if(userOptional.isEmpty()){
+            UserDto user = null;
+            try {
+                user = userService.retrieveById(Integer.valueOf(id));
+            } catch (ResourceNotFoundException e) {
+                System.out.println(e.getMessage());
                 return new ResponseEntity("el usuario no ha sido encontrado", HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity(userOptional.get(), HttpStatus.OK);
+            return new ResponseEntity(user, HttpStatus.OK);
         }
         return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);
     }

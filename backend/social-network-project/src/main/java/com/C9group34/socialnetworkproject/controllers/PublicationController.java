@@ -19,7 +19,7 @@ public class PublicationController {
     @Autowired
     private PublicationService publicationService;
     @Autowired
-    private  UserService userService;
+    private UserService userService;
     @Autowired
     private JWTutil jwt;
 
