@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString
 public class FavoritePublication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +24,20 @@ public class FavoritePublication {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "publication_id")
     private Publication publication;
+
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User u) {
+        this.user = u;
+    }
+    public Publication getPublication() {
+        return publication;
+    }
+
+    public void setPublication(Publication p) {
+        this.publication = p;
+
+    }
 
 }

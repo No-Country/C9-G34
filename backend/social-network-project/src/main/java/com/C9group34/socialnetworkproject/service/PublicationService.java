@@ -2,20 +2,18 @@ package com.C9group34.socialnetworkproject.service;
 
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
-import com.C9group34.socialnetworkproject.dto.UserDto;
-import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
+import com.C9group34.socialnetworkproject.models.Category;
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
+import com.C9group34.socialnetworkproject.repository.CategoryRepository;
 import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,17 +21,34 @@ import java.util.stream.Collectors;
 public class PublicationService {
 
 
+    // ------------cambio por autowired por simplicidad de codigo---------------
     @Autowired
     private  PublicationRepository publicationRepository;
     @Autowired
     private  UserRepository userRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    public List<Publication> getAll(){
+        List<Publication> p = publicationRepository.findAll();
+        return p;
+    }
 
 
     public void create(PublicationDto publicationDTO, Integer userId) {
-        Optional<User> user = userRepository.findById(userId);
-        Publication publication = mapToEntity(publicationDTO, user.get());
-        publicationRepository.save(publication);
+        Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
+        Optional<User> userOptional = userRepository.findById(userId);
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            Category category = categoryOptional.get();
+            Publication publication = mapToEntity(publicationDTO, user, category);
+            user.addPublication(publication);
+            category.addPublication(publication);
+            publicationRepository.save(publication);
+            
+            user.getPublications().stream().forEach(p ->System.out.println(p.getTitle()));
+        }
     }
 
 
@@ -62,7 +77,6 @@ public class PublicationService {
         if (publication.isEmpty()) {
             throw new ResourceNotFoundException("El id de la publicacion que está buscando no existe.");
         }
-
         return mapToDTO(publication.get());
     }
 
@@ -90,9 +104,7 @@ public class PublicationService {
         updatedPublication = new Publication().builder().id(publicationToReplace.getId())
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(publicationDto.getUrlImg())
-                .rating(publicationDto.getRating())
-                .status(publicationDto.getStatus())
+                .urlImg("")
                 .user(publicationToReplace.getUser())
                 .build();
         publicationRepository.save(updatedPublication);
@@ -100,48 +112,27 @@ public class PublicationService {
     }
 
 
-    /*public void modify(Integer userId, Integer publicationId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
 
-    /*
-    public void modify(Integer userId, Integer publicationId, Map<String, Object> fieldsToModify) throws ResourceNotFoundException {
-
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException();
-        }
-
-        Optional<Publication> publication = publicationRepository.findById(publicationId);
-        if (publication.isEmpty()) {
-            throw new ResourceNotFoundException();
-        }
-        Publication publicationToModify = publication.get();
-        //fieldsToModify.forEach((key, value) -> publicationToModify.modifyAttributeValue(key, value));
-        publicationRepository.save(publicationToModify);
-
-    }
-*/
-
-   private Publication mapToEntity(PublicationDto publicationDto , User user) {
-        Publication publication = new Publication().builder()
-                .id(publicationDto.getId())
+    private Publication mapToEntity(PublicationDto publicationDto , User user, Category category) {
+        return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(publicationDto.getUrlImg())
+                .urlImg(user.getImgProfile())
                 .rating(publicationDto.getRating())
-                .status(publicationDto.getStatus())
                 .user(user)
+                .category(category)
                 .build();
-
-        return publication;
     }
 
     private PublicationDto mapToDTO(Publication publication) {
+        // agregado de prueba
+
         PublicationDto.PublicationDtoBuilder publicationDto = new PublicationDto().builder().id(publication.getId())
                 .title(publication.getTitle())
                 .description(publication.getDescription())
-                .urlImg(publication.getUrlImg())
-                .rating(publication.getRating())
-                .status(publication.getStatus());
+                .img(publication.getUrlImg())
+                .rating(publication.getRating());
+
 
         return publicationDto.build();
     }
