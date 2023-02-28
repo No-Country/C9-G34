@@ -105,7 +105,6 @@ public class UserService {
 
     private User mapToEntity(UserDto userDto) {
 
-        String imgUrl = "";
         new User();
         return User.builder().name(userDto.getName())
                 .surname(userDto.getSurname())

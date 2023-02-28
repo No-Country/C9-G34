@@ -2,79 +2,118 @@ package com.C9group34.socialnetworkproject.service;
 
 
 import com.C9group34.socialnetworkproject.dto.CommentDto;
-import com.C9group34.socialnetworkproject.dto.FavoritePublicationDto;
 import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
-import com.C9group34.socialnetworkproject.models.Comment;
-import com.C9group34.socialnetworkproject.models.FavoritePublication;
-import com.C9group34.socialnetworkproject.models.Publication;
-import com.C9group34.socialnetworkproject.models.User;
+import com.C9group34.socialnetworkproject.models.*;
 import com.C9group34.socialnetworkproject.repository.CommentRepository;
-import com.C9group34.socialnetworkproject.repository.PublicationRepository;
-import com.C9group34.socialnetworkproject.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CommentService {
 
     @Autowired
-    final UserRepository userRepository;
-    @Autowired
-    final PublicationRepository publicationRepository;
-    @Autowired
-    final CommentRepository commentRepository;
+    private CommentRepository commentRepository;
 
-    public CommentService(UserRepository userRepository, PublicationRepository publicationRepository, CommentRepository commentRepository) {
-        this.userRepository = userRepository;
-        this.publicationRepository = publicationRepository;
-        this.commentRepository = commentRepository;
+    @Transactional
+    public Comment create(CommentDto comment) throws ExistingResourceException {
+        Comment c = mapToEntity(comment);
+        checkForExistingComment(c.getId());
+        c = commentRepository.save(c);
+        return c;
+
     }
-
-    public Comment create(Integer userId, Integer publicationId,CommentDto commentDto) throws ExistingResourceException, ResourceNotFoundException {
-        Optional<User> u = userRepository.findById(userId);
-        Optional<Publication> p = publicationRepository.findById(publicationId);
-        System.out.println(p.get());
-        if (u.isEmpty()) {
-            throw new ResourceNotFoundException("usuario no encontrado");
+    @Transactional
+    public List<CommentDto> retrieveAll() {
+        List<Comment> comments = commentRepository.findAll();
+        List commentDtoList = new ArrayList<>();
+        comments.forEach(c -> commentDtoList.add(mapToDTO(c)));
+        return commentDtoList;
+    }
+    @Transactional
+    public CommentDto retrieveById(Integer id) throws ResourceNotFoundException {
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        if(commentOptional.isEmpty()){
+            throw  new ResourceNotFoundException("El comentario no ha sido encontrado");
         }
-        Optional<Publication> publication = publicationRepository.findById(publicationId);
-        if (p.isEmpty()) {
-            throw new ResourceNotFoundException("publicacion no encontrada");
+
+        return mapToDTO(commentOptional.get());
+    }
+
+
+    @Transactional
+    public void delete(Integer id) throws ResourceNotFoundException {
+        try {
+            commentRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("No se pudo eliminar el commentario porque el id ingresando no existe.");
         }
+    }
 
-        Comment comment = mapToEntity(commentDto);
-
-        comment = commentRepository.save(comment);
-        return comment;
+    @Transactional
+    public void replace(Integer id, CommentDto dto) throws ResourceNotFoundException {
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        if (commentOptional.isEmpty()) {
+            throw new ResourceNotFoundException();
+        }
+        Comment updatedComment;
+        Comment commentToReplace = commentOptional.get();
+        new Comment();
+        updatedComment = Comment.builder().id(commentToReplace.getId())
+                .content(dto.getContent())
+                .publication(dto.getPublication())
+                .user(dto.getUser())
+                .build();
+        commentRepository.save(updatedComment);
     }
 
 
-
-        /*Comment comment = new Comment().builder()
-                .publication(p.get())
-                .user(u.get()).build();
-        comment = commentRepository.save(comment);
-        return this.mapToDTO(comment);*/
-
-
-
-
-    private CommentDto mapToDTO(Comment comment) {
-        return new CommentDto().builder()
-                .id(comment.getId())
-                .content(comment.getContent()).build();
-    }
-
-    private Comment mapToEntity(CommentDto commentDto) {
+    private Comment mapToEntity(CommentDto dto) {
 
         new Comment();
         return Comment.builder()
-                .id(commentDto.getId())
-                .content(commentDto.getContent())
+                .content(dto.getContent())
+                .user(dto.getUser())
+                .publication(dto.getPublication())
                 .build();
+    }
+
+    private CommentDto mapToDTO(Comment c) {
+
+        return CommentDto.builder()
+                .id(c.getId())
+                .content(c.getContent())
+                .publication(c.getPublication())
+                .user(c.getUser())
+                .build();
+    }
+
+    private Optional<UserDto> mapToDTOWithFavoritePublications(Optional<User> optionalUser) {
+        if(optionalUser.isEmpty()){
+            return Optional.empty();
+        }
+        User user = optionalUser.get();
+        return Optional.ofNullable(UserDto.builder().id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .password(user.getPassword())
+                .ratings(user.getRatings())
+                .build());
+    }
+
+
+    private void checkForExistingComment(Integer commentId) throws ExistingResourceException {
+        if (commentRepository.existsById(commentId)) {
+            throw new ExistingResourceException("El commentario que está intentando crear ya existe.");
+        }
     }
 }

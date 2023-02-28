@@ -35,7 +35,7 @@ public class CommentControllers {
 
         Comment comment = null;
         try {
-            comment = commentService.create( userId, publicationId , commentDto);
+            comment = commentService.create( commentDto);
         } catch (ExistingResourceException e) {
             System.out.println(e.getMessage());
         } catch (ResourceNotFoundException e) {

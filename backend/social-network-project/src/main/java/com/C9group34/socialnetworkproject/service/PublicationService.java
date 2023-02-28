@@ -2,6 +2,7 @@ package com.C9group34.socialnetworkproject.service;
 
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
+import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.models.Category;
 import com.C9group34.socialnetworkproject.models.Publication;
@@ -13,6 +14,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -123,6 +126,7 @@ public class PublicationService {
                 .category(category)
                 .build();
     }
+
 
     private PublicationDto mapToDTO(Publication publication) {
         // agregado de prueba
