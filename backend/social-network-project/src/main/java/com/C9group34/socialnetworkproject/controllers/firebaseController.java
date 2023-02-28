@@ -1,6 +1,5 @@
 package com.C9group34.socialnetworkproject.controllers;
 
-import com.C9group34.socialnetworkproject.util.FirebaseStorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -104,12 +104,11 @@ public class PublicationService {
 
 
 
-    private Publication mapToEntity(PublicationDto publicationDto , User user) {
-        String urlImg = "";
+    private Publication mapToEntity(PublicationDto publicationDto , User user, Category category) {
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(urlImg)
+                .urlImg(user.getImgProfile())
                 .rating(publicationDto.getRating())
                 .user(user)
                 .category(category)
@@ -122,7 +121,7 @@ public class PublicationService {
         PublicationDto.PublicationDtoBuilder publicationDto = new PublicationDto().builder().id(publication.getId())
                 .title(publication.getTitle())
                 .description(publication.getDescription())
-                .urlImg(publication.getUrlImg())
+                .img(publication.getUrlImg())
                 .rating(publication.getRating());
 
 

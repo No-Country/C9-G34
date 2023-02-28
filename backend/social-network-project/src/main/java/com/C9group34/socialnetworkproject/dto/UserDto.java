@@ -1,5 +1,6 @@
 package com.C9group34.socialnetworkproject.dto;
 
+import com.C9group34.socialnetworkproject.models.Conversation;
 import com.C9group34.socialnetworkproject.models.FavoritePublication;
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.Role;
@@ -26,6 +27,7 @@ public class UserDto {
     private List<Role> roles;
     private List<FavoritePublication> favoritePublications;
     private List<Publication> publications;
+    private List<Conversation> conversations;
 
 
 }
