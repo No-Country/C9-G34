@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/conversations")
-@CrossOrigin(origins = "${host}")
+@CrossOrigin
 public class ConversationsControllers {
     @Autowired
     ConversationService conversationService;

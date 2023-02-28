@@ -2,21 +2,18 @@ package com.C9group34.socialnetworkproject.service;
 
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
-import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
+import com.C9group34.socialnetworkproject.models.Category;
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
+import com.C9group34.socialnetworkproject.repository.CategoryRepository;
 import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,13 +28,24 @@ public class PublicationService {
     @Autowired
     private  UserRepository userRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    public List<Publication> getAll(){
+        List<Publication> p = publicationRepository.findAll();
+        return p;
+    }
+
 
     public void create(PublicationDto publicationDTO, Integer userId) {
+        Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            Publication publication = mapToEntity(publicationDTO, user);
+            Category category = categoryOptional.get();
+            Publication publication = mapToEntity(publicationDTO, user, category);
             user.addPublication(publication);
+            category.addPublication(publication);
             publicationRepository.save(publication);
             
             user.getPublications().stream().forEach(p ->System.out.println(p.getTitle()));
@@ -99,17 +107,18 @@ public class PublicationService {
     }
 
 
-    private Publication mapToEntity(PublicationDto publicationDto , User user) {
-        String urlImg = "";
+    private Publication mapToEntity(PublicationDto publicationDto , User user, Category category) {
+        Double ratings = 0.0;
+        String status = "active";
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(urlImg)
-                .rating(publicationDto.getRating())
-                .status(publicationDto.getStatus())
+                .urlImg(publicationDto.getImg())
+                .rating(ratings)
+                .status(status)
                 .user(user)
+                .category(category)
                 .build();
-
     }
 
     private PublicationDto mapToDTO(Publication publication) {
@@ -118,7 +127,7 @@ public class PublicationService {
         PublicationDto.PublicationDtoBuilder publicationDto = new PublicationDto().builder().id(publication.getId())
                 .title(publication.getTitle())
                 .description(publication.getDescription())
-                .img(img)
+                .img(String.valueOf(img))
                 .rating(publication.getRating())
                 .status(publication.getStatus());
 

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "${host}")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -30,6 +30,7 @@ public class UserController {
     @PostMapping("/new")
     @Operation(
             summary = "Create new use",
+            description = "With endpoint can you created a new user",
             responses = {
                     @ApiResponse(responseCode = "201",ref = "created"),
                     @ApiResponse(responseCode = "400",ref = "badRequest")
@@ -39,7 +40,7 @@ public class UserController {
             content = @Content(
                     mediaType = "application/json",
                     examples = @ExampleObject(
-                            value = "{\"name\" : \"Luis\", \"surname\" : \"Uzcategui\", \"email\" : \"luis@example.com\", \"password\" : \"123456789\", \"phone\" : \"+593979010717\" }"
+                            value = "{\"name\" : \"Luis\", \"surname\" : \"Uzcategui\", \"email\" : \"luis@example.com\", \"password\" : \"123456789\", \"phone\" : \"+593979010717\", \"img_profile\" : \"URL\" }"
                     )
             )
     ) @RequestBody UserDto u){
@@ -59,6 +60,7 @@ public class UserController {
     @GetMapping("/all")
     @Operation(
             summary = "Get all users",
+            description = "This endpoint is for get all users",
             responses = {
                     @ApiResponse(responseCode = "200",ref = "getAll"),
                     @ApiResponse(responseCode = "400",ref = "badRequest")
@@ -70,6 +72,14 @@ public class UserController {
     }
 
     @GetMapping("{userId}")
+    @Operation(
+            summary = "Get user by ID",
+            description = "With this endpoint can you get to a user by ID",
+            responses = {
+                    @ApiResponse(responseCode = "200",ref = "user"),
+                    @ApiResponse(responseCode = "400",ref = "badRequest")
+            }
+    )
     public ResponseEntity retrieveById(@PathVariable Integer userId){
 
         try {
@@ -82,6 +92,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
+    @Operation(
+            summary = "Delete a user",
+            description = "This endpoint is for delete a user",
+            responses = {
+                    @ApiResponse(responseCode = "200",ref = "userDeleted"),
+                    @ApiResponse(responseCode = "400",ref = "badRequest")
+            }
+    )
     public ResponseEntity delete(@PathVariable Integer userId) {
         try {
             userService.delete(userId);
@@ -94,6 +112,10 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
+    @Operation(
+            summary = "Update a user",
+            description = "This endpoint is for update a user"
+    )
     public ResponseEntity replace(@PathVariable Integer userId,@io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(
                     mediaType = "application/json",

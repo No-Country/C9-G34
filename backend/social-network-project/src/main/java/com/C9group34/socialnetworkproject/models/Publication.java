@@ -32,7 +32,7 @@ public class Publication {
     @Column(name = "ratings", nullable = false)
     private Double rating;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private String status;
 
 
@@ -62,6 +62,10 @@ public class Publication {
 
     public void setUser(User u) {
         this.user = u;
+    }
+
+    public void setCategory(Category c){
+        this.category = c;
     }
 
     public void addComment(Comment c) {

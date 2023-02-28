@@ -33,7 +33,6 @@ public class User {
 
 
     @Schema(required = true)
-
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 

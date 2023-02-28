@@ -1,13 +1,17 @@
-
 {
-  "created": {
+  "login": {
+    "token": "String token"
+  },
+  "userDeleted": "USER DELETED SUCCESSFUL",
+  "user": {
     "id": 0,
     "name": "String name",
     "surname": "String surname",
     "email": "string@example.com",
     "phone": "String",
     "password": "String",
-    "ratings": 0.0
+    "ratings": 0.0,
+    "publications": []
   },
   "getAll": [
     {

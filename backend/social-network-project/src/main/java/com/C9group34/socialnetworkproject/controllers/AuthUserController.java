@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "${host}")
+@CrossOrigin
 public class AuthUserController {
 
     @Autowired
@@ -54,16 +54,6 @@ public class AuthUserController {
             return true;
         }
         return false;
-    }
-
-    //-----------------------------
-
-
-
-    @GetMapping(value = "auth/guest")
-    public Token guestToken(){
-        Token token = new Token(jwt.create("0000", "xxx"));
-        return token;
     }
 
 }
