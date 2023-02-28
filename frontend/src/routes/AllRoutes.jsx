@@ -6,6 +6,7 @@ import {
   PagRegister,
   ProfilePage,
   EditUsers,
+  NewPost,
 } from "../pages";
 
 // --------------------------------------------------------------------
@@ -18,6 +19,7 @@ export default function AllRoutes() {
       <Route path="/register" element={<PagRegister />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/edit-user" element={<EditUsers />} />
+      <Route path="/newPost" element={<NewPost/>} />
     </Routes>
   );
 }
