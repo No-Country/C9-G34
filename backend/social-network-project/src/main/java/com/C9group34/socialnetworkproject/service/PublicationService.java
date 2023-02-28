@@ -80,7 +80,6 @@ public class PublicationService {
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
                 .rating(publicationDto.getRating())
-                .status(publicationDto.getStatus())
                 .user(publicationToReplace.getUser())
                 .build();
         publicationRepository.save(updatedPublication);
@@ -94,7 +93,6 @@ public class PublicationService {
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
                 .rating(publicationDto.getRating())
-                .status(publicationDto.getStatus())
                 .user(user)
                 .build();
 
@@ -105,8 +103,7 @@ public class PublicationService {
                 .title(publication.getTitle())
                 .description(publication.getDescription())
                 .urlImg(publication.getUrlImg())
-                .rating(publication.getRating())
-                .status(publication.getStatus());
+                .rating(publication.getRating());
 
         return publicationDto.build();
     }

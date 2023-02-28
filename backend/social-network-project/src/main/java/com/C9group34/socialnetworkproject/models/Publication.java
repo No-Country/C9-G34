@@ -31,9 +31,6 @@ public class Publication {
     @Column(name = "ratings", nullable = false)
     private Double rating;
 
-    @Column(name = "status", nullable = false)
-    private String status;
-
 
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
     private List<Comment> comments;
