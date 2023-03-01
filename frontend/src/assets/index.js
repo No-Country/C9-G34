@@ -7,6 +7,7 @@ import Message02Icon from "./images/icons/message02.svg";
 import FavoriteIcon from "./images/icons/favorite.svg";
 import LikeIcon from "./images/icons/like.svg";
 import TrashIcon from "./images/icons/trash.svg";
+import NewComentIcon from "./images/icons/new_coment.svg";
 
 // LOGOS
 import Logo from "./images/logos/logo.svg";
@@ -50,6 +51,10 @@ export default {
   TrashIcon: {
     img: TrashIcon,
     info: "Trash Icon Lumini"
+  },
+  NewComentIcon:{
+    img: NewComentIcon,
+    info: "New Coment Icon"
   },
 
   Logo: {

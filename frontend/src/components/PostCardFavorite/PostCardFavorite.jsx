@@ -27,8 +27,8 @@ export default function PostCardFavorite({ id }) {
     <div
       className="d-flex gap-3 justify-content-center align-items-center mb-5"
       style={{
-        maxWidth: screen.width >= 768 ? "100%" : "540px",
-        minHeight: screen.width >= 768 ? "570px" : "auto",
+        maxWidth: screen.width >= 768 ? "100%" : "340px",
+        minHeight: screen.width >= 768 ? "570px" : "340px",
       }}
     >
       <div className="bg-white position-relative">

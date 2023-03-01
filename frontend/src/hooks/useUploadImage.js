@@ -2,11 +2,11 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/conect";
 import { v4 as uuidv4 } from 'uuid';
 
-async function useUploadImage(uploadFile, idPost) {
+async function useUploadImage(uploadFile) {
   const [file] = uploadFile.files;
 
   if (file && file.type.includes("image")) {
-    const storageRef = ref(storage, `Post-${idPost}/${uuidv4()}`);
+    const storageRef = ref(storage, `Post/${uuidv4()}`);
 
     await uploadBytes(storageRef, file);
 
