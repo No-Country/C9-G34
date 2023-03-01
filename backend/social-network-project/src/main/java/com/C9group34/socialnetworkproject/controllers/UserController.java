@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 
 @RestController
 @RequestMapping("/users")
@@ -48,7 +51,13 @@ public class UserController {
 
         User user = null;
         try {
-            user = userService.register(u);
+            try {
+                user = userService.register(u);
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println(e.getMessage());
+            } catch (InvalidKeySpecException e) {
+                System.out.println(e.getMessage());
+            }
         } catch (ExistingResourceException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);

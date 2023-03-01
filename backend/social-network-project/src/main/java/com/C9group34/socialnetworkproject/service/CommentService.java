@@ -7,6 +7,7 @@ import com.C9group34.socialnetworkproject.exceptions.ExistingResourceException;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.models.*;
 import com.C9group34.socialnetworkproject.repository.CommentRepository;
+import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,9 +22,11 @@ public class CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private PublicationService publicationService;
 
     @Transactional
-    public Comment register(CommentDto comment) throws ExistingResourceException {
+    public Comment register(CommentDto comment, Integer publicationId) throws ExistingResourceException {
         Comment c = mapToEntity(comment);
         checkForExistingComment(c.getId());
         c = commentRepository.save(c);
@@ -31,7 +34,7 @@ public class CommentService {
 
     }
     @Transactional
-    public List<CommentDto> retrieveAll() {
+    public List<CommentDto> retrieveAll(Integer publicationId) {
         List<Comment> comments = commentRepository.findAll();
         List commentDtoList = new ArrayList<>();
         comments.forEach(c -> commentDtoList.add(mapToDTO(c)));
@@ -49,7 +52,7 @@ public class CommentService {
 
 
     @Transactional
-    public void delete(Integer id) throws ResourceNotFoundException {
+    public void delete(Integer id, Integer publicationId) throws ResourceNotFoundException {
         try {
             commentRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
@@ -85,8 +88,13 @@ public class CommentService {
                 .build();
     }
 
+    private CommentDto mapToDTOFirstTime(Comment c, Integer publicationId) {
+        Publication p = publicationService.retrieveWithoutMapToDTO(publicationId);
+    }
+
     private CommentDto mapToDTO(Comment c) {
 
+        Publication p = publicationService.retrieveWithoutMapToDTO(publicationId);
         return CommentDto.builder()
                 .id(c.getId())
                 .content(c.getContent())
