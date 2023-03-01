@@ -4,24 +4,39 @@ import { PostCardFavorite } from "../../components";
 import { motion } from "framer-motion";
 import { instance } from "../../axios/axiosConfig";
 import { useNavigate } from "react-router-dom";
+import useDataContext from "../../hooks/useDataContext";
+import Button from "react-bootstrap/Button";
 
 const ProfilePage = () => {
+  const { setLoader } = useDataContext();
   const [dataUser, setDataUser] = useState({});
   const navigate = useNavigate();
 
+  console.log(dataUser);
+
   useEffect(() => {
+    setLoader(true);
     instance
       .get("users/get", {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => setDataUser(res.data));
+
+    setTimeout(() => setLoader(false), 500);
   }, []);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+    window.location.reload();
+  };
 
   return (
     <motion.section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
+      className="pb-sm-5"
     >
       <div
         className="container w-100 position-relative"
@@ -35,6 +50,8 @@ const ProfilePage = () => {
         />
         <img
           style={{
+            aspectRatio: 1,
+            borderRadius: "50%",
             maxWidth: "150px",
             left: screen.width >= 992 ? "0" : "50%",
             transform:
@@ -52,17 +69,8 @@ const ProfilePage = () => {
       </div>
       <Container className="d-lg-flex">
         <div className="mt-5 pt-5 pb-5 me-lg-4">
-          <h2
-            className="text-center text-lg-start position-relative"
-            data-aos="fade-up-right"
-          >
+          <h2 className="text-center text-lg-start" data-aos="fade-up-right">
             {dataUser.name + " " + dataUser.surname}
-            <button
-              className="position-absolute top-0 right-0 bg-transparent border-0 ms-3"
-              onClick={() => navigate("/edit-user")}
-            >
-              <i className="bx bxs-pencil" style={{ fontSize: "2rem" }}></i>
-            </button>
           </h2>
           <ul className="ps-0" data-aos="fade-up-right">
             <li className="mt-2">
@@ -74,6 +82,18 @@ const ProfilePage = () => {
               {dataUser.email || "Email"}
             </li>
           </ul>
+          <div className="w-100 d-flex justify-content-between">
+            <Button variant="outline-danger" onClick={logout}>
+              Cerrar Sesion
+            </Button>
+            <Button
+              variant="outline-primary"
+              onClick={() => navigate("/edit-user")}
+            >
+              {" "}
+              <i className="bx bxs-pencil" style={{ fontSize: "1.5rem" }}></i>
+            </Button>
+          </div>
         </div>
         <div
           className="ps-lg-5"

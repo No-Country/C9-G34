@@ -1,44 +1,99 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Container, Form, Image, Row } from "react-bootstrap";
+import { alertOk, errorAlert } from "../../components/Alert/Alert";
 import { useForm } from "react-hook-form";
 import { Navbar } from "../../components";
 import assets from "../../assets/index";
 import { instance } from "../../axios/axiosConfig";
+import useUploadImage from "../../hooks/useUploadImage";
+import useDataContext from "../../hooks/useDataContext";
+import { useNavigate } from "react-router-dom";
 
 const EditUsers = () => {
+  const [afterData, setAfterData] = useState({});
+  const [loadImg, setImageLoad] = useState(null);
+  const [image, setImage] = useState("");
+  const { setLoader } = useDataContext();
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm();
 
+  const changeImage = async (e) => {
+    const targetImage = e.target;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = (e) => {
+      e.preventDefault();
+      setImageLoad(e.target.result);
+    };
+
+    let res = await useUploadImage(targetImage);
+
+    if (res !== "No es imagen") {
+      setImage(res);
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    setLoader(true);
+    instance
+      .get("users/get", {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((res) => setAfterData(res.data));
+    setTimeout(() => setLoader(false), 500);
+  }, []);
+
   const submit = (data) => {
-    data.imgProfile =
-      "https://play-lh.googleusercontent.com/Kyy41efsxzj4rAfkoMmbyuqMSOBSzascfz1hKhbumrPSWNxPrVKlzSyBwxOPLUtWP7M";
+    data.password = afterData.password;
+    data.email = afterData.email;
+    data.imgProfile = image;
+    data.ratings = 0;
 
     instance
       .put("users/edit", data, {
         headers: { Authorization: localStorage.getItem("token") },
       })
-      .then((res) => console.log(res.data));
+      .then((res) => {
+        alertOk("Datos actualizados");
+        setTimeout(() => {
+          navigate("/profile");
+        }, 3200);
+      })
+      .catch(() => errorAlert("Ocurrio un error, intentalo mas tarde"));
   };
 
   return (
     <Container>
       <Navbar />
-      <Row>
+      <Row className="pb-sm-5 px-3">
         <Card className="m-auto" style={{ width: "500px" }}>
           <Form className="my-5 " onSubmit={handleSubmit(submit)}>
-            <h3>Edit Perfil</h3>
+            <h3>Editar Perfil</h3>
             <Form.Group controlId="formFile" className="mb-3 ">
               <Image
-                className="rounded mx-auto d-block"
-                src={assets.Imgedit.img}
+                className="rounded mx-auto d-block w-100 mb-4"
+                src={loadImg ? loadImg : assets.Imgedit.img}
                 alt={assets.Imgedit.info}
                 title={assets.Imgedit.info}
+                style={{ maxWidth: "150px" }}
               ></Image>
-              <Form.Control type="file" />
+              <Form.Control
+                {...register("imgProfile", {
+                  required: true,
+                })}
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  changeImage(e);
+                }}
+              />
             </Form.Group>
             <Form.Group>
               <Form.Label> First Name</Form.Label>
@@ -69,7 +124,7 @@ const EditUsers = () => {
             <Form.Group>
               <Form.Label> Teléfono</Form.Label>
               <Form.Control
-                {...register("telefono", {
+                {...register("phone", {
                   required: true,
                 })}
                 type="text"

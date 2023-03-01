@@ -1,4 +1,4 @@
-import { BottomNavigationBar } from "./components";
+import { BottomNavigationBar, Loader } from "./components";
 import AllRoutes from "./routes/AllRoutes";
 import Aos from "aos";
 
@@ -29,6 +29,7 @@ Aos.init({
 export default function App() {
   return (
     <>
+      <Loader />
       <AllRoutes />
       <BottomNavigationBar />
     </>
