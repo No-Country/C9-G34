@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import { PostCard } from "../../components";
+import { PostCardFavorite } from "../../components";
 import { motion } from "framer-motion";
 import { instance } from "../../axios/axiosConfig";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +16,6 @@ const ProfilePage = () => {
       })
       .then((res) => setDataUser(res.data));
   }, []);
-
-  console.log(dataUser);
 
   return (
     <motion.section
@@ -60,13 +58,10 @@ const ProfilePage = () => {
           >
             {dataUser.name + " " + dataUser.surname}
             <button
-              className="position-absolute top-0 right-0 bg-transparent border-0"
+              className="position-absolute top-0 right-0 bg-transparent border-0 ms-3"
               onClick={() => navigate("/edit-user")}
             >
-              <i
-                class="bx bxs-pencil"
-                style={{  fontSize: "2rem" }}
-              ></i>
+              <i className="bx bxs-pencil" style={{ fontSize: "2rem" }}></i>
             </button>
           </h2>
           <ul className="ps-0" data-aos="fade-up-right">
@@ -89,7 +84,7 @@ const ProfilePage = () => {
           </h2>
           {dataUser.favoritePublications?.length !== 0 ? (
             dataUser.favoritePublications?.map((card, i) => {
-              return <PostCard isfavorite={true} key={i + 1} />;
+              return <PostCardFavorite id={card.id} key={i + 1} />;
             })
           ) : (
             <h3 className="text-center">

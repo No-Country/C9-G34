@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import assets from "../../assets/index";
 import { instance } from "../../axios/axiosConfig";
 
-export default function PostCard({ data }) {
-  console.log(data);
+export default function PostCardFavorite({ id }) {
+  const [dataCard, setDataCard] = useState({});
 
-  const addFavorite = () => {
+  useEffect(() => {
+    instance
+      .get(`users/publications/${id}`, {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((res) => setDataCard(res.data));
+  }, []);
+
+  console.log(dataCard)
+
+  const removeFavorite = () => {
     instance
       .post(`favorites/${data.id}`, {
         headers: { Authorization: localStorage.getItem("token") },
@@ -32,7 +42,7 @@ export default function PostCard({ data }) {
           data-aos="fade-down"
         />
         <img
-          src={data.urlImg || assets.Test02.img}
+          src={dataCard.img || assets.Test02.img}
           data-aos="fade-up-right"
           style={{
             width: screen.width >= 768 ? "450px" : "auto",
@@ -64,28 +74,25 @@ export default function PostCard({ data }) {
         </div>
       </div>
       <div>
-        <h5 className="fs-1 mb-4">{data.title}</h5>
+        <h5 className="fs-1 mb-4">{dataCard.title}</h5>
         <p
           style={{
             maxWidth: "500px",
             fontSize: screen.width >= 768 ? "40px" : "auto",
           }}
         >
-          {data.description}
+          {dataCard.description}
         </p>
         <div className="d-flex gap-4">
           <button className="border-0 bg-transparent" data-aos="fade-up">
             <img src={assets.Message02Icon.img} />
           </button>
-          <button
-            className="border-0 bg-transparent"
-            data-aos="fade-up"
-            onClick={addFavorite}
-          >
+          <button className="border-0 bg-transparent fs-1" data-aos="fade-up">
             <img
-              src={assets.FavoriteIcon.img}
-              alt={assets.FavoriteIcon.info}
-              title={assets.FavoriteIcon.info}
+              src={assets.TrashIcon.img}
+              alt={assets.TrashIcon.info}
+              title={assets.TrashIcon.info}
+              style={{ width: "40px" }}
             />
           </button>
         </div>
