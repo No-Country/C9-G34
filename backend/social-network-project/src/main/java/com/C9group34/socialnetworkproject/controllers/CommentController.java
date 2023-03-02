@@ -59,7 +59,6 @@ public class CommentController {
             }
 
             return new ResponseEntity(comment, HttpStatus.CREATED);
-
         }
         return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);
 
@@ -84,14 +83,13 @@ public class CommentController {
         return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);
     }
 
-    @DeleteMapping("/{commentId}/{publicationId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity delete(@RequestHeader(value = "Authorization") String token,
-                                 @PathVariable Integer publicationId,
                                  @PathVariable Integer commentId) {
 
         if (jwt.verifyToken(token)) {
             try {
-                commentService.delete(Integer.valueOf(commentId), publicationId);
+                commentService.delete(Integer.valueOf(commentId));
                 return new ResponseEntity(HttpStatus.OK);
             } catch (ResourceNotFoundException e) {
                 System.out.println(e.getMessage());

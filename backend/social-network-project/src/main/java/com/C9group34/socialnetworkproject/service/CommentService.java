@@ -36,15 +36,15 @@ public class CommentService {
     }
     @Transactional
     public List<CommentDto> retrieveAll(Integer publicationId) {
-        List<Comment> comments = commentRepository.retrieveAllCommentsOfAPublication(publicationId);
-        List commentDtoList = new ArrayList<>();
-        comments.forEach(c -> commentDtoList.add(mapToDTO(c)));
+         List<Comment> comments = commentRepository.retrieveAllCommentsOfAPublication(publicationId);
+         List commentDtoList = new ArrayList<>();
+         comments.forEach(c -> commentDtoList.add(mapToDTO(c)));
         return commentDtoList;
     }
 
 
     @Transactional
-    public void delete(Integer id, Integer publicationId) throws ResourceNotFoundException {
+    public void delete(Integer id) throws ResourceNotFoundException {
         try {
             commentRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
@@ -106,25 +106,10 @@ public class CommentService {
         return CommentDto.builder()
                 .id(c.getId())
                 .content(c.getContent())
-                .publication(c.getPublication())
                 .user(userDto)
                 .build();
     }
 
-    private Optional<UserDto> mapToDTOWithFavoritePublications(Optional<User> optionalUser) {
-        if(optionalUser.isEmpty()){
-            return Optional.empty();
-        }
-        User user = optionalUser.get();
-        return Optional.ofNullable(UserDto.builder().id(user.getId())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .password(user.getPassword())
-                .ratings(user.getRatings())
-                .build());
-    }
 
 
     private void checkForExistingComment(Integer commentId) throws ExistingResourceException {
