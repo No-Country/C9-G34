@@ -67,7 +67,7 @@ public class CommentController {
 
     @GetMapping("/all/{publicationId}")
     @Operation(
-            summary = "Get all users",
+            summary = "Get all comments",
             description = "This endpoint is for get all users",
             responses = {
                     @ApiResponse(responseCode = "200",ref = "getAll"),
@@ -75,26 +75,11 @@ public class CommentController {
             }
     )
     public ResponseEntity retrieve(@RequestHeader(value = "Authorization") String token,
-                                   @PathVariable Integer publicationId){
-
-
-        if (jwt.verifyToken(token)) return new ResponseEntity(commentService.retrieveAll(publicationId), HttpStatus.OK);
-        return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);
-    }
-
-    @GetMapping("/{commentId}")
-    public ResponseEntity<CommentDto> retrieveComment(@RequestHeader(value = "Authorization") String token,
-                                                      @PathVariable Integer commentId){
+                                   @PathVariable Integer publicationId) {
 
         if (jwt.verifyToken(token)) {
-            CommentDto commentDto = null;
-            try {
-                commentDto = commentService.retrieveById(Integer.valueOf(commentId));
-            } catch (ResourceNotFoundException e) {
-                System.out.println(e.getMessage());
-                return new ResponseEntity("el comentario no ha sido encontrado", HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity(commentDto, HttpStatus.OK);
+            return new ResponseEntity(commentService.retrieveAll(publicationId), HttpStatus.OK);
+
         }
         return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);
     }
@@ -117,7 +102,7 @@ public class CommentController {
 
     }
 
-    @PutMapping("/{commentId}")
+    @PutMapping("/{publicationId}/{commentId}")
     public ResponseEntity replace(@RequestHeader(value = "Authorization") String token,@io.swagger.v3.oas.annotations.parameters.RequestBody(
 
             content = @Content(
@@ -126,11 +111,12 @@ public class CommentController {
                             value = "{\"content\" : \"String\",}"
                     )
             )
-    ) @RequestBody CommentDto dto, @PathVariable Integer commentId) {
+    ) @RequestBody CommentDto dto, @PathVariable Integer commentId, @PathVariable Integer publicationId) {
 
+        String userId = jwt.getKey(token);
         try {
             if(jwt.verifyToken(token)){
-                commentService.replace(Integer.valueOf(commentId), dto);
+                commentService.replace(Integer.valueOf(commentId), dto, Integer.valueOf(userId), publicationId);
                 return new ResponseEntity<>("datos actualizados", HttpStatus.OK);
             }
         } catch (ResourceNotFoundException e) {
