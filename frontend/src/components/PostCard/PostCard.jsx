@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import assets from "../../assets/index";
 import { instance } from "../../axios/axiosConfig";
-import axios from "axios";
 import { alertOk, errorAlert } from "../../components/Alert/Alert";
+import useDataContext from "../../hooks/useDataContext";
 
 export default function PostCard({ data }) {
+  const { userCredentials } = useDataContext();
   const [showSquareComment, setShowSquareComment] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [commentController, setCommentController] = useState("");
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    getComments();
+  }, []);
 
   const addFavorite = () => {
     fetch(`https://lumini-production.up.railway.app/favorites/${data.id}`, {
@@ -14,6 +21,35 @@ export default function PostCard({ data }) {
       headers: { Authorization: localStorage.getItem("token") },
     })
       .then((res) => alertOk("Se agrego correctamente"))
+      .catch(() => errorAlert("Upps, ocurrio un error"));
+  };
+
+  const getComments = () => {
+    instance
+      .get(`comments/all/${data.id}`, {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((res) => setComments(res.data))
+      .catch(() => errorAlert("Ocurrio un error al cargar los comentarios"));
+  };
+
+  const createComment = () => {
+    const Comment = {
+      content: commentController,
+    };
+
+    fetch(`https://lumini-production.up.railway.app/comments/new/${data.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(Comment),
+    })
+      .then((res) => {
+        alertOk("Comentario creado");
+        getComments();
+      })
       .catch(() => errorAlert("Upps, ocurrio un error"));
   };
 
@@ -30,12 +66,13 @@ export default function PostCard({ data }) {
           className="bg-white position-relative shadow w-50 position-relative d-flex flex-column align-items-center"
           data-aos="fade-up-right"
         >
-          {/*border border-3 border-white rounded-circle d-flex justify-content-center align-items-center */}
           <img
-            src={assets.Test01.img}
-            className="position-absolute z-3"
+            src={data.userImgProfile || "https://cdn.icon-icons.com/icons2/2643/PNG/512/male_man_people_person_avatar_white_tone_icon_159363.png"}
+            className="position-absolute z-3 bg-white rounded-circle"
             style={{
+              objectFit: "cover",
               width: screen.width >= 768 ? "100px" : "auto",
+              aspectRatio: 1,
               top: screen.width >= 768 ? "-5%" : "0",
               right: screen.width >= 768 ? "-5%" : "0",
             }}
@@ -57,8 +94,13 @@ export default function PostCard({ data }) {
                 autoFocus={true}
                 style={{ resize: "none" }}
                 className="border-0"
+                value={commentController}
+                onChange={(e) => setCommentController(e.target.value)}
               ></textarea>
-              <button className="align-self-end p-2 rounded-pill border-0 text-light bg-dark mt-2">
+              <button
+                className="align-self-end p-2 rounded-pill border-0 text-light bg-dark mt-2"
+                onClick={createComment}
+              >
                 Enviar
               </button>
             </div>
@@ -115,9 +157,24 @@ export default function PostCard({ data }) {
           </div>
         </div>
       </section>
-      {showComments && (
-        <section className="w-100 p-3" style={{ height: "250px" }}>
+      {userCredentials.login !== null && showComments && (
+        <section
+          className="w-100 p-3"
+          style={{ height: "250px", overflowY: "scroll" }}
+        >
           <h3>Comentarios:</h3>
+          <ul className="d-flex flex-column gap-3 align-items-start ps-0">
+            {comments.map((comment) => (
+              <li key={comment.id}>
+                <img
+                  className="rounded-circle me-3"
+                  src={comment.user.imgProfile || "https://cdn.icon-icons.com/icons2/2643/PNG/512/male_man_people_person_avatar_white_tone_icon_159363.png"}
+                  style={{ maxWidth: "50px", aspectRatio: 1 }}
+                />
+                {comment.content}
+              </li>
+            ))}
+          </ul>
         </section>
       )}
     </div>

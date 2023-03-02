@@ -59,7 +59,8 @@ const NewPost = () => {
   };
 
   const submit = (data) => {
-    data.img = image;
+    data.urlImg = image;
+    console.log(data)
 
     instance
       .post("users/publications", data, {

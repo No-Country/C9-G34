@@ -53,6 +53,7 @@ const ProfilePage = () => {
           style={{
             aspectRatio: 1,
             borderRadius: "50%",
+            objectFit: "cover",
             maxWidth: "150px",
             left: screen.width >= 992 ? "0" : "50%",
             transform:
@@ -106,7 +107,7 @@ const ProfilePage = () => {
           {dataUser.favoritePublications?.length !== 0 ? (
             favorites.map((card, i) => {
               if(card.userId == dataUser.id){
-                return <PostCardFavorite id={card.publicationId} key={i + 1} />;
+                return <PostCardFavorite id={card} key={i + 1} />;
               }
             })
           ) : (

@@ -3,7 +3,14 @@ import { PostCard, Navbar } from "../../components";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { instance } from "../../axios/axiosConfig";
 import useDataContext from "../../hooks/useDataContext";
-import { Col, Dropdown, Form, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
+import {
+  Col,
+  Dropdown,
+  Form,
+  ListGroup,
+  ListGroupItem,
+  Row,
+} from "react-bootstrap";
 export default function HomePage() {
   const [publicationsData, setPublicationsData] = useState([]);
   const { setLoader } = useDataContext();
@@ -17,14 +24,14 @@ export default function HomePage() {
     instance.get("categories/all").then((res) => setCategories(res.data));
   }, []);
   const filterCategory = (id) => {
-    const mostrar = categories.filter(c => c.id === id)
-    setPublicationsData(mostrar[0].publications)
-  }
+    const mostrar = categories.filter((c) => c.id === id);
+    setPublicationsData(mostrar[0].publications);
+  };
   const resetCategories = () => {
     instance
       .get("users/publications/all")
       .then((res) => setPublicationsData(res.data));
-  }
+  };
 
   return (
     <motion.section
@@ -33,7 +40,7 @@ export default function HomePage() {
       transition={{ duration: 0.3 }}
     >
       <Navbar />
-      <Row style={{ width: '100%' }}>
+      <Row style={{ width: "100%" }}>
         <Col lg={3}>
           <ListGroup className=" m-auto mx-5 px-3 ">
             <Form.Label>Categorys</Form.Label>

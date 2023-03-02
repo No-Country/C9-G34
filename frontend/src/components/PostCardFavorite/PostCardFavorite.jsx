@@ -1,24 +1,35 @@
 import React, { useEffect, useState } from "react";
 import assets from "../../assets/index";
 import { instance } from "../../axios/axiosConfig";
+import { alertOk, errorAlert } from "../../components/Alert/Alert";
 
 export default function PostCardFavorite({ id }) {
   const [dataCard, setDataCard] = useState({});
-console.log(dataCard)
+
   useEffect(() => {
     instance
-      .get(`users/publications/${id}`, {
+      .get(`users/publications/${id.publicationId}`, {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => setDataCard(res.data));
   }, []);
 
+  console.log(dataCard);
+
   const removeFavorite = () => {
     instance
-      .post(`favorites/${data.id}`, {
+      .delete(`favorites/${id.id}`, {
         headers: { Authorization: localStorage.getItem("token") },
       })
-      .then((res) => console.log(res.data));
+      .then(() => {
+        alertOk("Eliminado");
+        setTimeout(() => {
+          window.location.reload();
+        }, 3200);
+      })
+      .catch(() => {
+        errorAlert("Ocurrio un error");
+      });
   };
 
   return (
@@ -31,40 +42,26 @@ console.log(dataCard)
     >
       <div className="bg-white position-relative shadow w-50">
         <img
-          src={dataCard.userProfileImg || assets.Test01.img}
+          src={dataCard.userImgProfile || assets.Test01.img}
           className="position-absolute z-3 border border-white"
           style={{
             top: screen.width >= 768 ? "-5%" : "0",
             right: screen.width >= 768 ? "-5%" : "0",
-            maxWidth: "100px",
+            maxWidth: screen.width >= 768 ? "100px" : "50px",
             aspectRatio: 1,
             objectFit: "cover",
-            borderRadius: "50%"
+            borderRadius: "50%",
           }}
         />
         <img
-          src={dataCard.img || assets.Test02.img}
+          src={dataCard.urlImg || assets.Test02.img}
           className="w-100"
           style={{
             height: screen.width >= 768 ? "400px" : "200px",
-            objectFit: "cover"
+            objectFit: "cover",
           }}
         />
         <div className="d-flex gap-4 justify-content-start p-2">
-          <button className="border-0 bg-transparent">
-            <img
-              src={assets.LikeIcon.img}
-              alt={assets.FavoriteIcon.info}
-              title={assets.FavoriteIcon.info}
-            />
-          </button>
-          <button className="border-0 bg-transparent">
-            <img
-              src={assets.LikeIcon.img}
-              alt={assets.FavoriteIcon.info}
-              title={assets.FavoriteIcon.info}
-            />
-          </button>
           <button className="border-0 bg-transparent">
             <img
               src={assets.LikeIcon.img}
@@ -79,13 +76,17 @@ console.log(dataCard)
         <p
           style={{
             maxWidth: "500px",
-            fontSize: screen.width >= 768 ? "40px" : "auto",
+            fontSize: screen.width >= 768 ? "30px" : "auto",
           }}
         >
           {dataCard.description}
         </p>
         <div className="d-flex gap-4">
-          <button className="border-0 bg-transparent fs-1" data-aos="fade-up">
+          <button
+            className="border-0 bg-transparent fs-1"
+            data-aos="fade-up"
+            onClick={removeFavorite}
+          >
             <img
               src={assets.TrashIcon.img}
               alt={assets.TrashIcon.info}
