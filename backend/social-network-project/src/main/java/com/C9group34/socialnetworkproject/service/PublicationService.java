@@ -108,7 +108,7 @@ public class PublicationService {
  //puntaje 1,2 y3
     public void sumarRating(Integer userId , Publication publicationId, Double puntaje) throws ResourceNotFoundException {
         Optional<Publication> publication = publicationRepository.findById(publicationId.getId());
-        PublicationDto publicationDto = mapToDTO(publication.get() , userId);
+        PublicationDto publicationDto = mapToDTO(publication.get());
 
         publicationDto.setRating(publicationDto.getRating() + puntaje);
         publicationRepository.save(mapToEntity(publicationDto));
