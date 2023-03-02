@@ -21,35 +21,30 @@ public class CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private PublicationService publicationService;
+    @Autowired
+    private UserService userService;
 
     @Transactional
-    public Comment register(CommentDto comment) throws ExistingResourceException {
-        Comment c = mapToEntity(comment);
+    public Comment register(CommentDto comment, Integer publicationId, Integer userId) throws ExistingResourceException, ResourceNotFoundException {
+        Comment c = mapToEntity(comment, publicationId, userId);
         checkForExistingComment(c.getId());
         c = commentRepository.save(c);
         return c;
 
     }
     @Transactional
-    public List<CommentDto> retrieveAll() {
-        List<Comment> comments = commentRepository.findAll();
+    public List<CommentDto> retrieveAll(Integer publicationId) {
+        List<Comment> comments = commentRepository.retrieveAllCommentsOfAPublication(publicationId);
         List commentDtoList = new ArrayList<>();
         comments.forEach(c -> commentDtoList.add(mapToDTO(c)));
         return commentDtoList;
     }
-    @Transactional
-    public CommentDto retrieveById(Integer id) throws ResourceNotFoundException {
-        Optional<Comment> commentOptional = commentRepository.findById(id);
-        if(commentOptional.isEmpty()){
-            throw  new ResourceNotFoundException("El comentario no ha sido encontrado");
-        }
-
-        return mapToDTO(commentOptional.get());
-    }
 
 
     @Transactional
-    public void delete(Integer id) throws ResourceNotFoundException {
+    public void delete(Integer id, Integer publicationId) throws ResourceNotFoundException {
         try {
             commentRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
@@ -58,40 +53,61 @@ public class CommentService {
     }
 
     @Transactional
-    public void replace(Integer id, CommentDto dto) throws ResourceNotFoundException {
+    public void replace(Integer id, CommentDto dto, Integer userId, Integer publicationId) throws ResourceNotFoundException {
         Optional<Comment> commentOptional = commentRepository.findById(id);
         if (commentOptional.isEmpty()) {
             throw new ResourceNotFoundException();
         }
+        Optional<User> userOptional = userService.retrieveWithoutMapToDTO(userId);
+        Optional<Publication> publicationOptional = publicationService.retrieveWithoutMapToDTO(publicationId);
+        if(userOptional.isEmpty() || publicationOptional.isEmpty()){
+            System.out.println("ERROR");
+        }
+        Publication publication = publicationOptional.get();
+        User user = userOptional.get();
         Comment updatedComment;
         Comment commentToReplace = commentOptional.get();
         new Comment();
         updatedComment = Comment.builder().id(commentToReplace.getId())
                 .content(dto.getContent())
-                .publication(dto.getPublication())
-                .user(dto.getUser())
+                .publication(publication)
+                .user(user)
                 .build();
         commentRepository.save(updatedComment);
     }
 
 
-    private Comment mapToEntity(CommentDto dto) {
 
+    private Comment mapToEntity(CommentDto dto, Integer publicationId, Integer userId) throws ResourceNotFoundException {
+
+        Optional<Publication> p = publicationService.retrieveWithoutMapToDTO(publicationId);
+        Optional<User> u = userService.retrieveWithoutMapToDTO(userId);
+        if (p.isEmpty() && u.isEmpty()){
+            throw new ResourceNotFoundException("usuario o publicacon no encontrados");
+        }
         new Comment();
         return Comment.builder()
                 .content(dto.getContent())
-                .user(dto.getUser())
-                .publication(dto.getPublication())
+                .user(u.get())
+                .publication(p.get())
                 .build();
     }
 
     private CommentDto mapToDTO(Comment c) {
 
+        User user = c.getUser();
+        UserDto userDto = new UserDto().builder()
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .ratings(user.getRatings())
+                .imgProfile(user.getImgProfile())
+                .build();
         return CommentDto.builder()
                 .id(c.getId())
                 .content(c.getContent())
                 .publication(c.getPublication())
-                .user(c.getUser())
+                .user(userDto)
                 .build();
     }
 

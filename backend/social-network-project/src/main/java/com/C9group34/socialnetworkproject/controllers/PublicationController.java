@@ -2,6 +2,7 @@ package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
+import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.service.PublicationService;
 import com.C9group34.socialnetworkproject.service.UserService;
 import com.C9group34.socialnetworkproject.util.JWTutil;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/users/publications")
-
 @CrossOrigin
 public class PublicationController {
 
@@ -52,13 +52,14 @@ public class PublicationController {
 
     }
 
+
     @GetMapping("/all")
     @Query(value = "select publications.id, publications.title, publications.description, publications.url_imgs, publications.ratings, publications.category_id, publications.user_id, users.img_profile FROM publications INNER JOIN users ON publications.user_id = users.id ORDER BY publications.id;", nativeQuery = true)
     public ResponseEntity getAll(){
         return new ResponseEntity(publicationService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/all+")
     public ResponseEntity retrieve(@RequestHeader(value = "Authorization") String token){
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)){
