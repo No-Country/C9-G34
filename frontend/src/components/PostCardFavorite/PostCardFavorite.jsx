@@ -4,7 +4,7 @@ import { instance } from "../../axios/axiosConfig";
 
 export default function PostCardFavorite({ id }) {
   const [dataCard, setDataCard] = useState({});
-
+console.log(dataCard)
   useEffect(() => {
     instance
       .get(`users/publications/${id}`, {
@@ -31,11 +31,15 @@ export default function PostCardFavorite({ id }) {
     >
       <div className="bg-white position-relative shadow w-50">
         <img
-          src={assets.Test01.img}
-          className="position-absolute z-3"
+          src={dataCard.userProfileImg || assets.Test01.img}
+          className="position-absolute z-3 border border-white"
           style={{
             top: screen.width >= 768 ? "-5%" : "0",
             right: screen.width >= 768 ? "-5%" : "0",
+            maxWidth: "100px",
+            aspectRatio: 1,
+            objectFit: "cover",
+            borderRadius: "50%"
           }}
         />
         <img
