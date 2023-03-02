@@ -36,8 +36,6 @@ public class PublicationService {
     public Publication create(PublicationDto publicationDTO, Integer userId) {
         Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
         Optional<User> userOptional = userRepository.findById(userId);
-        System.out.println(userOptional.get().getId());
-
         if(userOptional.isPresent()){
             User user = userOptional.get();
             Category category = categoryOptional.get();
@@ -99,12 +97,9 @@ public class PublicationService {
         publicationRepository.save(updatedPublication);
 
     }
-
     public Optional<Publication> retrieveWithoutMapToDTO(Integer id){
         return publicationRepository.findById(id);
     }
-
-
 
     private Publication mapToEntity(PublicationDto publicationDto , User user ,Category category) {
         return new Publication().builder()
