@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,15 +53,6 @@ public class PublicationService {
         }
         return null;
 
-    }
-
-
-    @Transactional
-    public List<PublicationDto> retrieveAll() {
-        List<Publication> publications = publicationRepository.findAll();
-        return publications.stream()
-                .map(publication -> mapToDTO(publication))
-                .collect(Collectors.toList());
     }
 
     public List<PublicationDto> retrieveAll(Integer userId) throws ResourceNotFoundException {
@@ -119,22 +112,33 @@ public class PublicationService {
 
     }
 
+    public void sumarRating(Integer userId , Publication publicationId, Double puntaje) throws ResourceNotFoundException {
+        Optional<Publication> publication = publicationRepository.findById(publicationId.getId());
+        PublicationDto publicationDto = mapToDTO(publication.get() , userId);
 
+        publicationDto.setRating(publicationDto.getRating() + puntaje);
+        publicationRepository.save(mapToEntity(publicationDto));
 
+    }
 
+    private Publication mapToEntity(PublicationDto publicationDto) {
 
-    private Publication mapToEntity(PublicationDto publicationDto , User user, Category category) {
-        Double ratings = 0.0;
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getImg())
-                .rating(ratings)
+                .build();
+    }
+    private Publication mapToEntity(PublicationDto publicationDto , User user, Category category) {
+        return new Publication().builder()
+                .title(publicationDto.getTitle())
+                .description(publicationDto.getDescription())
+                .urlImg(publicationDto.getImg())
                 .user(user)
                 .category(category)
                 .build();
     }
-    
+
 
     private PublicationDto mapToDTO(Publication publication, Integer userId) throws ResourceNotFoundException {
         // agregado de prueba

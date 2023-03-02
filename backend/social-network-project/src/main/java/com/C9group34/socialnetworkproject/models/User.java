@@ -1,5 +1,6 @@
 package com.C9group34.socialnetworkproject.models;
 
+import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -105,5 +106,6 @@ public class User {
         c.setUser(null);
 
     }
+
 
 }

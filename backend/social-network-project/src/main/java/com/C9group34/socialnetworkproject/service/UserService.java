@@ -7,6 +7,7 @@ import com.C9group34.socialnetworkproject.models.Conversation;
 import com.C9group34.socialnetworkproject.models.FavoritePublication;
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
+import com.C9group34.socialnetworkproject.repository.PublicationRepository;
 import com.C9group34.socialnetworkproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class UserService {
 
     @Autowired
     private  UserRepository userRepository;
+    @Autowired
+    private PublicationRepository publicationRepository;
 
     @Transactional
     public User register(UserDto userDto) throws ExistingResourceException {
@@ -103,6 +106,8 @@ public class UserService {
                 .ratings(userDto.getRatings())
                 .build();
     }
+
+
 
 
     private User mapToEntity(UserDto userDto) {
