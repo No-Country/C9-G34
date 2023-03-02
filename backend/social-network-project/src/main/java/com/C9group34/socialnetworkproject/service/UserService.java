@@ -74,6 +74,7 @@ public class UserService {
                 .phone(userDTO.getPhone())
                 .imgProfile(userDTO.getImgProfile())
                 .password(userDTO.getPassword())
+                .imgProfile(userDTO.getImgProfile())
                 .publications(new ArrayList<Publication>())
                 .favoritePublications(new ArrayList<FavoritePublication>())
                 .conversations(new ArrayList<Conversation>())
