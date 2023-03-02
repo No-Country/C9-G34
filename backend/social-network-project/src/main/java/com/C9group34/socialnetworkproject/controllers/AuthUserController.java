@@ -43,7 +43,7 @@ public class AuthUserController {
                             value = "{ \"email\" : \"luis@example.com\", \"password\" : \"123456789\" }"
                     )
             )
-    ) @RequestBody UserDto userDto) {
+    ) @RequestBody UserDto userDto) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         Optional<User> checkedUser = userService.getUserByEmail(userDto.getEmail());
         if(checkedUser.isEmpty()){

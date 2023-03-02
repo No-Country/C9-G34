@@ -66,13 +66,13 @@ public class PublicationService {
 
     }
 
-    public PublicationDto retrieveById(Integer publicationId, Integer userId) throws ResourceNotFoundException {
+    public PublicationDto retrieveById(Integer publicationId) throws ResourceNotFoundException {
         Optional<Publication> publication = publicationRepository.findById(publicationId);
 
         if (publication.isEmpty()) {
             throw new ResourceNotFoundException("El id de la publicacion que está buscando no existe.");
         }
-        return mapToDTO(publication.get(), userId);
+        return mapToDTO(publication.get());
     }
 
 
@@ -116,14 +116,14 @@ public class PublicationService {
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(publicationDto.getImg())
+                .urlImg(publicationDto.getUrlImg())
                 .rating(ratings)
                 .user(user)
                 .category(category)
                 .build();
     }
 
-    private PublicationDto mapToDTO(Publication publication, Integer userId) throws ResourceNotFoundException {
+    private PublicationDto mapToDTO(Publication publication) {
         // agregado de prueba
         String userImg = publication.getUser().getImgProfile();
         return  new PublicationDto().builder().id(publication.getId())

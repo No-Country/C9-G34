@@ -80,7 +80,7 @@ public class PublicationController {
         String userId = jwt.getKey(token);
         if (jwt.verifyToken(token)){
             try {
-                publicationDto = publicationService.retrieveById(publicationId, Integer.valueOf(userId));
+                publicationDto = publicationService.retrieveById(publicationId);
                 return new ResponseEntity(publicationDto, HttpStatus.OK);
             } catch (ResourceNotFoundException e) {
                 throw new RuntimeException(e);
