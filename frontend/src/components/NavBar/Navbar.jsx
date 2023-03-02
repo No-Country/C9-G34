@@ -23,7 +23,7 @@ export default function Navbar() {
             title={assets.Logo.info}
           />
         </a>
-        {userCredentials.login === null ? (
+        {userCredentials.login === null &&(
           <div className="d-flex gap-4">
             <Link
               className="border-0 bg-transparent text-decoration-none text-muted"
@@ -37,26 +37,9 @@ export default function Navbar() {
             >
               Registrarse
             </Link>
-          </div>
-        ) : (
-          <Dropdown>
-            <Dropdown.Toggle variant="transparent" id="dropdown-basic">
-              Todas
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Todas</Dropdown.Item>
-              {categories.map((category) => (
-                <Dropdown.Item
-                  key={category.id}
-                  style={{ cursor: "pointer" }}
-                  value={category.id}
-                >
-                  {category.title}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        )}
+          </div>)
+                  
+        }
       </div>
     </nav>
   );
