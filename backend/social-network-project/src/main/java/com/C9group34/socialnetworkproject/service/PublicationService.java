@@ -3,7 +3,6 @@ package com.C9group34.socialnetworkproject.service;
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
-import com.C9group34.socialnetworkproject.models.Category;
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.repository.CategoryRepository;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,25 +30,22 @@ public class PublicationService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<Publication> getAll(){
-        List<Publication> p = publicationRepository.findAll();
-        return p;
-    }
 
 
-    public void create(PublicationDto publicationDTO, Integer userId) {
-        Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
+    public Publication create(PublicationDto publicationDTO, Integer userId) {
+        //Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
         Optional<User> userOptional = userRepository.findById(userId);
+        System.out.println(userOptional.get().getId());
+
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            Category category = categoryOptional.get();
-            Publication publication = mapToEntity(publicationDTO, user, category);
+           // Category category = categoryOptional.get();
+            Publication publication = mapToEntity(publicationDTO, user);
             user.addPublication(publication);
-            category.addPublication(publication);
-            publicationRepository.save(publication);
-            
-            user.getPublications().stream().forEach(p ->System.out.println(p.getTitle()));
+            //category.addPublication(publication);
+           return  publicationRepository.save(publication);
         }
+        return null;
     }
 
 
@@ -58,9 +55,9 @@ public class PublicationService {
             throw new ResourceNotFoundException("El id del usuario que está ingresando no existe.");
         }
         List<Publication> publications = publicationRepository.findAll();
-        return publications.stream()
-                .map(publication -> mapToDTO(publication))
-                .collect(Collectors.toList());
+        List<PublicationDto> listToReturn = new ArrayList<>();
+        publications.forEach(p -> listToReturn.add(mapToDTO(p)));
+        return listToReturn;
     }
 
     public PublicationDto retrieveById(Integer publicationId) throws ResourceNotFoundException {
@@ -90,13 +87,12 @@ public class PublicationService {
         if (publication.isEmpty()) {
             throw new ResourceNotFoundException("El id de la publicacion que está ingresando no existe.");
         }
-
         Publication updatedPublication;
         Publication publicationToReplace = publication.get();
         updatedPublication = new Publication().builder().id(publicationToReplace.getId())
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg("")
+                .urlImg(publicationDto.getUrlImg())
                 .user(publicationToReplace.getUser())
                 .build();
         publicationRepository.save(updatedPublication);
@@ -109,28 +105,27 @@ public class PublicationService {
 
 
 
-    private Publication mapToEntity(PublicationDto publicationDto , User user, Category category) {
+    private Publication mapToEntity(PublicationDto publicationDto , User user) {
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(user.getImgProfile())
                 .rating(publicationDto.getRating())
                 .user(user)
-                .category(category)
+                //.category(category)
                 .build();
     }
 
     private PublicationDto mapToDTO(Publication publication) {
         // agregado de prueba
-
-        PublicationDto.PublicationDtoBuilder publicationDto = new PublicationDto().builder().id(publication.getId())
+        String userImg = publication.getUser().getImgProfile();
+        return  new PublicationDto().builder().id(publication.getId())
                 .title(publication.getTitle())
                 .description(publication.getDescription())
-                .img(publication.getUrlImg())
-                .rating(publication.getRating());
-
-
-        return publicationDto.build();
+                .urlImg(publication.getUrlImg())
+                .userImgProfile(userImg)
+                .rating(publication.getRating())
+                .build();
     }
 
 }

@@ -2,6 +2,7 @@ package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
+import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.service.PublicationService;
 import com.C9group34.socialnetworkproject.service.UserService;
 import com.C9group34.socialnetworkproject.util.JWTutil;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/users/publications")
-
 @CrossOrigin
 public class PublicationController {
 
@@ -40,19 +40,15 @@ public class PublicationController {
     {
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)) {
-            publicationService.create(publicationDTO, Integer.valueOf(id));
-            return new ResponseEntity<>(publicationDTO.getId(), HttpStatus.CREATED);
+            Publication p = publicationService.create(publicationDTO, Integer.valueOf(id));
+            return new ResponseEntity<>(p, HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Accion no realizada", HttpStatus.UNAUTHORIZED);
 
     }
 
-    @GetMapping("/all")
-    public ResponseEntity getAll(){
-        return new ResponseEntity(publicationService.getAll(), HttpStatus.OK);
-    }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity retrieve(@RequestHeader(value = "Authorization") String token){
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)){
@@ -70,6 +66,7 @@ public class PublicationController {
     public ResponseEntity retrieveById(@RequestHeader(value = "Authorization") String token,
                                        @PathVariable Integer publicationId){
         PublicationDto publicationDto = null;
+        String userId = jwt.getKey(token);
         if (jwt.verifyToken(token)){
             try {
                 publicationDto = publicationService.retrieveById(publicationId);
