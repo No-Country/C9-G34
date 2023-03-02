@@ -2,6 +2,7 @@ package com.C9group34.socialnetworkproject.service;
 
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
+import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.models.Category;
 import com.C9group34.socialnetworkproject.models.Publication;
@@ -30,13 +31,12 @@ public class PublicationService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<Publication> getAll(){
-        List<Publication> p = publicationRepository.findAll();
-        return p;
+    public List<Publication> getAll() {
+        return publicationRepository.findAll();
     }
 
 
-    public void create(PublicationDto publicationDTO, Integer userId) {
+    public Publication create(PublicationDto publicationDTO, Integer userId) {
         Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
@@ -45,10 +45,12 @@ public class PublicationService {
             Publication publication = mapToEntity(publicationDTO, user, category);
             user.addPublication(publication);
             category.addPublication(publication);
-            publicationRepository.save(publication);
+            Publication publicationCreade = publicationRepository.save(publication);
             
-            user.getPublications().stream().forEach(p ->System.out.println(p.getTitle()));
+        return publicationCreade;
         }
+        return null;
+
     }
 
 
@@ -67,17 +69,23 @@ public class PublicationService {
         }
         List<Publication> publications = publicationRepository.findAll();
         return publications.stream()
-                .map(publication -> mapToDTO(publication))
+                .map(publication -> {
+                    try {
+                        return mapToDTO(publication, userId);
+                    } catch (ResourceNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 
-    public PublicationDto retrieveById(Integer publicationId) throws ResourceNotFoundException {
+    public PublicationDto retrieveById(Integer publicationId, Integer userId) throws ResourceNotFoundException {
         Optional<Publication> publication = publicationRepository.findById(publicationId);
 
         if (publication.isEmpty()) {
             throw new ResourceNotFoundException("El id de la publicacion que está buscando no existe.");
         }
-        return mapToDTO(publication.get());
+        return mapToDTO(publication.get(), userId);
     }
 
 
@@ -104,7 +112,7 @@ public class PublicationService {
         updatedPublication = new Publication().builder().id(publicationToReplace.getId())
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg("")
+                .urlImg(publicationDto.getImg())
                 .user(publicationToReplace.getUser())
                 .build();
         publicationRepository.save(updatedPublication);
@@ -116,27 +124,31 @@ public class PublicationService {
 
 
     private Publication mapToEntity(PublicationDto publicationDto , User user, Category category) {
+        Double ratings = 0.0;
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(user.getImgProfile())
-                .rating(publicationDto.getRating())
+                .urlImg(publicationDto.getImg())
+                .rating(ratings)
                 .user(user)
                 .category(category)
                 .build();
     }
     
 
-    private PublicationDto mapToDTO(Publication publication) {
+    private PublicationDto mapToDTO(Publication publication, Integer userId) throws ResourceNotFoundException {
         // agregado de prueba
 
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()){
+            throw new ResourceNotFoundException("Usuario no encontrado");
+        }
         PublicationDto.PublicationDtoBuilder publicationDto = new PublicationDto().builder().id(publication.getId())
                 .title(publication.getTitle())
                 .description(publication.getDescription())
                 .img(publication.getUrlImg())
+                .userProfileImg(userOptional.get().getImgProfile())
                 .rating(publication.getRating());
-
-
         return publicationDto.build();
     }
 
