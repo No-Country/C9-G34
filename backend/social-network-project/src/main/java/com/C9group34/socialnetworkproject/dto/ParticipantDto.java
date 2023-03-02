@@ -1,8 +1,6 @@
 package com.C9group34.socialnetworkproject.dto;
 
 import com.C9group34.socialnetworkproject.models.User;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
 
 import java.util.List;
 

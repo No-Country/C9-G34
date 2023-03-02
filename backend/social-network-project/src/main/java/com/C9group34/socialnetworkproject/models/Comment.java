@@ -1,11 +1,9 @@
 package com.C9group34.socialnetworkproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "comments")
 @Builder
@@ -25,6 +23,23 @@ public class Comment {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "publication_id")
     private Publication publication;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
+    @JoinColumn(name = "creator_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User u) {
+        this.user = u;
+    }
+    public Publication getPublication() {
+        return publication;
+    }
+    public void setPublication(Publication p) { this.publication = p; }
 
 
 }

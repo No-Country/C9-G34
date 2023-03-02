@@ -1,32 +1,15 @@
 package com.C9group34.socialnetworkproject.dto;
 
-public class CommentDto {
+import com.C9group34.socialnetworkproject.models.Publication;
+import lombok.*;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+public class CommentDto {
     private int id;
     private String content;
+    private UserDto user;
 
-    public CommentDto() {
-
-    }
-
-    public CommentDto(int id, String content) {
-        this.id = id;
-        this.content = content;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

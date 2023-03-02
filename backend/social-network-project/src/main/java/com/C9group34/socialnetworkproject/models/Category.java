@@ -1,10 +1,7 @@
 package com.C9group34.socialnetworkproject.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -27,6 +24,11 @@ public class Category{
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Publication> publications;
+
+    public void addPublication(Publication p) {
+        publications.add(p);
+        p.setCategory(this);
+    }
 
 
 }

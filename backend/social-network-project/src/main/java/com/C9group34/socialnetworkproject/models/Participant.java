@@ -1,12 +1,13 @@
 package com.C9group34.socialnetworkproject.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Optional;
 
 @Entity(name = "participants")
 @Builder
@@ -19,10 +20,43 @@ public class Participant {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
-    private List<User> pars;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-
-    @OneToOne(mappedBy = "participant", cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "conversation_id")
     private Conversation conversation;
+
+    public Participant(Conversation conversation, User user) {
+        this.conversation = conversation;
+        this.user = user;
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Conversation getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
+    }
 }
