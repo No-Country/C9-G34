@@ -13,8 +13,6 @@ export default function PostCardFavorite({ id }) {
       .then((res) => setDataCard(res.data));
   }, []);
 
-  console.log(dataCard)
-
   const removeFavorite = () => {
     instance
       .post(`favorites/${data.id}`, {
@@ -25,31 +23,30 @@ export default function PostCardFavorite({ id }) {
 
   return (
     <div
-      className="d-flex gap-3 justify-content-center align-items-center mb-5"
+      className="w-100 mx-auto p-2 p-lg-4 d-flex gap-3 justify-content-center align-items-center mb-5 bg-white shadow"
       style={{
         maxWidth: screen.width >= 768 ? "100%" : "340px",
-        minHeight: screen.width >= 768 ? "570px" : "340px",
+        minHeight: screen.width >= 768 ? "500px" : "270px",
       }}
     >
-      <div className="bg-white position-relative">
+      <div className="bg-white position-relative shadow w-50">
         <img
           src={assets.Test01.img}
           className="position-absolute z-3"
           style={{
-            top: screen.width >= 768 ? "-5%" : "-10%",
-            right: screen.width >= 768 ? "-5%" : "-10%",
+            top: screen.width >= 768 ? "-5%" : "0",
+            right: screen.width >= 768 ? "-5%" : "0",
           }}
-          data-aos="fade-down"
         />
         <img
           src={dataCard.img || assets.Test02.img}
-          data-aos="fade-up-right"
+          className="w-100"
           style={{
-            width: screen.width >= 768 ? "450px" : "auto",
-            maxHeight: "450px",
+            height: screen.width >= 768 ? "400px" : "200px",
+            objectFit: "cover"
           }}
         />
-        <div className="d-flex gap-4 justify-content-center my-2">
+        <div className="d-flex gap-4 justify-content-start p-2">
           <button className="border-0 bg-transparent">
             <img
               src={assets.LikeIcon.img}
@@ -73,7 +70,7 @@ export default function PostCardFavorite({ id }) {
           </button>
         </div>
       </div>
-      <div>
+      <div className="w-50">
         <h5 className="fs-1 mb-4">{dataCard.title}</h5>
         <p
           style={{
@@ -84,9 +81,6 @@ export default function PostCardFavorite({ id }) {
           {dataCard.description}
         </p>
         <div className="d-flex gap-4">
-          <button className="border-0 bg-transparent" data-aos="fade-up">
-            <img src={assets.Message02Icon.img} />
-          </button>
           <button className="border-0 bg-transparent fs-1" data-aos="fade-up">
             <img
               src={assets.TrashIcon.img}

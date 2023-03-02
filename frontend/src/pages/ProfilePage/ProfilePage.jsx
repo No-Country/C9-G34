@@ -10,9 +10,8 @@ import Button from "react-bootstrap/Button";
 const ProfilePage = () => {
   const { setLoader } = useDataContext();
   const [dataUser, setDataUser] = useState({});
+  const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
-
-  console.log(dataUser);
 
   useEffect(() => {
     setLoader(true);
@@ -21,7 +20,9 @@ const ProfilePage = () => {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => setDataUser(res.data));
-
+    instance.get("favorites", {
+      headers: { Authorization: localStorage.getItem("token") },
+    }).then(res => setFavorites(res.data))
     setTimeout(() => setLoader(false), 500);
   }, []);
 
@@ -96,15 +97,17 @@ const ProfilePage = () => {
           </div>
         </div>
         <div
-          className="ps-lg-5"
+          className="ps-lg-5 pb-5"
           style={{ width: screen.width >= 992 ? "75%" : "100%" }}
         >
           <h2 className="text-center mt-5 mb-5" data-aos="fade-up-right">
             Publicaciones Favoritas
           </h2>
           {dataUser.favoritePublications?.length !== 0 ? (
-            dataUser.favoritePublications?.map((card, i) => {
-              return <PostCardFavorite id={card.id} key={i + 1} />;
+            favorites.map((card, i) => {
+              if(card.userId == dataUser.id){
+                return <PostCardFavorite id={card.publicationId} key={i + 1} />;
+              }
             })
           ) : (
             <h3 className="text-center">
