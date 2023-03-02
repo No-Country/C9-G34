@@ -6,9 +6,11 @@ import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.service.PublicationService;
 import com.C9group34.socialnetworkproject.service.UserService;
 import com.C9group34.socialnetworkproject.util.JWTutil;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,10 @@ public class PublicationController {
     private JWTutil jwt;
 
     @PostMapping
+    @Operation(
+            summary = "Create publication",
+            description = "This endpoint is for create a publication of a user"
+    )
     public ResponseEntity create(@RequestHeader(value = "Authorization") String token,
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(
@@ -40,8 +46,7 @@ public class PublicationController {
     {
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)) {
-            Publication p = publicationService.create(publicationDTO, Integer.valueOf(id));
-            return new ResponseEntity<>(p, HttpStatus.CREATED);
+            return new ResponseEntity<>(publicationService.create(publicationDTO, Integer.valueOf(id)), HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Accion no realizada", HttpStatus.UNAUTHORIZED);
 
@@ -49,6 +54,12 @@ public class PublicationController {
 
 
     @GetMapping("/all")
+    @Query(value = "select publications.id, publications.title, publications.description, publications.url_imgs, publications.ratings, publications.category_id, publications.user_id, users.img_profile FROM publications INNER JOIN users ON publications.user_id = users.id ORDER BY publications.id;", nativeQuery = true)
+    public ResponseEntity getAll(){
+        return new ResponseEntity(publicationService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/all+")
     public ResponseEntity retrieve(@RequestHeader(value = "Authorization") String token){
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)){
@@ -69,7 +80,7 @@ public class PublicationController {
         String userId = jwt.getKey(token);
         if (jwt.verifyToken(token)){
             try {
-                publicationDto = publicationService.retrieveById(publicationId);
+                publicationDto = publicationService.retrieveById(publicationId, Integer.valueOf(userId));
                 return new ResponseEntity(publicationDto, HttpStatus.OK);
             } catch (ResourceNotFoundException e) {
                 throw new RuntimeException(e);

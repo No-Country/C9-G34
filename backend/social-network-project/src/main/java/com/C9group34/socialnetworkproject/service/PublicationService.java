@@ -2,6 +2,7 @@ package com.C9group34.socialnetworkproject.service;
 
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
+import com.C9group34.socialnetworkproject.dto.UserDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
 import com.C9group34.socialnetworkproject.models.Category;
 import com.C9group34.socialnetworkproject.models.Publication;
@@ -31,6 +32,10 @@ public class PublicationService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    public List<Publication> getAll() {
+        return publicationRepository.findAll();
+    }
+
 
 
     public Publication create(PublicationDto publicationDTO, Integer userId) {
@@ -45,6 +50,7 @@ public class PublicationService {
            return  publicationRepository.save(publication);
         }
         return null;
+
     }
 
 
@@ -57,15 +63,16 @@ public class PublicationService {
         List<PublicationDto> listToReturn = new ArrayList<>();
         publications.forEach(p -> listToReturn.add(mapToDTO(p)));
         return listToReturn;
+
     }
 
-    public PublicationDto retrieveById(Integer publicationId) throws ResourceNotFoundException {
+    public PublicationDto retrieveById(Integer publicationId, Integer userId) throws ResourceNotFoundException {
         Optional<Publication> publication = publicationRepository.findById(publicationId);
 
         if (publication.isEmpty()) {
             throw new ResourceNotFoundException("El id de la publicacion que está buscando no existe.");
         }
-        return mapToDTO(publication.get());
+        return mapToDTO(publication.get(), userId);
     }
 
 
@@ -92,6 +99,7 @@ public class PublicationService {
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
+
                 .user(publicationToReplace.getUser())
                 .build();
         publicationRepository.save(updatedPublication);
@@ -101,18 +109,21 @@ public class PublicationService {
         return publicationRepository.findById(id);
     }
 
-    private Publication mapToEntity(PublicationDto publicationDto , User user ,Category category) {
+
+    private Publication mapToEntity(PublicationDto publicationDto , User user, Category category) {
+        Double ratings = 0.0;
+
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
-                .urlImg(user.getImgProfile())
-                .rating(publicationDto.getRating())
+                .urlImg(publicationDto.getImg())
+                .rating(ratings)
                 .user(user)
                 .category(category)
                 .build();
     }
 
-    private PublicationDto mapToDTO(Publication publication) {
+    private PublicationDto mapToDTO(Publication publication, Integer userId) throws ResourceNotFoundException {
         // agregado de prueba
         String userImg = publication.getUser().getImgProfile();
         return  new PublicationDto().builder().id(publication.getId())
@@ -122,6 +133,7 @@ public class PublicationService {
                 .userImgProfile(userImg)
                 .rating(publication.getRating())
                 .build();
+
     }
 
 }

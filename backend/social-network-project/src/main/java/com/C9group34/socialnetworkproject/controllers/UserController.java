@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +83,11 @@ public class UserController {
     }
 
     @GetMapping("/get")
+    @Operation(
+            security = @SecurityRequirement(name = "token"),
+            summary = "Get a user",
+            description = "This endpoint is for get a user by token"
+    )
     public ResponseEntity<UserDto> retrieveUser(@RequestHeader(value = "Authorization") String token){
 
         String id = jwt.getKey(token);
@@ -99,6 +105,14 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
+    @Operation(
+            summary = "Delete a user",
+            description = "This endpoint is for delete a user",
+            responses = {
+                    @ApiResponse(responseCode = "200",ref = "userDeleted"),
+                    @ApiResponse(responseCode = "400",ref = "badRequest")
+            }
+    )
     public ResponseEntity delete(@RequestHeader(value = "Authorization") String token) {
 
         String id = jwt.getKey(token);
@@ -108,7 +122,7 @@ public class UserController {
                 return new ResponseEntity(HttpStatus.OK);
             } catch (ResourceNotFoundException e) {
                 System.out.println(e.getMessage());
-                return new ResponseEntity("accion no realizada", HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity("Accion no realizada", HttpStatus.NOT_IMPLEMENTED);
             }
         }
         return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);
@@ -116,12 +130,19 @@ public class UserController {
     }
 
     @PutMapping("/edit")
+    @Operation(
+            summary = "Update a user",
+            description = "This endpoint is for update a user",
+            responses = {
+                    @ApiResponse(responseCode = "200",ref = "userUpdated"),
+                    @ApiResponse(responseCode = "400",ref = "badRequest")
+            }
+    )
     public ResponseEntity replace(@RequestHeader(value = "Authorization") String token,@io.swagger.v3.oas.annotations.parameters.RequestBody(
-
             content = @Content(
                     mediaType = "application/json",
                     examples = @ExampleObject(
-                            value = "{\"name\" : \"String\", \"surname\" : \"String\", \"email\" : \"String\", \"password\" : \"String\", \"phone\" : \"String\", \"ratings\" : 0.0 }"
+                            value = "{\"name\" : \"String\", \"surname\" : \"String\", \"email\" : \"String\", \"password\" : \"String\", \"phone\" : \"String\", \"ratings\" : 0.0, \"imgProfile\" : \"String\" }"
                     )
             )
     ) @RequestBody UserDto user) {
@@ -129,7 +150,7 @@ public class UserController {
         try {
             if(jwt.verifyToken(token)){
                 userService.replace(Integer.valueOf(id), user);
-                return new ResponseEntity<>("datos actualizados", HttpStatus.OK);
+                return new ResponseEntity<>("Datos Actualizados", HttpStatus.OK);
             }
         } catch (ResourceNotFoundException e) {
             System.out.println(e.getMessage());
