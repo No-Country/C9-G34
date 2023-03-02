@@ -3,6 +3,7 @@ package com.C9group34.socialnetworkproject.service;
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
+import com.C9group34.socialnetworkproject.models.Category;
 import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.models.User;
 import com.C9group34.socialnetworkproject.repository.CategoryRepository;
@@ -33,16 +34,16 @@ public class PublicationService {
 
 
     public Publication create(PublicationDto publicationDTO, Integer userId) {
-        //Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
+        Optional<Category> categoryOptional = categoryRepository.findById(publicationDTO.getCategory());
         Optional<User> userOptional = userRepository.findById(userId);
         System.out.println(userOptional.get().getId());
 
         if(userOptional.isPresent()){
             User user = userOptional.get();
-           // Category category = categoryOptional.get();
-            Publication publication = mapToEntity(publicationDTO, user);
+            Category category = categoryOptional.get();
+            Publication publication = mapToEntity(publicationDTO, user, category);
             user.addPublication(publication);
-            //category.addPublication(publication);
+            category.addPublication(publication);
            return  publicationRepository.save(publication);
         }
         return null;
@@ -105,14 +106,14 @@ public class PublicationService {
 
 
 
-    private Publication mapToEntity(PublicationDto publicationDto , User user) {
+    private Publication mapToEntity(PublicationDto publicationDto , User user ,Category category) {
         return new Publication().builder()
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(user.getImgProfile())
                 .rating(publicationDto.getRating())
                 .user(user)
-                //.category(category)
+                .category(category)
                 .build();
     }
 
