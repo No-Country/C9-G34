@@ -60,17 +60,17 @@ public class UserService {
 
     @Transactional
     public void replace(Integer userId, UserDto userDTO) throws ResourceNotFoundException {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException();
         }
         User updatedUser;
-        User userToReplace = user.get();
+        User userToReplace = userOptional.get();
         new User();
         updatedUser = User.builder().id(userToReplace.getId())
                 .name(userDTO.getName())
                 .surname(userDTO.getSurname())
-                .email(userDTO.getEmail())
+                .email(userToReplace.getEmail())
                 .phone(userDTO.getPhone())
                 .imgProfile(userDTO.getImgProfile())
                 .password(userDTO.getPassword())
