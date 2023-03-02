@@ -29,7 +29,7 @@ public class CommentController {
     private JWTutil jwt;
 
 
-    @PostMapping("/new/{idPublication}")
+    @PostMapping("/new/{publicationId}")
     @Operation(
             summary = "Create new comment",
             description = "With endpoint can you created a new comment",
@@ -38,8 +38,8 @@ public class CommentController {
                     @ApiResponse(responseCode = "400",ref = "badRequest")
             }
     )
-    public ResponseEntity register (@RequestHeader(value = "Authorization") String token,
-                                    @PathVariable Integer publicationId
+    public ResponseEntity create (@RequestHeader(value = "Authorization") String token,
+                                  @PathVariable Integer publicationId
             , @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(
                     mediaType = "application/json",
@@ -48,12 +48,12 @@ public class CommentController {
                     )
             )
     ) @RequestBody CommentDto dto){
-
+        String userId = jwt.getKey(token);
         if (jwt.verifyToken(token)){
             Comment comment = null;
             try {
-                comment = commentService.register(dto, publicationId);
-            } catch (ExistingResourceException e) {
+                comment = commentService.register(dto, publicationId, Integer.valueOf(userId));
+            } catch (ExistingResourceException | ResourceNotFoundException e) {
                 System.out.println(e.getMessage());
                 return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
             }
@@ -76,6 +76,7 @@ public class CommentController {
     )
     public ResponseEntity retrieve(@RequestHeader(value = "Authorization") String token,
                                    @PathVariable Integer publicationId){
+
 
         if (jwt.verifyToken(token)) return new ResponseEntity(commentService.retrieveAll(publicationId), HttpStatus.OK);
         return new ResponseEntity("Acceso denegado", HttpStatus.UNAUTHORIZED);

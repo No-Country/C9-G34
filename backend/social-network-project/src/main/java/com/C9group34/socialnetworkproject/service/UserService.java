@@ -85,6 +85,10 @@ public class UserService {
         return Optional.ofNullable(userRepository.findByEmail(email));
     }
 
+    public Optional<User> retrieveWithoutMapToDTO(Integer userId){
+        return userRepository.findById(userId);
+    }
+
 
     private User createNewEntity(UserDto userDto, String encryptedPassword){
         new User();
