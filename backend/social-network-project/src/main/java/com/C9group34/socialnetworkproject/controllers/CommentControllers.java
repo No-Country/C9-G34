@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(path ="/comments")
 public class CommentControllers {
 
-    @Autowired
+    /*@Autowired
     private CommentService commentService;
 
     @PostMapping("/{userId}/publicationId")
@@ -42,5 +42,5 @@ public class CommentControllers {
             System.out.println(e.getMessage());
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    }*/
 }
