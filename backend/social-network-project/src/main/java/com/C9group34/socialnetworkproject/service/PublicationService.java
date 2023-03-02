@@ -105,7 +105,7 @@ public class PublicationService {
         publicationRepository.save(updatedPublication);
 
     }
-
+ //puntaje 1,2 y3
     public void sumarRating(Integer userId , Publication publicationId, Double puntaje) throws ResourceNotFoundException {
         Optional<Publication> publication = publicationRepository.findById(publicationId.getId());
         PublicationDto publicationDto = mapToDTO(publication.get() , userId);
@@ -137,7 +137,7 @@ public class PublicationService {
         return publicationRepository.findById(id);
     }
 
-    
+
 
     private PublicationDto mapToDTO(Publication publication) {
         // agregado de prueba
