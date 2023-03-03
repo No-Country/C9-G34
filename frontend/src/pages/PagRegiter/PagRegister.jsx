@@ -27,16 +27,28 @@ const PagRegister = () => {
   const navigate = useNavigate();
 
   const submit = (data) => {
+    const e = {
+      email: data.email,
+      password: data.password,
+    };
+
     instance
       .post("users/new", data)
       .then((res) => {
-        alertOk(
-          `${res.data.name} te registraste correctamente, ahora inicia sesion`
-        );
+        instance
+          .post("auth/login", e)
+          .then((resLog) => {
+            localStorage.setItem("token", resLog.data);
+            alertOk(`${res.data.name} te registraste correctamente.`);
+            setTimeout(() => {
+              navigate("/");
+              window.location.reload();
+            }, 3200);
+          })
+          .catch((err) => {
+            errorAlert("Ocurrio un error, intenta de nuevo");
+          });
         clear();
-        setTimeout(() => {
-          navigate("/login");
-        }, 3200);
       })
       .catch((err) => errorAlert("Ocurrio un error, intenta de nuevo"));
   };
@@ -60,7 +72,7 @@ const PagRegister = () => {
       <Container className="register">
         <Row xs={1} lg={2}>
           <Col>
-            <Form className="my-5 py-5" onSubmit={handleSubmit(submit)}>
+            <Form className="mt-5 py-5" onSubmit={handleSubmit(submit)}>
               <Row>
                 <Form.Group as={Col}>
                   <Form.Label> First Name</Form.Label>
@@ -132,6 +144,17 @@ const PagRegister = () => {
                 Register
               </Button>
             </Form>
+            <button
+              type="button"
+              className="w-100 btn btn-outline-primary m-auto"
+            >
+              Registrate con
+              <img
+                src={assets.GoogleIcon.img}
+                className="ms-2"
+                style={{ width: "20px" }}
+              />
+            </button>
           </Col>
           <Col>
             <Card.Body className="mb-5 pb-5 d-flex flex-column align-items-center">

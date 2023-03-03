@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import images from "../../assets/index";
 import { motion } from "framer-motion";
+import assets from "../../assets/index";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +26,7 @@ export default function LoginPage() {
         alertOk("Sesion iniciada con exito");
         setTimeout(() => {
           navigate("/");
-          window.location.reload()
+          window.location.reload();
         }, 3200);
       })
       .catch((err) => {
@@ -56,7 +57,7 @@ export default function LoginPage() {
       style={{ minHeight: "100vh" }}
     >
       <Card.Img className="w-25 h-100 d-sm-none" src={images.Logo.img} />
-      <Container className="d-flex flex-column align-items-center justify-content-center flex-sm-row justify-content-sm-around">
+      <Container className="d-flex flex-column align-items-center justify-content-center flex-sm-row justify-content-sm-around pb-5">
         <Card.Img
           className="w-50 h-50"
           src={images.LoginImg.img}
@@ -118,6 +119,10 @@ export default function LoginPage() {
           >
             Iniciar sesion
           </Button>
+          <span>O</span>
+          <button type="button" className="w-75 btn btn-outline-primary">
+            Inicia sesion con <img src={assets.GoogleIcon.img} className="ms-2" style={{width: "20px"}}/>
+          </button>
           <h6>Aun no eres usuario</h6>
           <Button type="submit" className="w-75 bg-secondary">
             <Link className="text-decoration-none text-white" to="/register">

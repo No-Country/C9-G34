@@ -8,6 +8,7 @@ import FavoriteIcon from "./images/icons/favorite.svg";
 import LikeIcon from "./images/icons/like.svg";
 import TrashIcon from "./images/icons/trash.svg";
 import NewComentIcon from "./images/icons/new_coment.svg";
+import GoogleIcon from "./images/icons/google_icon.png"
 
 // LOGOS
 import Logo from "./images/logos/logo.svg";
@@ -55,6 +56,10 @@ export default {
   NewComentIcon:{
     img: NewComentIcon,
     info: "New Coment Icon"
+  },
+  GoogleIcon: {
+    img: GoogleIcon,
+    info: "Google Icon lumini"
   },
 
   Logo: {
