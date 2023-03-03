@@ -69,7 +69,7 @@ const ProfilePage = () => {
           alt="Avatar"
         />
       </div>
-      <Container className="d-lg-flex">
+      <Container className="d-lg-flex pb-5">
         <div className="mt-5 pt-5 pb-5 me-lg-4">
           <h2 className="text-center text-lg-start" data-aos="fade-up-right">
             {dataUser.name + " " + dataUser.surname}
