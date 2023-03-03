@@ -78,10 +78,10 @@ export default function PostCard({ data }) {
             className="position-absolute z-3 bg-white rounded-circle"
             style={{
               objectFit: "cover",
-              width: screen.width >= 768 ? "100px" : "auto",
+              width: screen.width <= 768 ? "80px" : "100px",
               aspectRatio: 1,
-              top: screen.width >= 768 ? "-5%" : "0",
-              right: screen.width >= 768 ? "-5%" : "0",
+              top: screen.width >= 768 ? "-5%" : "-5%",
+              right: screen.width >= 768 ? "-5%" : "-5%",
             }}
           />
           <img

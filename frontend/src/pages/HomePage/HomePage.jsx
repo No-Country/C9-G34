@@ -41,19 +41,25 @@ export default function HomePage() {
     >
       <Navbar />
       <Row style={{ width: "100%" }}>
-        <Col lg={3}>
-          <ListGroup className=" m-auto mx-5 px-3 ">
-            <Form.Label>Categorys</Form.Label>
-            <ListGroupItem onClick={resetCategories}>Todas</ListGroupItem>
-            {categories.map((category) => (
-              <ListGroupItem
+        <Col lg={3} >
+          <ListGroup className=" m-auto mx-5 px-3 " >
+            <Dropdown>
+              <Dropdown.Toggle className="border-light btn-lg bg-light text-dark " style={{width:"100%"}} >
+                Categorys
+              </Dropdown.Toggle>
+              <Dropdown.Menu style={{width:"100%"}}>
+              <Dropdown.Item style={{ cursor: "pointer" }} onClick={resetCategories}>Todas</Dropdown.Item>
+              {categories.map((category) => (
+                <Dropdown.Item
                 key={category.id}
                 style={{ cursor: "pointer" }}
                 onClick={() => filterCategory(category.id)}
-              >
-                {category.title}
-              </ListGroupItem>
-            ))}
+                >
+                  {category.title}
+                </Dropdown.Item>
+              ))}
+              </Dropdown.Menu>
+            </Dropdown>
           </ListGroup>
         </Col>
         <Col className="mr-3">

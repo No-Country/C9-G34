@@ -14,13 +14,14 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="navbar container">
+    <nav className="navbar container" >
       <div className="container-fluid">
         <a className="navbar-brand">
           <img
             src={assets.Logo.img}
             alt={assets.Logo.info}
-            title={assets.Logo.info}
+            title={assets.Logo.info}    
+            style={{width:'230px'}}        
           />
         </a>
         {userCredentials.login === null &&(

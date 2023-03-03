@@ -9,7 +9,7 @@ export default function BottomNavigationBar() {
   const navigate = useNavigate();
 
   return (
-    <section className="container fixed-bottom d-flex justify-content-center py-3 first-color gap-5">
+    <section className="rounded container fixed-bottom d-flex justify-content-center py-3 first-color gap-5">
       {linksBottomNavigationBar.map((e, i) => {
         if (e.to == "/newPost" || e.to == "/profile") {
           if (userCredentials.login !== null) {
