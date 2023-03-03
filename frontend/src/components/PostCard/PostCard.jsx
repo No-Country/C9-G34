@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import assets from "../../assets/index";
 import { instance } from "../../axios/axiosConfig";
 import { alertOk, errorAlert } from "../../components/Alert/Alert";
@@ -10,6 +11,7 @@ export default function PostCard({ data }) {
   const [showComments, setShowComments] = useState(false);
   const [commentController, setCommentController] = useState("");
   const [comments, setComments] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getComments();
@@ -49,6 +51,8 @@ export default function PostCard({ data }) {
       .then((res) => {
         alertOk("Comentario creado");
         getComments();
+        setCommentController("")
+        setShowSquareComment(false)
       })
       .catch(() => errorAlert("Upps, ocurrio un error"));
   };
@@ -67,7 +71,10 @@ export default function PostCard({ data }) {
           data-aos="fade-up-right"
         >
           <img
-            src={data.userImgProfile || "https://cdn.icon-icons.com/icons2/2643/PNG/512/male_man_people_person_avatar_white_tone_icon_159363.png"}
+            src={
+              data.userImgProfile ||
+              "https://cdn.icon-icons.com/icons2/2643/PNG/512/male_man_people_person_avatar_white_tone_icon_159363.png"
+            }
             className="position-absolute z-3 bg-white rounded-circle"
             style={{
               objectFit: "cover",
@@ -89,8 +96,10 @@ export default function PostCard({ data }) {
             <div
               className="bg-white shadow w-75 position-absolute top-50 d-flex flex-column p-3"
               style={{ borderRadius: "40px" }}
+              data-aos="fade-up-left"
             >
               <textarea
+                placeholder="Comentario..."
                 autoFocus={true}
                 style={{ resize: "none" }}
                 className="border-0"
@@ -139,7 +148,13 @@ export default function PostCard({ data }) {
             <button
               className="border-0 bg-transparent"
               data-aos="fade-up"
-              onClick={() => setShowComments(!showComments)}
+              onClick={() => {
+                if (userCredentials.login !== null) {
+                  setShowComments(!showComments);
+                } else {
+                  navigate("/login");
+                }
+              }}
             >
               <img src={assets.Message02Icon.img} />
             </button>
@@ -157,7 +172,7 @@ export default function PostCard({ data }) {
           </div>
         </div>
       </section>
-      {userCredentials.login !== null && showComments && (
+      {showComments && (
         <section
           className="w-100 p-3"
           style={{ height: "250px", overflowY: "scroll" }}
@@ -168,7 +183,10 @@ export default function PostCard({ data }) {
               <li key={comment.id}>
                 <img
                   className="rounded-circle me-3"
-                  src={comment.user.imgProfile || "https://cdn.icon-icons.com/icons2/2643/PNG/512/male_man_people_person_avatar_white_tone_icon_159363.png"}
+                  src={
+                    comment.user.imgProfile ||
+                    "https://cdn.icon-icons.com/icons2/2643/PNG/512/male_man_people_person_avatar_white_tone_icon_159363.png"
+                  }
                   style={{ maxWidth: "50px", aspectRatio: 1 }}
                 />
                 {comment.content}
