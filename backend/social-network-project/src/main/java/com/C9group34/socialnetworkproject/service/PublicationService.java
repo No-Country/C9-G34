@@ -53,6 +53,12 @@ public class PublicationService {
 
     }
 
+    public List<PublicationDto> retrieveAllPublicationsList(){
+        List<Publication> publications = publicationRepository.findAll();
+        List<PublicationDto> listToReturn = new ArrayList<>();
+        publications.forEach(p -> listToReturn.add(mapToDTO(p)));
+        return listToReturn;
+    }
 
     public List<PublicationDto> retrieveAll(Integer userId) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
@@ -99,7 +105,7 @@ public class PublicationService {
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
-
+                //.category(publicationDto.getCategory())
                 .user(publicationToReplace.getUser())
                 .build();
         publicationRepository.save(updatedPublication);

@@ -2,7 +2,6 @@ package com.C9group34.socialnetworkproject.controllers;
 
 import com.C9group34.socialnetworkproject.dto.PublicationDto;
 import com.C9group34.socialnetworkproject.exceptions.ResourceNotFoundException;
-import com.C9group34.socialnetworkproject.models.Publication;
 import com.C9group34.socialnetworkproject.service.PublicationService;
 import com.C9group34.socialnetworkproject.service.UserService;
 import com.C9group34.socialnetworkproject.util.JWTutil;
@@ -44,9 +43,9 @@ public class PublicationController {
     ) @RequestBody PublicationDto publicationDTO)
 
     {
-        String id = jwt.getKey(token);
+        String userId = jwt.getKey(token);
         if (jwt.verifyToken(token)) {
-            return new ResponseEntity<>(publicationService.create(publicationDTO, Integer.valueOf(id)), HttpStatus.CREATED);
+            return new ResponseEntity<>(publicationService.create(publicationDTO, Integer.valueOf(userId)), HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Accion no realizada", HttpStatus.UNAUTHORIZED);
 
