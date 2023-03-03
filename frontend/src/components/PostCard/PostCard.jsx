@@ -59,6 +59,12 @@ export default function PostCard({ data }) {
       .catch(() => errorAlert("Upps, ocurrio un error"));
   };
 
+  const randomRat = (min=1, max=3) => {
+    return Math.floor((Math.random() * (max - min + 1)) + min);
+  }
+
+  const amdomRatPerCard = randomRat()
+
   const deleteComment = (id) => {
     fetch(`https://lumini-production.up.railway.app/comments/${id}`, {
       method: "DELETE",
@@ -131,7 +137,7 @@ export default function PostCard({ data }) {
               </button>
             </div>
           )}
-          <div className="d-flex gap-4 justify-content-between py-2 px-4 w-100">
+          <div className="d-flex gap-4 justify-content-between align-items-center py-2 px-4 w-100">
             <div>
               <div className="d-flex"
                 onMouseEnter={() => setIsShown(true)}>
@@ -169,6 +175,7 @@ export default function PostCard({ data }) {
                 )}
               </div>
             </div>
+              <span>{amdomRatPerCard}</span>
 
 
             <button
@@ -186,6 +193,7 @@ export default function PostCard({ data }) {
         <div className="w-50">
           <h5 className="fs-1 mb-4">{data.title}</h5>
           <p
+          className="limit__card"
             style={{
               maxWidth: "500px",
               fontSize: screen.width >= 768 ? "30px" : "auto",

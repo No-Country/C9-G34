@@ -40,8 +40,8 @@ export default function HomePage() {
       transition={{ duration: 0.3 }}
     >
       <Navbar />
-      <Row style={{ width: "100%" }}>
-        <Col lg={3} >
+      <Row style={{ width: "100%" }} className="m-0">
+        <Col lg={3} className="m-0 p-0">
           <ListGroup className=" m-auto mx-5 px-3 " >
             <Dropdown>
               <Dropdown.Toggle className="border-light btn-lg bg-light text-dark " style={{width:"100%"}} >
@@ -62,7 +62,7 @@ export default function HomePage() {
             </Dropdown>
           </ListGroup>
         </Col>
-        <Col className="mr-3">
+        <Col className="p-0">
           <div className="w-100 p-3 py-5 container py-sm-3 pb-sm-5  flex-sm-column align-items-center">
             {publicationsData.map((publication, i) => {
               return <PostCard data={publication} key={i + 1} />;

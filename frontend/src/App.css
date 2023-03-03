@@ -28,3 +28,10 @@ body{
 .first-color{
   background-color: #fff;
 }
+
+.limit__card{
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

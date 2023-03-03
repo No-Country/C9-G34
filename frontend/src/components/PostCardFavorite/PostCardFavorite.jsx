@@ -74,6 +74,7 @@ export default function PostCardFavorite({ id }) {
       <div className="w-50">
         <h5 className="fs-1 mb-4">{dataCard.title}</h5>
         <p
+        className="limit__card"
           style={{
             maxWidth: "500px",
             fontSize: screen.width >= 768 ? "30px" : "auto",
