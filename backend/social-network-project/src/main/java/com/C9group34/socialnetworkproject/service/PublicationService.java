@@ -81,6 +81,13 @@ public class PublicationService {
         return mapToDTO(publication.get());
     }
 
+    public List<PublicationDto> retrieveByCategory(Integer categoryId){
+        List <PublicationDto> publicationsToReturn = new ArrayList<>();
+        List <Publication> publications = publicationRepository.retrieveAllPublicationsByCategory(categoryId);
+        publications.forEach(p -> publicationsToReturn.add(mapToDTO(p)));
+        return publicationsToReturn;
+    }
+
 
     public void delete(Integer publicationId) throws ResourceNotFoundException {
         try {

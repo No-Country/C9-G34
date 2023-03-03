@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping(path = "/users/publications")
@@ -51,14 +53,21 @@ public class PublicationController {
 
     }
 
+    @GetMapping("getByCategories/{categoryId}")
+    public ResponseEntity getPublicationsByCategory(@PathVariable Integer categoryId){
+        List<PublicationDto> publications = publicationService.retrieveByCategory(categoryId);
+        return new ResponseEntity(publications, HttpStatus.OK);
 
+    }
+
+    /*
     @GetMapping("/all")
     @Query(value = "select publications.id, publications.title, publications.description, publications.url_imgs, publications.ratings, publications.category_id, publications.user_id, users.img_profile FROM publications INNER JOIN users ON publications.user_id = users.id ORDER BY publications.id;", nativeQuery = true)
     public ResponseEntity getAll(){
         return new ResponseEntity(publicationService.getAll(), HttpStatus.OK);
-    }
+    }*/
 
-    @GetMapping("/all+")
+    @GetMapping("/all")
     public ResponseEntity retrieve(@RequestHeader(value = "Authorization") String token){
         String id = jwt.getKey(token);
         if (jwt.verifyToken(token)){
