@@ -59,11 +59,11 @@ export default function PostCard({ data }) {
       .catch(() => errorAlert("Upps, ocurrio un error"));
   };
 
-  const randomRat = (min=1, max=3) => {
-    return Math.floor((Math.random() * (max - min + 1)) + min);
-  }
+  const randomRat = (min = 1, max = 3) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  };
 
-  const amdomRatPerCard = randomRat()
+  const amdomRatPerCard = randomRat();
 
   const deleteComment = (id) => {
     fetch(`https://lumini-production.up.railway.app/comments/${id}`, {
@@ -138,11 +138,13 @@ export default function PostCard({ data }) {
             </div>
           )}
           <div className="d-flex gap-4 justify-content-between align-items-center py-2 px-4 w-100">
-            <div>
-              <div className="d-flex"
-                onMouseEnter={() => setIsShown(true)}>
-                <button className="mx-1 border-0 "
-                  onClick={() => setIsShown(false)}>
+
+              <div className="d-flex align-items-center" onMouseEnter={() => setIsShown(true)}>
+                <span className="me-3">{amdomRatPerCard}</span>
+                <button
+                  className="mx-1 border-0 "
+                  onClick={() => setIsShown(false)}
+                >
                   <img
                     src={assets.LikeIcon.img}
                     alt={assets.FavoriteIcon.info}
@@ -150,11 +152,11 @@ export default function PostCard({ data }) {
                   />
                 </button>
                 {isShown && (
-                  <div
-                    onMouseEnter={() => setIsShown2(true)}
-                  >
-                    <button className=" mx-1 border-0"
-                      onClick={() => setIsShown2(false)}>
+                  <div onMouseEnter={() => setIsShown2(true)}>
+                    <button
+                      className=" mx-1 border-0"
+                      onClick={() => setIsShown2(false)}
+                    >
                       <img
                         src={assets.LikeIcon.img}
                         alt={assets.FavoriteIcon.info}
@@ -162,8 +164,10 @@ export default function PostCard({ data }) {
                       />
                     </button>
                     {isShown2 && (
-                      <button className="mx-1 border-0 "
-                        onClick={() => setIsShown2(true)}>
+                      <button
+                        className="mx-1 border-0 "
+                        onClick={() => setIsShown2(true)}
+                      >
                         <img
                           src={assets.LikeIcon.img}
                           alt={assets.FavoriteIcon.info}
@@ -174,26 +178,24 @@ export default function PostCard({ data }) {
                   </div>
                 )}
               </div>
-            </div>
-              <span>{amdomRatPerCard}</span>
-
-
-            <button
-              className="border-0 bg-transparent"
-              onClick={() => setShowSquareComment(!showSquareComment)}
-            >
-              <img
-                src={assets.NewComentIcon.img}
-                alt={assets.NewComentIcon.info}
-                title={assets.NewComentIcon.info}
-              />
-            </button>
+            {userCredentials.login !== null && (
+              <button
+                className="border-0 bg-transparent"
+                onClick={() => setShowSquareComment(!showSquareComment)}
+              >
+                <img
+                  src={assets.NewComentIcon.img}
+                  alt={assets.NewComentIcon.info}
+                  title={assets.NewComentIcon.info}
+                />
+              </button>
+            )}
           </div>
         </div>
         <div className="w-50">
           <h5 className="fs-1 mb-4">{data.title}</h5>
           <p
-          className="limit__card"
+            className="limit__card"
             style={{
               maxWidth: "500px",
               fontSize: screen.width >= 768 ? "30px" : "auto",
@@ -202,30 +204,34 @@ export default function PostCard({ data }) {
             {data.description}
           </p>
           <div className="d-flex gap-4 justify-content-end">
-            <button
-              className="border-0 bg-transparent"
-              data-aos="fade-up"
-              onClick={() => {
-                if (userCredentials.login !== null) {
-                  setShowComments(!showComments);
-                } else {
-                  navigate("/login");
-                }
-              }}
-            >
-              <img src={assets.Message02Icon.img} />
-            </button>
-            <button
-              className="border-0 bg-transparent"
-              data-aos="fade-up"
-              onClick={addFavorite}
-            >
-              <img
-                src={assets.FavoriteIcon.img}
-                alt={assets.FavoriteIcon.info}
-                title={assets.FavoriteIcon.info}
-              />
-            </button>
+            {userCredentials.login !== null && (
+              <>
+                <button
+                  className="border-0 bg-transparent"
+                  data-aos="fade-up"
+                  onClick={() => {
+                    if (userCredentials.login !== null) {
+                      setShowComments(!showComments);
+                    } else {
+                      navigate("/login");
+                    }
+                  }}
+                >
+                  <img src={assets.Message02Icon.img} />
+                </button>
+                <button
+                  className="border-0 bg-transparent"
+                  data-aos="fade-up"
+                  onClick={addFavorite}
+                >
+                  <img
+                    src={assets.FavoriteIcon.img}
+                    alt={assets.FavoriteIcon.info}
+                    title={assets.FavoriteIcon.info}
+                  />
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -237,30 +243,34 @@ export default function PostCard({ data }) {
         >
           <h3>Comentarios:</h3>
           <ul className="d-flex flex-column gap-3 align-items-start ps-0">
-            {comments.map((comment) => (
-              <li key={comment.id} className="w-100 position-relative">
-                <img
-                  className="rounded-circle me-3"
-                  src={
-                    comment.user.imgProfile ||
-                    "https://cdn.icon-icons.com/icons2/2643/PNG/512/male_man_people_person_avatar_white_tone_icon_159363.png"
-                  }
-                  style={{ maxWidth: "50px", aspectRatio: 1 }}
-                />
-                {comment.content}
-                {emailProfile === comment.user.email && (
-                  <button
-                    className="position-absolute top-0 end-0 border-0 bg-transparent"
-                    onClick={() => deleteComment(comment.id)}
-                  >
-                    <i
-                      className="bx bxs-trash"
-                      style={{ color: "#d40d0d" }}
-                    ></i>
-                  </button>
-                )}
-              </li>
-            ))}
+            {comments.length !== 0 ? (
+              comments.map((comment) => (
+                <li key={comment.id} className="w-100 position-relative">
+                  <img
+                    className="rounded-circle me-3"
+                    src={
+                      comment.user.imgProfile ||
+                      "https://cdn.icon-icons.com/icons2/2643/PNG/512/male_man_people_person_avatar_white_tone_icon_159363.png"
+                    }
+                    style={{ maxWidth: "50px", aspectRatio: 1 }}
+                  />
+                  {comment.content}
+                  {emailProfile === comment.user.email && (
+                    <button
+                      className="position-absolute top-0 end-0 border-0 bg-transparent"
+                      onClick={() => deleteComment(comment.id)}
+                    >
+                      <i
+                        className="bx bxs-trash"
+                        style={{ color: "#d40d0d" }}
+                      ></i>
+                    </button>
+                  )}
+                </li>
+              ))
+            ) : (
+              <span className="m-auto pt-5">Se el primero en comentar</span>
+            )}
           </ul>
         </section>
       )}

@@ -20,6 +20,8 @@ import Test02 from "./images/test/test02.svg"
 // IMAGENES
 import LoginImg from "./images/loginImg.svg"
 
+import LoaderPost from "./images/loader.png"
+
 export default {
   CameraIcon: {
     img: CameraIcon,
@@ -84,5 +86,10 @@ export default {
   Imgedit:{
     img: Imgedit,
   info:"image edit perfil"
+  },
+
+  LoaderPost: {
+    img: LoaderPost,
+    info: "Load Post"
   }
 };
