@@ -6,7 +6,7 @@ import { alertOk, errorAlert } from "../../components/Alert/Alert";
 import useDataContext from "../../hooks/useDataContext";
 
 export default function PostCard({ data }) {
-  const { userCredentials } = useDataContext();
+  const { userCredentials, emailProfile } = useDataContext();
   const [showSquareComment, setShowSquareComment] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [commentController, setCommentController] = useState("");
@@ -51,8 +51,23 @@ export default function PostCard({ data }) {
       .then((res) => {
         alertOk("Comentario creado");
         getComments();
-        setCommentController("")
-        setShowSquareComment(false)
+        setCommentController("");
+        setShowSquareComment(false);
+      })
+      .catch(() => errorAlert("Upps, ocurrio un error"));
+  };
+
+  const deleteComment = (id) => {
+    fetch(`https://lumini-production.up.railway.app/comments/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        alertOk("Se elimino correctamente");
+        getComments();
+        setCommentController("");
       })
       .catch(() => errorAlert("Upps, ocurrio un error"));
   };
@@ -174,13 +189,14 @@ export default function PostCard({ data }) {
       </section>
       {showComments && (
         <section
+          data-aos="fade-down"
           className="w-100 p-3"
           style={{ height: "250px", overflowY: "scroll" }}
         >
           <h3>Comentarios:</h3>
           <ul className="d-flex flex-column gap-3 align-items-start ps-0">
             {comments.map((comment) => (
-              <li key={comment.id}>
+              <li key={comment.id} className="w-100 position-relative">
                 <img
                   className="rounded-circle me-3"
                   src={
@@ -190,6 +206,17 @@ export default function PostCard({ data }) {
                   style={{ maxWidth: "50px", aspectRatio: 1 }}
                 />
                 {comment.content}
+                {emailProfile === comment.user.email && (
+                  <button
+                    className="position-absolute top-0 end-0 border-0 bg-transparent"
+                    onClick={() => deleteComment(comment.id)}
+                  >
+                    <i
+                      className="bx bxs-trash"
+                      style={{ color: "#d40d0d" }}
+                    ></i>
+                  </button>
+                )}
               </li>
             ))}
           </ul>
