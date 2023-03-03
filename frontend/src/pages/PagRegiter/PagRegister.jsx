@@ -142,7 +142,7 @@ const PagRegister = () => {
                     src={assets.Logo.img}
                     alt={assets.Logo.info}
                     title={assets.Logo.info}
-                    style={{ width: "200px", height: "65px" }}
+                    style={{ width: "230px" }}
                   />
                 </a>
               </Card.Title>

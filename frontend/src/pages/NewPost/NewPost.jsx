@@ -87,6 +87,7 @@ const NewPost = () => {
           src={assets.Logo.img}
           alt={assets.Logo.info}
           title={assets.Logo.info}
+          style={{width:'230px'}}
         />
 
         <Form className="m-5 p-5" onSubmit={handleSubmit(submit)}>

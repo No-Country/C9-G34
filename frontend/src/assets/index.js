@@ -10,7 +10,7 @@ import TrashIcon from "./images/icons/trash.svg";
 import NewComentIcon from "./images/icons/new_coment.svg";
 
 // LOGOS
-import Logo from "./images/logos/logo.svg";
+import Logo from "./images/logos/logobg.png";
 import Imgedit from "./images/logos/imgedit.svg";
 // TEST
 import Test01 from "./images/test/test01.svg"
@@ -60,6 +60,7 @@ export default {
   Logo: {
     img: Logo,
     info: "Logo Lumini",
+    
   },
 
   Test01: {
