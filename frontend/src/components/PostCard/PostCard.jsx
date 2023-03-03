@@ -11,6 +11,8 @@ export default function PostCard({ data }) {
   const [showComments, setShowComments] = useState(false);
   const [commentController, setCommentController] = useState("");
   const [comments, setComments] = useState([]);
+  const [isShown, setIsShown] = useState(false);
+  const [isShown2, setIsShown2] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -115,13 +117,45 @@ export default function PostCard({ data }) {
             </div>
           )}
           <div className="d-flex gap-4 justify-content-between py-2 px-4 w-100">
-            <button className="border-0 bg-transparent">
-              <img
-                src={assets.LikeIcon.img}
-                alt={assets.FavoriteIcon.info}
-                title={assets.FavoriteIcon.info}
-              />
-            </button>
+            <div>
+              <div className="d-flex"
+                onMouseEnter={() => setIsShown(true)}>
+                <button className="mx-1 border-0 "
+                  onClick={() => setIsShown(false)}>
+                  <img
+                    src={assets.LikeIcon.img}
+                    alt={assets.FavoriteIcon.info}
+                    title={assets.FavoriteIcon.info}
+                  />
+                </button>
+                {isShown && (
+                  <div
+                    onMouseEnter={() => setIsShown2(true)}
+                  >
+                    <button className=" mx-1 border-0"
+                      onClick={() => setIsShown2(false)}>
+                      <img
+                        src={assets.LikeIcon.img}
+                        alt={assets.FavoriteIcon.info}
+                        title={assets.FavoriteIcon.info}
+                      />
+                    </button>
+                    {isShown2 && (
+                      <button className="mx-1 border-0 "
+                        onClick={() => setIsShown2(true)}>
+                        <img
+                          src={assets.LikeIcon.img}
+                          alt={assets.FavoriteIcon.info}
+                          title={assets.FavoriteIcon.info}
+                        />
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+
             <button
               className="border-0 bg-transparent"
               onClick={() => setShowSquareComment(!showSquareComment)}
