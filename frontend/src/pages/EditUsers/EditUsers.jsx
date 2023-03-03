@@ -19,9 +19,11 @@ const EditUsers = () => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
 
   const changeImage = async (e) => {
+    setLoader(true);
     const targetImage = e.target;
 
     const reader = new FileReader();
@@ -35,6 +37,7 @@ const EditUsers = () => {
 
     if (res !== "No es imagen") {
       setImage(res);
+      setTimeout(() => setLoader(false), 500);
     } else {
       return;
     }
@@ -46,14 +49,21 @@ const EditUsers = () => {
       .get("users/get", {
         headers: { Authorization: localStorage.getItem("token") },
       })
-      .then((res) => setAfterData(res.data));
+      .then((res) => {
+        setAfterData(res.data);
+        reset({
+          name: res.data.name,
+          surname: res.data.surname,
+          phone: res.data.phone == null ? "" : res.data.phone,
+        });
+      });
     setTimeout(() => setLoader(false), 500);
   }, []);
 
   const submit = (data) => {
     data.password = afterData.password;
     data.email = afterData.email;
-    data.imgProfile = image;
+    data.imgProfile = image.length == 0 ? afterData.imgProfile : image;
     data.ratings = 0;
 
     instance
@@ -85,9 +95,7 @@ const EditUsers = () => {
                 style={{ maxWidth: "150px" }}
               ></Image>
               <Form.Control
-                {...register("imgProfile", {
-                  required: true,
-                })}
+                {...register("imgProfile")}
                 type="file"
                 accept="image/*"
                 onChange={(e) => {
