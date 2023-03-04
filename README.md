@@ -17,7 +17,7 @@
 // Integrantes del equipo de diseño UI/UX
   Matias Rodriguez
   
-// Produc Manager
+// Product Manager
   Nazarena Lapasta
 
 ```
@@ -47,12 +47,16 @@ $ npm run dev
 
 - "Link de la documentación"
 
-## Enlace en producción
+## Enlace en aplicación
 
-- "Link del enlace"
+- https://voluble-genie-013061.netlify.app/
 
 ## Lenguajes o herramientas 
 
 - ReactJS
 - Boostrap
 - Redux/toolkit
+- java
+- spring / springboot
+- postgresSql
+- swagger
