@@ -53,6 +53,12 @@ public class PublicationService {
 
     }
 
+    public List<PublicationDto> retrieveAllPublicationsList(){
+        List<Publication> publications = publicationRepository.findAll();
+        List<PublicationDto> listToReturn = new ArrayList<>();
+        publications.forEach(p -> listToReturn.add(mapToDTO(p)));
+        return listToReturn;
+    }
 
     public List<PublicationDto> retrieveAll(Integer userId) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
@@ -73,6 +79,13 @@ public class PublicationService {
             throw new ResourceNotFoundException("El id de la publicacion que está buscando no existe.");
         }
         return mapToDTO(publication.get());
+    }
+
+    public List<PublicationDto> retrieveByCategory(Integer categoryId){
+        List <PublicationDto> publicationsToReturn = new ArrayList<>();
+        List <Publication> publications = publicationRepository.retrieveAllPublicationsByCategory(categoryId);
+        publications.forEach(p -> publicationsToReturn.add(mapToDTO(p)));
+        return publicationsToReturn;
     }
 
 
@@ -99,7 +112,7 @@ public class PublicationService {
                 .title(publicationDto.getTitle())
                 .description(publicationDto.getDescription())
                 .urlImg(publicationDto.getUrlImg())
-
+                //.category(publicationDto.getCategory())
                 .user(publicationToReplace.getUser())
                 .build();
         publicationRepository.save(updatedPublication);

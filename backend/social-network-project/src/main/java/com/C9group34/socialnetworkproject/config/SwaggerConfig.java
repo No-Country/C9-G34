@@ -25,7 +25,6 @@ import java.io.IOException;
         scheme = "bearer"
 )
 public class SwaggerConfig {
-    
     @Bean
     public OpenAPI baseOpenAPI() throws IOException {
 
