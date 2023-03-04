@@ -32,7 +32,7 @@
 
 - https://voluble-genie-013061.netlify.app/
 
-## Lenguajes o herramientas 
+## Lenguajes, herramientas y métodos 
 
 - ReactJS
 - Boostrap
@@ -41,3 +41,5 @@
 - spring / springboot
 - postgresSql
 - swagger
+- scrum
+- trello
