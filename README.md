@@ -41,5 +41,3 @@
 - spring / springboot
 - postgresSql
 - swagger
-- scrum
-- trello
