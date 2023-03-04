@@ -6,3 +6,32 @@
   box-sizing: border-box;
   outline: none;
 }
+
+/* CUSTOM SCROLL */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background:#D2E5E5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5f3519;
+  border-radius: 10px;
+}
+
+body{
+  background-color: #82caca !important;
+}
+
+.first-color{
+  background-color: #fff;
+}
+
+.limit__card{
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
