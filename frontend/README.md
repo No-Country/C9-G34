@@ -8,8 +8,7 @@
 // Integrantes del equipo de front-end
 const INTEGRANTES = [
   "Diego Nieves",
-  "Omar Vera",
-  "Andrea Servin"
+  "Omar Vera"
 ]
 ```
 <hr></hr>
