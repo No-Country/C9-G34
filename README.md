@@ -4,15 +4,15 @@
 
 <h1 align="center">Lumini C9-34</h1>
 
-```javascript
+```javascript - react
 // Integrantes del equipo de front-end
-const INTEGRANTES = [
+INTEGRANTES = [
   "Diego Nieves",
   "Omar Vera"
 ]
 
 // Integrantes del equipo de back-end
-const INTEGRANTES = [
+INTEGRANTES = [
   "Gabriel Mayantz Remes",
   "Laila Aquilos",
   "Luis Uzcátegui"
