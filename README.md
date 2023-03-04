@@ -5,18 +5,21 @@
 <h1 align="center">Lumini C9-34</h1>
 
 ```javascript - react
-// Integrantes del equipo de front-end
-INTEGRANTES = [
-  "Diego Nieves",
-  "Omar Vera"
-]
+# Integrantes del equipo de front-end
+  Diego Nieves
+  Omar Vera
 
-// Integrantes del equipo de back-end
-INTEGRANTES = [
-  "Gabriel Mayantz Remes",
-  "Laila Aquilos",
-  "Luis Uzcátegui"
-]
+# Integrantes del equipo de back-end
+  Gabriel Mayantz Remes,
+  Laila Aquilos,
+  Luis Uzcátegui
+
+# Integrantes del equipo de diseño UI/UX
+  Matias Rodriguez
+  
+# Produc manager
+  Nazarena Lapasta
+
 ```
 <hr></hr>
 
