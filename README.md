@@ -11,7 +11,7 @@
 
 // Integrantes del equipo de back-end
   Gabriel Mayantz Remes,
-  Laila Aquilos,
+  Laila Aquillos,
   Luis Uzcátegui
 
 // Integrantes del equipo de diseño UI/UX
