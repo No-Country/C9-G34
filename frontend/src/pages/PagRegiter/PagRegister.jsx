@@ -127,7 +127,7 @@ const PagRegister = () => {
                     minLength: 8,
                     maxLength: 15,
                   })}
-                  type="text"
+                  type="password"
                   placeholder="Password"
                 />
                 {errors.password?.type === "required" && (
